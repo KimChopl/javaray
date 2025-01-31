@@ -14,8 +14,9 @@ const ShippingList = () => {
   return (
     <>
       <StyledShipDiv>
+      <ShippingSmallMenu />
         <StyledShipImgCover>
-          <StyledShipImage />
+          <StyledShipImage src=""/>
         </StyledShipImgCover>
         <StyledShipTitleDiv>
           <span>하이요</span>
@@ -30,7 +31,6 @@ const ShippingList = () => {
         </StyledShipRatingCover>
         <StyledShipTitleDiv>인당 가격 : 40,000원</StyledShipTitleDiv>
       </StyledShipDiv>
-      <ShippingSmallMenu />
     </>
   );
 };

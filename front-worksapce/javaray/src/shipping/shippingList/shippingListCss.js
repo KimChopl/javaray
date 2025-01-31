@@ -7,6 +7,7 @@ export const StyledShipDiv = styled.div`
   box-shadow: 1px 3px 5px #bbbbbb;
   display: inline-block;
   margin: 15px;
+  position: relative;
 `;
 
 export const StyledShipImgCover = styled.div`
@@ -16,13 +17,14 @@ export const StyledShipImgCover = styled.div`
   width: 194px;
   margin: 7px 7px 0 7px;
   height: 195px;
-  background-color: #1c1c1c;
+  background-color: #d0d0d0;
 `;
 
 export const StyledShipImage = styled.img`
   width: 100%;
   height: auto;
-  max-heught: 100%;
+  max-height: 100%;
+  object-fit: contain;
 `;
 
 export const StyledShipTitleDiv = styled.div`
