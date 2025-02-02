@@ -1,29 +1,27 @@
 import { useState } from "react";
-import { CircleCover, CircleDiv, Report } from "./ShippingSmallMenuCss";
+import { CircleCover, CircleDiv } from "./ShippingSmallMenuCss";
+import ShippingReport from "./shippingReport/ShippingReport";
 
-const ShippingSmallMenu = () => {
+const ShippingSmallMenu = (props) => {
   const [displayDiv, setDisplayDiv] = useState(false);
   const onClickDiv = () => {
     if(displayDiv === false){
-      setDisplayDiv(true)
+      setDisplayDiv(true);
     } else {
       setDisplayDiv(false);
     }
   }
-  const outMouse = () =>{
-    setDisplayDiv(false);
-  }
 
-  const overMouse = () => {
-    setDisplayDiv(true);
+  const isReport = (x) => {
+    props.setReport(x);
   }
+ 
   return (
     <CircleCover onClick={onClickDiv}>
       <CircleDiv />
       <CircleDiv />
       <CircleDiv />
-      {displayDiv && <Report onMouseover={overMouse} onMouseOut={outMouse}>
-      </Report>}
+      {displayDiv && <ShippingReport a={isReport}/>}
     </CircleCover>
   );
 };
