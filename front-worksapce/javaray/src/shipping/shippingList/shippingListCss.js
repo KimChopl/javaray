@@ -9,6 +9,11 @@ export const StyledShipDiv = styled.div`
   margin: 15px;
   position: relative;
 `;
+export const ShippingToDetail = styled.div`
+  width: 194px;
+  height: 270px;
+  display: inline-block;
+`;
 
 export const StyledShipImgCover = styled.div`
   display: flex;

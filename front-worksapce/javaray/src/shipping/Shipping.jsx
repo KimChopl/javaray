@@ -9,6 +9,7 @@ const Shipping = () => {
   const isReport = (x) => {
     setReport(x);
   };
+
   return (
     <StyledShipWarp>
       <SearchBar />
