@@ -1,6 +1,6 @@
 spring:
   application:
-    name: secom
+    name: javaray
   datasource:
     url: jdbc:oracle:thin:@61.37.177.140:1521:xe
     username: JAVARAY
