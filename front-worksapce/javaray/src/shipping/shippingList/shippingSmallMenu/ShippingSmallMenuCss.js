@@ -12,13 +12,9 @@ export const CircleDiv = styled.div`
 
 export const CircleCover = styled.div`
   width : 36px;
-  height : 80px;
+  height : 10px;
   position: absolute;
   margin-left: 165px;
 `
 
-export const Report = styled.div`
-  width : 60px;
-  height : auto;
-  font-size: 13px;
-`
+
