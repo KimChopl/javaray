@@ -1,3 +1,4 @@
+import { useContext, useState } from "react";
 import {
   BaseCover,
   DetailBase,
@@ -13,10 +14,17 @@ import {
   LocationDiv,
   PriceDiv,
   AllowNumberDiv,
+  ContentLabel,
+  FishTable,
+  Td,
 } from "./ShippingDetailCss";
+import { ModalContext } from "../../Modal/OpenOrCloseModal";
+import Modal from "../../Modal/Modal";
 
 const ShippingDetail = () => {
+  const {isModal, openModal} = useContext(ModalContext);
   return (
+    <>
     <DetailWarp>
       <DetailHeader>
         <h1>제목이 들어갈 자리</h1>
@@ -28,13 +36,36 @@ const ShippingDetail = () => {
           </ImageCover>
           <BaseCover>
             <BaseBar>
-              <LocationDiv>무슨도 어디군 어디읍 무슨항</LocationDiv>
+              <LocationDiv>
+                <ContentLabel>무슨도 어디군 어디읍 무슨항</ContentLabel>
+              </LocationDiv>
             </BaseBar>
             <BaseBar>
-              <PriceDiv>인당 가격 : </PriceDiv>
-              <AllowNumberDiv>최대 탑승 인원 :</AllowNumberDiv>
+              <PriceDiv>
+                <ContentLabel>
+                  인당 가격 :
+                </ContentLabel>
+              </PriceDiv>
+              <AllowNumberDiv>
+                <ContentLabel>
+                  최대 탑승 인원 :
+                </ContentLabel>
+              </AllowNumberDiv>
             </BaseBar>
-            <BaseBar></BaseBar>
+            <BaseBar><FishTable>
+              <thead>
+                <tr>
+                  <th colSpan={2}>낚시 가능 어종</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <Td >광어</Td>
+                  <Td>우럭</Td>
+                </tr>
+                </tbody>
+              </FishTable>
+            </BaseBar>
             <BaseBar></BaseBar>
             <BaseBar></BaseBar>
           </BaseCover>
@@ -44,6 +75,8 @@ const ShippingDetail = () => {
         <ReviewCover>리뷰들</ReviewCover>
       </DetailBody>
     </DetailWarp>
+    {isModal && <Modal />}
+ </>
   );
 };
 

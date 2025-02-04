@@ -1,25 +1,26 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import Modal from "../../../../Modal/Modal";
 import { Report } from "./ShippingReportCss";
-const ShippingReport = (props) => {
-    
-    const [deleteShipping, setDeleteShipping] = useState(false);
-    const clickReort = () =>{
-        props.a(true)
+import { ModalContext } from "../../../../Modal/OpenOrCloseModal";
+const ShippingReport = () => {
+    const {openModal, isModal} = useContext(ModalContext)
+    const clickModal = (e) => {
+        openModal(e)
     }
-    const clickDelete = () => {
-        setDeleteShipping(true);
+    const closeModal = (e) => {
+        openModal(e);
     }
     return (
         <>
         <Report>
             <div>
-                <label onClick={clickReort}>신고하기</label>
+                <label>신고하기</label>
             </div>
             <div>
-                <label onClick={clickDelete}>삭제하기</label>
+                <label>삭제하기</label>
             </div>
         </Report>
-        
+        {isModal && <Modal kind={"report"} clickModal={closeModal}/>}
         </>
     )
 }

@@ -15,17 +15,17 @@ export const DetailHeader = styled.div`
 
 export const DetailBody = styled.div`
   width: 100%;
-  height: 800px;
+  height: 802px;
 `;
 export const DetailBase = styled.div`
   width: 1100px;
-  height: 500px;
+  height: 502px;
   padding-left: 50px;
 `;
 
 export const ImageCover = styled.div`
   width: 650px;
-  height: 450px;
+  height: 452px;
   padding: 25px;
   display: inline-block;
   position: relative;
@@ -33,7 +33,7 @@ export const ImageCover = styled.div`
 
 export const BaseCover = styled.div`
   width: 375px;
-  height: 450px;
+  height: 452px;
   padding: 25px 25px 25px 0;
   display: inline-block;
 `;
@@ -91,7 +91,21 @@ export const PriceDiv = styled.div`
 export const AllowNumberDiv = styled.div`
   width: 155px;
   height: 40px;
-  display: inline-block;
   position: absolute;
   padding: 5px 10px 5px 165px;
 `;
+
+export const ContentLabel = styled.label`
+  position : absolute;
+  width : 100%;
+  height : 100%
+`
+export const FishTable = styled.table`
+  text-align : center;
+`
+
+export const Td = styled.td`
+  &:hover {
+    cursor : pointer;
+  }
+`
