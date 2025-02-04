@@ -10,6 +10,9 @@ import {
   WeatherCover,
   ShippingContent,
   ReviewCover,
+  LocationDiv,
+  PriceDiv,
+  AllowNumberDiv,
 } from "./ShippingDetailCss";
 
 const ShippingDetail = () => {
@@ -24,16 +27,21 @@ const ShippingDetail = () => {
             <ImageBox src="" alt="여러장 넣어야하는디" />
           </ImageCover>
           <BaseCover>
-            <BaseBar></BaseBar>
-            <BaseBar></BaseBar>
+            <BaseBar>
+              <LocationDiv>무슨도 어디군 어디읍 무슨항</LocationDiv>
+            </BaseBar>
+            <BaseBar>
+              <PriceDiv>인당 가격 : </PriceDiv>
+              <AllowNumberDiv>최대 탑승 인원 :</AllowNumberDiv>
+            </BaseBar>
             <BaseBar></BaseBar>
             <BaseBar></BaseBar>
             <BaseBar></BaseBar>
           </BaseCover>
         </DetailBase>
-        <WeatherCover></WeatherCover>
-        <ShippingContent></ShippingContent>
-        <ReviewCover></ReviewCover>
+        <WeatherCover>일주일 날씨 예보</WeatherCover>
+        <ShippingContent>상세 내용</ShippingContent>
+        <ReviewCover>리뷰들</ReviewCover>
       </DetailBody>
     </DetailWarp>
   );

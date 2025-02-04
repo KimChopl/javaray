@@ -24,7 +24,7 @@ export const DetailBase = styled.div`
 `;
 
 export const ImageCover = styled.div`
-  width: 700px;
+  width: 650px;
   height: 450px;
   padding: 25px;
   display: inline-block;
@@ -32,14 +32,14 @@ export const ImageCover = styled.div`
 `;
 
 export const BaseCover = styled.div`
-  width: 325px;
+  width: 375px;
   height: 450px;
   padding: 25px 25px 25px 0;
   display: inline-block;
 `;
 
 export const ImageBox = styled.img`
-  width: 700px;
+  width: 650px;
   height: auto;
   max-height: 100%;
   object-fit: contain;
@@ -47,9 +47,10 @@ export const ImageBox = styled.img`
 `;
 
 export const BaseBar = styled.div`
-  width: 275px;
+  width: 325px;
   height: 65px;
   padding: 12.5px 25px 12.5px 25px;
+  position: relative;
 `;
 
 export const WeatherCover = styled.div`
@@ -70,4 +71,27 @@ export const ReviewCover = styled.div`
   height: auto;
   min-height: 90px;
   padding: 10px 25px 10px 25px;
+`;
+
+export const LocationDiv = styled.div`
+  width: 305px;
+  height: 40px;
+  padding: 5px 10px 5px 10px;
+  position: absolute;
+`;
+
+export const PriceDiv = styled.div`
+  width: 150px;
+  height: 40px;
+  display: inline-block;
+  position: absolute;
+  padding: 5px 5px 5px 10px;
+`;
+
+export const AllowNumberDiv = styled.div`
+  width: 155px;
+  height: 40px;
+  display: inline-block;
+  position: absolute;
+  padding: 5px 10px 5px 165px;
 `;
