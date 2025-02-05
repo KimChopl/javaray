@@ -10,6 +10,8 @@ import Mypage from "./member/Mypage/Mypage";
 
 import CollapsibleExample from "./Header/Header";
 
+import FishingInsert from "./fishing/FishingInsert/FishingInsert";
+
 
 function App() {
   return (
@@ -21,6 +23,9 @@ function App() {
           <Route path="shipping" element={<Shipping />} />
           <Route path="/shipping/detail" element={<ShippingDetail />} />
           <Route path="mypage" element={<Mypage />} />
+
+          <Route path="/fishing/insert" element={<FishingInsert />} />
+
         </Routes>
         <Footer />
       </BrowserRouter>
