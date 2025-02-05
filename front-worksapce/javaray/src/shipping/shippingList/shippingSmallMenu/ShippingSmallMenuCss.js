@@ -11,10 +11,8 @@ export const CircleDiv = styled.div`
 `;
 
 export const CircleCover = styled.div`
-  width : 36px;
-  height : 10px;
+  width: 36px;
+  height: 10px;
   position: absolute;
   margin-left: 165px;
-`
-
-
+`;
