@@ -5,15 +5,17 @@ import { ModalProvider } from "./Modal/OpenOrCloseModal";
 import Modal from "./Modal/Modal";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CarouselWithIndicatorsExample } from "./WelcomPage/CarouselComponent";
+import FishingInsert from "./fishing/FishingInsert/FishingInsert";
 
 function App() {
   return (
     <ModalProvider>
-      <CarouselWithIndicatorsExample />
+      {/*<CarouselWithIndicatorsExample />*/}
       <BrowserRouter>
         <Routes>
-          <Route path="shipping" element={<Shipping />} />
-          <Route path="/shipping/detail" element={<ShippingDetail />} />
+          {/*<Route path="shipping" element={<Shipping />} />*/}
+          {/*<Route path="/shipping/detail" element={<ShippingDetail />} />*/}
+          <Route path="/fishing/insert" element={<FishingInsert />} />
         </Routes>
         <Footer />
       </BrowserRouter>
