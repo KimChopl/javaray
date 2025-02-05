@@ -5,20 +5,10 @@ import ReportForm from "./shippingList/shippingSmallMenu/shippingReport/reportFo
 import { useState } from "react";
 
 const Shipping = () => {
-  const [report, setReport] = useState(false);
-  const isReport = (x) => {
-    setReport(x);
-  };
-
   return (
     <StyledShipWarp>
       <SearchBar />
-      <ShippingList setReport={isReport} />
-      {report && (
-        <ModalBackground>
-          <ReportForm/>
-        </ModalBackground>
-      )}
+      <ShippingList />
     </StyledShipWarp>
   );
 };
