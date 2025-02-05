@@ -16,7 +16,7 @@ const Shipping = () => {
       <ShippingList setReport={isReport} />
       {report && (
         <ModalBackground>
-          <ReportForm setReport={isReport} />
+          <ReportForm/>
         </ModalBackground>
       )}
     </StyledShipWarp>

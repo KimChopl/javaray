@@ -2,7 +2,7 @@ import { useState } from "react";
 import { CircleCover, CircleDiv } from "./ShippingSmallMenuCss";
 import ShippingReport from "./shippingReport/ShippingReport";
 
-const ShippingSmallMenu = (props) => {
+const ShippingSmallMenu = () => {
   const [displayDiv, setDisplayDiv] = useState(false);
   const onClickDiv = () => {
     if(displayDiv === false){
@@ -12,16 +12,14 @@ const ShippingSmallMenu = (props) => {
     }
   }
 
-  const isReport = (x) => {
-    props.setReport(x);
-  }
+
  
   return (
     <CircleCover onClick={onClickDiv}>
       <CircleDiv />
       <CircleDiv />
       <CircleDiv />
-      {displayDiv && <ShippingReport a={isReport}/>}
+      {displayDiv && <ShippingReport />}
     </CircleCover>
   );
 };

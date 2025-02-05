@@ -15,31 +15,31 @@ export const DetailHeader = styled.div`
 
 export const DetailBody = styled.div`
   width: 100%;
-  height: 800px;
+  height: 802px;
 `;
 export const DetailBase = styled.div`
   width: 1100px;
-  height: 500px;
+  height: 502px;
   padding-left: 50px;
 `;
 
 export const ImageCover = styled.div`
-  width: 700px;
-  height: 450px;
+  width: 650px;
+  height: 452px;
   padding: 25px;
   display: inline-block;
   position: relative;
 `;
 
 export const BaseCover = styled.div`
-  width: 325px;
-  height: 450px;
+  width: 375px;
+  height: 452px;
   padding: 25px 25px 25px 0;
   display: inline-block;
 `;
 
 export const ImageBox = styled.img`
-  width: 700px;
+  width: 650px;
   height: auto;
   max-height: 100%;
   object-fit: contain;
@@ -47,9 +47,10 @@ export const ImageBox = styled.img`
 `;
 
 export const BaseBar = styled.div`
-  width: 275px;
+  width: 325px;
   height: 65px;
   padding: 12.5px 25px 12.5px 25px;
+  position: relative;
 `;
 
 export const WeatherCover = styled.div`
@@ -71,3 +72,40 @@ export const ReviewCover = styled.div`
   min-height: 90px;
   padding: 10px 25px 10px 25px;
 `;
+
+export const LocationDiv = styled.div`
+  width: 305px;
+  height: 40px;
+  padding: 5px 10px 5px 10px;
+  position: absolute;
+`;
+
+export const PriceDiv = styled.div`
+  width: 150px;
+  height: 40px;
+  display: inline-block;
+  position: absolute;
+  padding: 5px 5px 5px 10px;
+`;
+
+export const AllowNumberDiv = styled.div`
+  width: 155px;
+  height: 40px;
+  position: absolute;
+  padding: 5px 10px 5px 165px;
+`;
+
+export const ContentLabel = styled.label`
+  position : absolute;
+  width : 100%;
+  height : 100%
+`
+export const FishTable = styled.table`
+  text-align : center;
+`
+
+export const Td = styled.td`
+  &:hover {
+    cursor : pointer;
+  }
+`
