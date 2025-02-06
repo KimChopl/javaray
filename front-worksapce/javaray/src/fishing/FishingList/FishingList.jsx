@@ -13,6 +13,7 @@ import {
   InnerTextDiv,
   FishP,
   PriceDiv,
+  FilterP,
 } from "./FishingList.styled";
 
 const FishingList = () => {
@@ -39,9 +40,12 @@ const FishingList = () => {
       </Block1>
       <Block2>
         <FishingAreaFilterBox>
+          <FilterP>지역필터</FilterP>
           <FilterButtom type="submit">선택</FilterButtom>
         </FishingAreaFilterBox>
-        <FishingFilterBox></FishingFilterBox>
+        <FishingFilterBox>
+          <FilterP>필터</FilterP>
+        </FishingFilterBox>
       </Block2>
     </Container>
   );

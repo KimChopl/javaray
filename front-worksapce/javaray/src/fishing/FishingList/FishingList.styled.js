@@ -37,7 +37,7 @@ export const FishingListBox = styled.div`
 `;
 
 export const FishingAreaFilterBox = styled.div`
-  width: 300px;
+  width: 250px;
   height: 60px;
   border: 1px solid rgb(57, 56, 56);
   border-radius: 5px;
@@ -50,7 +50,7 @@ export const FishingAreaFilterBox = styled.div`
 `;
 
 export const FishingFilterBox = styled.div`
-  width: 150px;
+  width: 120px;
   height: 60px;
   border: 1px solid rgb(57, 56, 56);
   border-radius: 5px;
@@ -132,4 +132,14 @@ export const PriceDiv = styled.div`
   border: 1px solid red;
   margin-top: 50px;
   margin-left: 200px;
+`;
+
+export const FilterP = styled.p`
+  width: 50%;
+  height: 70%;
+  border: 1px solid pink;
+  margin-top: 10px;
+  margin-left: 15px;
+  font-size: 25px;
+  font-weight: bold;
 `;
