@@ -1,6 +1,13 @@
 import { useState, useContext } from "react";
 import axios from "axios";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
+import {
+  LoginButton,
+  LoginContainer,
+  LoginForm,
+  LoginInput,
+} from "./Login.styles";
+import { Form } from "react-router-dom";
 
 const Login = () => {
   const [userId, setUserId] = useState("");
@@ -29,23 +36,23 @@ const Login = () => {
   return (
     <LoginContainer>
       <h2>로그인</h2>
-      <Form onSubmit={handleLogin}>
-        <Input
+      <LoginForm onSubmit={handleLogin}>
+        <LoginInput
           type="text"
           onChange={(e) => setUserId(e.target.value)}
           value={userId}
-          placeholder="사용자명"
+          placeholder="아이디"
           required
         />
-        <Input
+        <LoginInput
           type="password"
           onChange={(e) => setUserPwd(e.target.value)}
           value={userPwd}
           placeholder="비밀번호"
           required
         />
-        <Button type="submit">로그인</Button>
-      </Form>
+        <LoginButton type="submit">로그인</LoginButton>
+      </LoginForm>
     </LoginContainer>
   );
 };

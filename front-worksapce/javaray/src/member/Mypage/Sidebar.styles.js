@@ -8,13 +8,15 @@ export const Sidebar = styled.div`
 `;
 
 export const SbTitle = styled.h2`
-  font-size: 18px;
-  font-weight: bold;
+  font-size: 23px;
+  font-weight: 900;
+  margin: 30px;
   color: #33bfe8;
 `;
 
 export const SbTitleMenu = styled.ul`
-  margin-top: 20px;
+  width: 200px;
+  margin: 20px;
   list-style: none;
   padding: 0;
 `;
@@ -27,5 +29,6 @@ export const SbTitleMenuItem = styled.li`
   &:hover {
     background-color: #33bfe8;
     border-radius: 5px;
+    color: rgb(255, 255, 255);
   }
 `;
