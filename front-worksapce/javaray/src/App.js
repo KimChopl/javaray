@@ -9,7 +9,7 @@ import { CarouselWithIndicatorsExample } from "./WelcomPage/CarouselComponent";
 import Mypage from "./member/Mypage/Mypage";
 
 import CollapsibleExample from "./Header/Header";
-
+import FundingLists from "./Funding/FundingList/FundingLists";
 import FishingInsert from "./fishing/FishingInsert/FishingInsert";
 import FishingList from "./fishing/FishingList/FishingList";
 
@@ -18,12 +18,12 @@ function App() {
     <ModalProvider>
       <BrowserRouter>
         <CollapsibleExample />
-        <CarouselWithIndicatorsExample />
         <Routes>
+          <Route path="/" element={<CarouselWithIndicatorsExample />} />
           <Route path="shipping" element={<Shipping />} />
           <Route path="/shipping/detail" element={<ShippingDetail />} />
           <Route path="mypage" element={<Mypage />} />
-
+          <Route path="funding" element={<FundingLists />} />
           <Route path="/fishing/insert" element={<FishingInsert />} />
           <Route path="fishing" element={<FishingList />} />
         </Routes>
