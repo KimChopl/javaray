@@ -9,18 +9,19 @@ import { CarouselWithIndicatorsExample } from "./WelcomPage/CarouselComponent";
 import Mypage from "./member/Mypage/Mypage";
 
 import CollapsibleExample from "./Header/Header";
-
+import FundingLists from "./Funding/FundingList/FundingLists";
 
 function App() {
   return (
     <ModalProvider>
       <BrowserRouter>
         <CollapsibleExample />
-        <CarouselWithIndicatorsExample />
         <Routes>
+          <Route path="/" element={<CarouselWithIndicatorsExample />} />
           <Route path="shipping" element={<Shipping />} />
           <Route path="/shipping/detail" element={<ShippingDetail />} />
           <Route path="mypage" element={<Mypage />} />
+          <Route path="funding" element={<FundingLists />} />
         </Routes>
         <Footer />
       </BrowserRouter>

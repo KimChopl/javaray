@@ -56,7 +56,7 @@ function CollapsibleExample() {
                 낚시 제한 구역
               </NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link onClick={() => goTo("/")}>펀딩사이트</Nav.Link>
+            <Nav.Link onClick={() => goTo("/funding")}>펀딩사이트</Nav.Link>
           </Nav>
           {
             /*auth.isAuthenticated*/ 1 ? (
