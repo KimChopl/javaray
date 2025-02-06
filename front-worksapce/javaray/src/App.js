@@ -12,6 +12,7 @@ import CollapsibleExample from "./Header/Header";
 import FundingLists from "./Funding/FundingList/FundingLists";
 import FishingInsert from "./fishing/FishingInsert/FishingInsert";
 import FishingList from "./fishing/FishingList/FishingList";
+import FishingDetail from "./fishing/FishingDetail/FishingDetail";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="funding" element={<FundingLists />} />
           <Route path="/fishing/insert" element={<FishingInsert />} />
           <Route path="fishing" element={<FishingList />} />
+          <Route path="/fishing/detail" element={<FishingDetail />} />
         </Routes>
         <Footer />
       </BrowserRouter>
