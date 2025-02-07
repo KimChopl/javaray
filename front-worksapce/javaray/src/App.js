@@ -6,12 +6,14 @@ import { CarouselWithIndicatorsExample } from "./WelcomPage/CarouselComponent";
 import Calendar from "./Calendar/Calendar";
 
 import Mypage from "./member/Mypage/Mypage";
-
+import FishingDetail from "./fishing/FishingDetail/FishingDetail";
 import CollapsibleExample from "./Header/Header";
 import FundingLists from "./Funding/FundingList/FundingLists";
 import FishingInsert from "./fishing/FishingInsert/FishingInsert";
 import FishingList from "./fishing/FishingList/FishingList";
-import FishingDetail from "./fishing/FishingDetail/FishingDetail";
+import BusninessNoAPI from "./Funding/FundingBusinessNoAuth/BusinessNoAPI";
+
+
 
 function App() {
   return (
@@ -27,6 +29,7 @@ function App() {
         <Route path="fishing" element={<FishingList />} />
         <Route path="cal" element={<Calendar />} />
         <Route path="/fishing/detail" element={<FishingDetail />} />
+       <Route path="BusinessNoApi" element={<BusninessNoAPI />} />
       </Routes>
       <Footer />
     </BrowserRouter>
