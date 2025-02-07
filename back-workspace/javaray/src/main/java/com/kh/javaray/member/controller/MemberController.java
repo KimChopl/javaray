@@ -35,5 +35,17 @@ public class MemberController {
 		LoginResponse response = ms.login(requestMember);
 		return ResponseEntity.ok(response);
 	}
+	
+	@PutMapping("update/all")
+	public ResponseEntity<?> update (@Valid @RequestBody MemberDTO member){
+		log.info("{}", member);
+		ms.updateAll(member);
+		return null;
+	}
+	
+	@PutMapping("update/password")
+	public ResponseEntity<?> updatePassword (@Valid @RequestBody MemberDTO member){
+		return null;
+	}
 
 }

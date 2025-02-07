@@ -35,9 +35,24 @@ export const CalTd = styled.td`
   border: 1px solid gray;
 `;
 
+export const GrayTd = styled.td`
+  border: 1px solid gray;
+  background-color: lightgray;
+`;
+
 export const CalPreOrNext = styled.button`
   margin: 0;
   padding: 0;
   background-color: white;
   border: 0;
+`;
+
+export const GrayWeekEnd = styled.div`
+  text-align: center;
+  color: darkred;
+`;
+
+export const GrayWeekday = styled.div`
+  text-align: center;
+  color: gray;
 `;

@@ -8,6 +8,8 @@ import {
   CalWeekend,
   CalPreOrNext,
   CalTd,
+  GrayWeekEnd,
+  GrayWeekday,
 } from "./CalendarCss";
 import {
   format,
@@ -26,6 +28,7 @@ const Calendar = () => {
   const startDate = startOfWeek(startOfMonth(date));
   const endDate = endOfWeek(endOfMonth(date));
   const days = eachDayOfInterval({ start: startDate, end: endDate });
+  const toDayMonth = format(date, "MM");
   const daysFormat = days.map((day, index) => ({
     date: format(day, "yyyy-MM--dd"),
     yaer: format(day, "yyyy"),
@@ -37,7 +40,6 @@ const Calendar = () => {
 
   const preBtn = () => {
     setDate(subMonths(date, 1));
-    console.log(daysFormat);
   };
   const nextBtn = () => {
     setDate(addMonths(date, 1));
@@ -66,21 +68,27 @@ const Calendar = () => {
         <tbody>
           {daysFormat
             .reduce((rows, day, index) => {
-              if (index % 7 === 0) {
-                rows.push([]);
+              {
+                index % 7 === 0 && rows.push([]);
               }
+              console.log(toDayMonth);
               rows[rows.length - 1].push(day);
-
               return rows;
             }, [])
             .map((week, index) => (
               <tr key={index}>
                 {week.map((day) => (
                   <CalTd key={day.index}>
-                    {day.index % 7 === 0 || day.index % 7 === 6 ? (
-                      <CalWeekend>{day.day}</CalWeekend>
-                    ) : (
+                    {index % 7 === 0 || index % 7 === 6 ? (
+                      day.month === toDayMonth ? (
+                        <CalWeekend>{day.day}</CalWeekend>
+                      ) : (
+                        <GrayWeekEnd>{day.day}</GrayWeekEnd>
+                      )
+                    ) : day.month === toDayMonth ? (
                       <CalWeekday>{day.day}</CalWeekday>
+                    ) : (
+                      <GrayWeekday>{day.day}</GrayWeekday>
                     )}
                   </CalTd>
                 ))}

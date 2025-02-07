@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.kh.javaray.auth.service.AuthenticationService;
 import com.kh.javaray.exception.exceptions.AlreadyUseingUsernameException;
+import com.kh.javaray.exception.exceptions.NotMatchUserInfoException;
+import com.kh.javaray.member.model.dto.CustomUserDetails;
 import com.kh.javaray.member.model.dto.LoginForm;
 import com.kh.javaray.member.model.dto.LoginResponse;
 import com.kh.javaray.member.model.dto.Member;
@@ -51,6 +53,16 @@ public class MemberServiceImpl implements MemberService {
 		Member member = mm.findById(requestMember.getUsername());
 		LoginResponse user = LoginResponse.builder().username(member.getUsername()).role(member.getRole()).tokens(token).nickname(member.getNickname()).build();
 		return user;
+	}
+	
+	private Member findById(String username) {
+		return null;
+	}
+
+	@Override
+	public void updateAll(MemberDTO member) {
+		CustomUserDetails user = as.checkedUser();
+		log.info("{} /n{}", member, user);
 	}
 
 }

@@ -13,4 +13,6 @@ public interface MemberService {
 
 	LoginResponse login(LoginForm requestMember);
 
+	void updateAll(MemberDTO member);
+
 }
