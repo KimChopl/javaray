@@ -1,0 +1,39 @@
+package com.kh.javaray.member.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.kh.javaray.member.model.dto.LoginForm;
+import com.kh.javaray.member.model.dto.LoginResponse;
+import com.kh.javaray.member.model.dto.MemberDTO;
+import com.kh.javaray.member.model.service.MemberService;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@RestController
+@RequestMapping(value = "members")
+@RequiredArgsConstructor
+@Slf4j
+public class MemberController {
+	
+	private final MemberService ms;
+	
+	@PostMapping
+	public ResponseEntity<?> insertMember(@Valid @RequestBody MemberDTO member) {
+		ms.insertMember(member);
+		return ResponseEntity.ok("회원가입에 완료하였습니다.");
+	}
+	
+	@PostMapping("login")
+	public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginForm requestMember){
+		LoginResponse response = ms.login(requestMember);
+		return ResponseEntity.ok(response);
+	}
+
+}
