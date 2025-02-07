@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.javaray.member.model.mapper.MemberMapper">
+	<select id="findById" parameterType="string" resultType="Member">
+		SELECT
+		       USER_NO userNo,
+		       USER_ID username,
+		       USER_NAME userRealName,
+		       USER_PWD userPwd,
+		       NICKNAME,
+		       PHONE,
+		       EMAIL,
+		       ROLE,
+		       CREATE_AT createAt
+		 FROM
+		       TB_MEMBER
+		WHERE
+		      USER_ID = #{username}
+	</select>
+	
+	<insert id="insertMember" parameterType="MemberDTO">
+		INSERT
+		  INTO
+		       TB_MEMBER
+		VALUES
+		       (
+				SEQ_USER_NO.NEXTVAL,
+				#{userRealName},
+				#{username},
+				#{userPwd},
+				#{nickname},
+				#{email},
+				#{phone},
+				#{role},
+				SYSDATE,
+				'Y'
+			   )
+	</insert>
+</mapper>

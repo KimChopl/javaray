@@ -5,7 +5,7 @@ export const DownWrap = styled.div`
   height: 78%;
   margin: auto;
   border: 1px solid blue;
-  background-color: rgb(250, 243, 243);
+  background-color: rgb(246, 245, 245);
 `;
 
 export const AddressDiv = styled.div`

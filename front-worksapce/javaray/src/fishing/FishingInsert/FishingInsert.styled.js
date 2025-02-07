@@ -144,3 +144,64 @@ export const FormGroup = styled.div`
   max-width: 600px; /* 최대 너비 설정 */
   margin-bottom: 10px; /* 아래 간격 */
 `;
+
+export const AmenitiesImg = styled.img`
+  width: 60px;
+  height: 60px;
+  margin: auto;
+`;
+
+export const AmenitiesText = styled.label`
+  font-size: 15px;
+  font-weight: bold;
+`;
+
+export const AmenitiesDiv = styled.div`
+  width: 100px;
+  height: 90px;
+  margin: auto;
+  border: 1px solid rgb(225, 218, 203);
+  text-align: center;
+  float: left;
+  border-radius: 3px;
+
+  &:hover {
+    outline: 2px solid skyblue;
+    background-color: #e0f7ff;
+  }
+`;
+
+export const AmenitiesImgDiv = styled.div`
+  width: 100%;
+  height: 75%;
+`;
+
+export const AmenitiesTextDiv = styled.div`
+  width: 100%;
+  height: 25%;
+
+  margin-bottom: 2px;
+`;
+
+export const AmenitiesContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap; /* 줄바꿈 허용 */
+  gap: 10px; /* 간격 조정 */
+
+  margin-bottom: 20px;
+`;
+
+export const FishText = styled.label`
+  font-size: 20px;
+  font-weight: bold;
+  border: 1px solid rgb(225, 218, 203);
+  text-align: center;
+  border-radius: 3px;
+
+  &:hover {
+    width: auto;
+    height: 30px;
+    outline: 2px solid skyblue;
+    background-color: #e0f7ff;
+  }
+`;

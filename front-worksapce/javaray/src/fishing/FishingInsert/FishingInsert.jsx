@@ -7,7 +7,25 @@ import {
   Button,
   Form,
   FormGroup,
+  AmenitiesImg,
+  AmenitiesText,
+  AmenitiesDiv,
+  AmenitiesContainer,
+  FishText,
+  AmenitiesImgDiv,
+  AmenitiesTextDiv,
 } from "./FishingInsert.styled";
+
+import airconditioner from "../FishingImg/airconditioner.png";
+import bathroom from "../FishingImg/bathroom.png";
+import beachumbrella from "../FishingImg/beachumbrella.png";
+import bedding from "../FishingImg/bedding.png";
+import burner from "../FishingImg/burner.png";
+import carpark from "../FishingImg/carpark.png";
+import fan from "../FishingImg/fan.png";
+import sofa from "../FishingImg/sofa.png";
+import tv from "../FishingImg/tv.png";
+import vest from "../FishingImg/vest.png";
 
 const FishingInsert = () => {
   return (
@@ -40,11 +58,106 @@ const FishingInsert = () => {
         </FormGroup>
         <FormGroup>
           <Label>상세정보</Label>
-          <Input type="checkbox"></Input>
+          <AmenitiesContainer>
+            <AmenitiesDiv>
+              <AmenitiesImgDiv>
+                <AmenitiesImg src={airconditioner} />
+              </AmenitiesImgDiv>
+              <AmenitiesTextDiv>
+                <AmenitiesText>에어컨</AmenitiesText>
+              </AmenitiesTextDiv>
+            </AmenitiesDiv>
+            <AmenitiesDiv>
+              <AmenitiesImgDiv>
+                <AmenitiesImg src={bathroom} />
+              </AmenitiesImgDiv>
+              <AmenitiesTextDiv>
+                <AmenitiesText>화장실</AmenitiesText>
+              </AmenitiesTextDiv>
+            </AmenitiesDiv>
+            <AmenitiesDiv>
+              <AmenitiesImgDiv>
+                <AmenitiesImg src={beachumbrella} />
+              </AmenitiesImgDiv>
+              <AmenitiesTextDiv>
+                <AmenitiesText>그늘막</AmenitiesText>
+              </AmenitiesTextDiv>
+            </AmenitiesDiv>
+            <AmenitiesDiv>
+              <AmenitiesImgDiv>
+                <AmenitiesImg src={bedding} />
+              </AmenitiesImgDiv>
+              <AmenitiesTextDiv>
+                <AmenitiesText>침구</AmenitiesText>
+              </AmenitiesTextDiv>
+            </AmenitiesDiv>
+            <AmenitiesDiv>
+              <AmenitiesImgDiv>
+                <AmenitiesImg src={burner} />
+              </AmenitiesImgDiv>
+              <AmenitiesTextDiv>
+                <AmenitiesText>버너</AmenitiesText>
+              </AmenitiesTextDiv>
+            </AmenitiesDiv>
+            <AmenitiesDiv>
+              <AmenitiesImgDiv>
+                <AmenitiesImg src={carpark} />
+              </AmenitiesImgDiv>
+              <AmenitiesTextDiv>
+                <AmenitiesText>주차장</AmenitiesText>
+              </AmenitiesTextDiv>
+            </AmenitiesDiv>
+            <AmenitiesDiv>
+              <AmenitiesImgDiv>
+                <AmenitiesImg src={fan} />
+              </AmenitiesImgDiv>
+              <AmenitiesTextDiv>
+                <AmenitiesText>선풍기</AmenitiesText>
+              </AmenitiesTextDiv>
+            </AmenitiesDiv>
+            <AmenitiesDiv>
+              <AmenitiesImgDiv>
+                <AmenitiesImg src={sofa}></AmenitiesImg>
+              </AmenitiesImgDiv>
+              <AmenitiesTextDiv>
+                <AmenitiesText>소파</AmenitiesText>
+              </AmenitiesTextDiv>
+            </AmenitiesDiv>
+            <AmenitiesDiv>
+              <AmenitiesImgDiv>
+                <AmenitiesImg src={tv} />
+              </AmenitiesImgDiv>
+              <AmenitiesTextDiv>
+                <AmenitiesText>텔레비전</AmenitiesText>
+              </AmenitiesTextDiv>
+            </AmenitiesDiv>
+            <AmenitiesDiv>
+              <AmenitiesImgDiv>
+                <AmenitiesImg src={vest} />
+              </AmenitiesImgDiv>
+              <AmenitiesTextDiv>
+                <AmenitiesText>구명조끼</AmenitiesText>
+              </AmenitiesTextDiv>
+            </AmenitiesDiv>
+          </AmenitiesContainer>
         </FormGroup>
         <FormGroup>
           <Label>주요 어종</Label>
-          <Input type="checkbox"></Input>
+
+          <AmenitiesContainer>
+            <FishText>붕어</FishText>
+            <FishText>향어</FishText>
+            <FishText>잉어</FishText>
+            <FishText>메기</FishText>
+            <FishText>비단잉어</FishText>
+            <FishText>광어(민물)</FishText>
+            <FishText>가물치</FishText>
+            <FishText>민어</FishText>
+            <FishText>돌돔(민물)</FishText>
+            <FishText>빙어</FishText>
+            <FishText>송어</FishText>
+            <FishText>민물기타</FishText>
+          </AmenitiesContainer>
         </FormGroup>
         <FormGroup>
           <Label>사장님 한마디</Label>

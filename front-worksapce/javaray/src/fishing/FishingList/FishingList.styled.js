@@ -5,8 +5,24 @@ export const Container = styled.div`
   width: 1200px;
   height: 1500px; /* 나중에 auto로 바꾸기 */
   margin: auto;
-  background-color: #ffffff;
-  border: 1px solid rgb(85, 83, 83);
+  background-color: rgb(246, 245, 245);
+  border: 1px solid rgb(85, 83, 83); // 스타일 확인하고 지우기
+`;
+
+export const TitleLine = styled.div`
+  width: 100%;
+  height: 60px;
+  background-color: white;
+  text-align: center;
+
+  border: 1px solid rgb(189, 185, 185);
+`;
+
+export const TitleText = styled.p`
+  font-weight: bold;
+  font-size: 25px;
+  color: rgb(75, 74, 74);
+  margin-top: 8px;
 `;
 
 export const Block1 = styled.div`
@@ -34,6 +50,7 @@ export const FishingListBox = styled.div`
   margin-top: 25px;
   margin-left: 35px;
   margin-bottom: 20px;
+  background-color: white;
 `;
 
 export const FishingAreaFilterBox = styled.div`
@@ -43,6 +60,7 @@ export const FishingAreaFilterBox = styled.div`
   border-radius: 5px;
   margin-left: 40px;
   margin-top: 25px;
+  background-color: white;
 
   display: flex; /* Flexbox 활성화 */
   justify-content: flex-end; /* 버튼을 오른쪽 정렬 */
@@ -56,6 +74,8 @@ export const FishingFilterBox = styled.div`
   border-radius: 5px;
   margin-left: 40px;
   margin-top: 10px;
+
+  background-color: white;
 `;
 
 export const FilterButtom = styled.button`
@@ -71,6 +91,7 @@ export const FilterButtom = styled.button`
   font-weight: bold;
   margin-bottom: 10px;
   margin-right: 5px;
+  background-color: whiten;
 
   margin-left: auto; /* 버튼을 오른쪽 끝으로 정렬 */
 
