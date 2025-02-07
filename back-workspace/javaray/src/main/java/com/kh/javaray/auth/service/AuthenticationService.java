@@ -13,4 +13,6 @@ public interface AuthenticationService {
 	
 	void validWriter(String writer, String username);
 	
+	void checkedMember(CustomUserDetails user);
+	
 }

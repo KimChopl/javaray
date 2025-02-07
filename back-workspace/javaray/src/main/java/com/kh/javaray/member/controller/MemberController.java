@@ -1,5 +1,6 @@
 package com.kh.javaray.member.controller;
 
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -7,9 +8,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kh.javaray.member.model.dto.ChangePassword;
 import com.kh.javaray.member.model.dto.LoginForm;
 import com.kh.javaray.member.model.dto.LoginResponse;
 import com.kh.javaray.member.model.dto.MemberDTO;
+import com.kh.javaray.member.model.dto.UpdateMemberDTO;
 import com.kh.javaray.member.model.service.MemberService;
 
 import jakarta.validation.Valid;
@@ -37,15 +40,16 @@ public class MemberController {
 	}
 	
 	@PutMapping("update/all")
-	public ResponseEntity<?> update (@Valid @RequestBody MemberDTO member){
+	public ResponseEntity<?> update (@Valid @RequestBody UpdateMemberDTO member){
 		log.info("{}", member);
 		ms.updateAll(member);
-		return null;
+		return ResponseEntity.status(HttpStatusCode.valueOf(201)).body("수정에 성공했습니다.");
 	}
 	
 	@PutMapping("update/password")
-	public ResponseEntity<?> updatePassword (@Valid @RequestBody MemberDTO member){
-		return null;
+	public ResponseEntity<?> updatePassword (@Valid @RequestBody ChangePassword password){
+		ms.updatePassword(password);
+		return ResponseEntity.status(HttpStatusCode.valueOf(201)).body("비밀번호 변경에 성공했습니다. 다시 로그인 하세요.");
 	}
 
 }

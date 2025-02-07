@@ -10,6 +10,8 @@ import {
   CalTd,
   GrayWeekEnd,
   GrayWeekday,
+  GrayDiv,
+  CalDiv,
 } from "./CalendarCss";
 import {
   format,
@@ -21,6 +23,7 @@ import {
   endOfMonth,
   eachDayOfInterval,
   getDay,
+  startOfToday,
 } from "date-fns";
 
 const Calendar = () => {
@@ -29,13 +32,15 @@ const Calendar = () => {
   const endDate = endOfWeek(endOfMonth(date));
   const days = eachDayOfInterval({ start: startDate, end: endDate });
   const toDayMonth = format(date, "MM");
+  const toDay = new Date().getTime();
   const daysFormat = days.map((day, index) => ({
-    date: format(day, "yyyy-MM--dd"),
+    date: format(day, "yyyy-MM-dd"),
     yaer: format(day, "yyyy"),
     month: format(day, "MM"),
     day: format(day, "dd"),
     weekIndex: getDay(day),
     index: index,
+    dateNumber : day.getTime()
   }));
 
   const preBtn = () => {
@@ -43,6 +48,7 @@ const Calendar = () => {
   };
   const nextBtn = () => {
     setDate(addMonths(date, 1));
+    console.log('현재시간 : ' || toDay)
   };
   return (
     <>
@@ -66,34 +72,41 @@ const Calendar = () => {
           </tr>
         </thead>
         <tbody>
-          {daysFormat
-            .reduce((rows, day, index) => {
-              {
-                index % 7 === 0 && rows.push([]);
-              }
-              console.log(toDayMonth);
-              rows[rows.length - 1].push(day);
-              return rows;
-            }, [])
-            .map((week, index) => (
-              <tr key={index}>
-                {week.map((day) => (
-                  <CalTd key={day.index}>
-                    {index % 7 === 0 || index % 7 === 6 ? (
-                      day.month === toDayMonth ? (
-                        <CalWeekend>{day.day}</CalWeekend>
-                      ) : (
-                        <GrayWeekEnd>{day.day}</GrayWeekEnd>
-                      )
-                    ) : day.month === toDayMonth ? (
-                      <CalWeekday>{day.day}</CalWeekday>
+        {daysFormat
+          .reduce((rows, day, index) => {
+            if (index % 7 === 0) rows.push([]);
+            rows[rows.length - 1].push(day);
+            return rows;
+          }, [])
+          .map((week, index) => (
+            <tr key={index}>
+              {week.map((day, dayIndex) => (
+                <CalTd key={`${index}-${dayIndex}`}>
+                  {day.dateNumber < toDay ? (
+                    dayIndex % 7 === 0 || dayIndex % 7 === 6 ? (
+                      <GrayDiv><GrayWeekEnd>{day.day}</GrayWeekEnd></GrayDiv>
                     ) : (
-                      <GrayWeekday>{day.day}</GrayWeekday>
-                    )}
-                  </CalTd>
-                ))}
-              </tr>
-            ))}
+                      <GrayDiv><GrayWeekday>{day.day}</GrayWeekday></GrayDiv>
+                    )
+                  ) : (
+                    dayIndex % 7 === 0 || dayIndex % 7 === 6 ? (
+                      day.month === toDayMonth ? (
+                        <CalDiv><CalWeekend>{day.day}</CalWeekend></CalDiv>
+                      ) : (
+                        <GrayDiv><GrayWeekEnd>{day.day}</GrayWeekEnd></GrayDiv>
+                      )
+                    ) : (
+                      day.month === toDayMonth ? (
+                        <CalDiv><CalWeekday>{day.day}</CalWeekday></CalDiv>
+                      ) : (
+                        <GrayDiv><GrayWeekday>{day.day}</GrayWeekday></GrayDiv>
+                      )
+                    )
+                  )}
+                </CalTd>
+              ))}
+            </tr>
+          ))}
         </tbody>
       </CalTable>
     </>

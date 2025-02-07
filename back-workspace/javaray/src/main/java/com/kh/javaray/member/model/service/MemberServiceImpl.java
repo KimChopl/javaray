@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 import com.kh.javaray.auth.service.AuthenticationService;
 import com.kh.javaray.exception.exceptions.AlreadyUseingUsernameException;
 import com.kh.javaray.exception.exceptions.NotMatchUserInfoException;
+import com.kh.javaray.member.model.dto.ChangePassword;
 import com.kh.javaray.member.model.dto.CustomUserDetails;
 import com.kh.javaray.member.model.dto.LoginForm;
 import com.kh.javaray.member.model.dto.LoginResponse;
 import com.kh.javaray.member.model.dto.Member;
 import com.kh.javaray.member.model.dto.MemberDTO;
+import com.kh.javaray.member.model.dto.UpdateMemberDTO;
 import com.kh.javaray.member.model.mapper.MemberMapper;
 
 import jakarta.validation.Valid;
@@ -51,18 +53,49 @@ public class MemberServiceImpl implements MemberService {
 		Map<String, String> token = as.login(requestMember);
 		log.info("{}", token);
 		Member member = mm.findById(requestMember.getUsername());
-		LoginResponse user = LoginResponse.builder().username(member.getUsername()).role(member.getRole()).tokens(token).nickname(member.getNickname()).build();
+		LoginResponse user = LoginResponse.builder().username(member.getUsername()).role(cutRole(member.getRole())).tokens(token).nickname(member.getNickname()).build();
 		return user;
 	}
 	
-	private Member findById(String username) {
-		return null;
+	private String cutRole(String role) {
+		return role.substring(role.indexOf('_') + 1);
+	}
+	
+
+	@Override
+	public void updateAll(UpdateMemberDTO member) {
+		CustomUserDetails user = as.checkedUser();
+		log.info("{} /n{}", member, user);
+		if(!user.getUsername().equals(member.getUsername())) {
+			throw new NotMatchUserInfoException("현제 페이지에서는 아이디를 변경할 수 없습니다. 고객센터를 통해 아이디를 변경해주세요.");
+		}
+		member.setUserNo(user.getUserNo());
+		mm.updateAll(member);
+	}
+
+	private CustomUserDetails checkedUserInfo(ChangePassword password) {
+		CustomUserDetails user = as.checkedUser();
+		if(!user.getUsername().equals(password.getUsername())) {
+			throw new NotMatchUserInfoException("유저 정보가 일치하지 않습니다. 다시 시도해주세요.");
+		}
+		Member member = mm.findById(user.getUsername());
+		if(!pwe.matches(password.getOriginUserPwd(), member.getUserPwd())) {
+			throw new NotMatchUserInfoException("비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
+		}
+		
+		return user;
 	}
 
 	@Override
-	public void updateAll(MemberDTO member) {
-		CustomUserDetails user = as.checkedUser();
-		log.info("{} /n{}", member, user);
+	public void updatePassword(ChangePassword password) {
+		
+		CustomUserDetails user = checkedUserInfo(password);
+		
+		password.setUserNo(user.getUserNo());
+		password.setChangeUserPwd(pwe.encode(password.getChangeUserPwd()));
+		int result = mm.updatePassword(password);
+		log.info("{}", result);
+		
 	}
 
 }

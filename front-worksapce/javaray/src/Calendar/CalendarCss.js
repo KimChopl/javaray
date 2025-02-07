@@ -35,8 +35,14 @@ export const CalTd = styled.td`
   border: 1px solid gray;
 `;
 
-export const GrayTd = styled.td`
-  border: 1px solid gray;
+export const CalDiv = styled.div`
+  width : 100%;
+  height : 100%;
+`;
+
+export const GrayDiv = styled.div`
+  width : 100%;
+  height : 100%;
   background-color: lightgray;
 `;
 

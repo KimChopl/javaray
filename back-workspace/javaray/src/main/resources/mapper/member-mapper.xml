@@ -38,4 +38,17 @@
 				'Y'
 			   )
 	</insert>
+	
+	<update id="updateAll" parameterType="UpdateMemberDTO">
+		UPDATE
+		       TB_MEMBER
+		   <set>
+				<if test="nickname != null">NICKNAME = #{nickname},</if>
+				<if test="email != null">EMAIL = #{email},</if>
+				<if test="phone != null">PHONE = #{phone},</if>
+				MODIFY_AT = SYSDATE		   
+		   </set>
+		 WHERE
+		       USER_NO = #{userNo}
+	</update>
 </mapper>

@@ -46,4 +46,10 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 		}		
 	}
 
+	@Override
+	public void checkedMember(CustomUserDetails user) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
