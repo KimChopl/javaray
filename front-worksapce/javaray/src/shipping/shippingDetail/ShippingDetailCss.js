@@ -96,16 +96,70 @@ export const AllowNumberDiv = styled.div`
 `;
 
 export const ContentLabel = styled.label`
-  position : absolute;
-  width : 100%;
-  height : 100%
-`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+`;
 export const FishTable = styled.table`
-  text-align : center;
-`
+  text-align: center;
+`;
 
 export const Td = styled.td`
   &:hover {
-    cursor : pointer;
+    cursor: pointer;
   }
-`
+`;
+
+export const BookBtnCover = styled.div`
+  width: 180px;
+  height: 100%;
+  padding: 3px;
+  float: left;
+  border-right: 1px solid gray;
+  box-sizing: border-box;
+  position: relative;
+`;
+
+export const BookBtn = styled.button`
+  width: 80px;
+  height: 34px;
+  position: absolute;
+  border: none;
+  background-color: skyblue;
+  display: block;
+  position: absolute;
+  &:hover {
+    background-color: #5a9bd5;
+  }
+`;
+
+export const OtherInfo = styled.div`
+  width: 90px;
+  height: 100%;
+  text-align: center;
+  border-right: 1px solid gray;
+  box-sizing: border-box;
+  float: left;
+  &:hover {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+  }
+`;
+
+export const RatingInfo = styled.div`
+  width: 95px;
+  height: 100%;
+  text-align: center;
+  float: left;
+`;
+
+export const AttentionInfo = styled.div`
+  width: 95px;
+  height: 100%;
+  text-align: center;
+  float: left;
+  &:hover {
+    cursor: pointer;
+  }
+`;
