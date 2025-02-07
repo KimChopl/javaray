@@ -37,8 +37,8 @@ export const CategoryItem = styled.li`
 `;
 
 export const FundingIcon = styled.img`
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   text-align: center;
   margin-top: 13px;
 `;
