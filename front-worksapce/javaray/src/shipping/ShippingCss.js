@@ -4,6 +4,7 @@ export const StyledShipWarp = styled.div`
   width: 1200px;
   height: auto;
   margin: auto;
+  min-height: 800px;
 `;
 
 export const ModalBackground = styled.div`

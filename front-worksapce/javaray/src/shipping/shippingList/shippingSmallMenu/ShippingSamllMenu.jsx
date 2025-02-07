@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CircleCover, CircleDiv } from "./ShippingSmallMenuCss";
+import { CircleCover, CircleDiv, PositionDiv } from "./ShippingSmallMenuCss";
 import ShippingReport from "./shippingReport/ShippingReport";
 
 const ShippingSmallMenu = () => {
@@ -15,9 +15,11 @@ const ShippingSmallMenu = () => {
 
   return (
     <CircleCover onClick={onClickDiv}>
-      <CircleDiv />
-      <CircleDiv />
-      <CircleDiv />
+      <PositionDiv>
+        <CircleDiv />
+        <CircleDiv />
+        <CircleDiv />
+      </PositionDiv>
       {displayDiv && <ShippingReport i={setDisplayDiv} />}
     </CircleCover>
   );

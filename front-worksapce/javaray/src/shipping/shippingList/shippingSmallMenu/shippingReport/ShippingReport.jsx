@@ -1,14 +1,12 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Modal from "../../../../Modal/Modal";
 import { Report } from "./ShippingReportCss";
-import { ModalContext } from "../../../../Modal/OpenOrCloseModal";
 const ShippingReport = ({ i }) => {
-  const { openModal, isModal, setIsModal } = useContext(ModalContext);
   const [flag, isFlag] = useState(false);
-  const clickModal = (e) => {
-    //openModal(e);
-    console.log(e);
-    isFlag(e);
+  const [kind, setKind] = useState("");
+  const clickModal = (boolean, kind) => {
+    isFlag(boolean);
+    setKind(kind);
   };
   const closeModal = (e) => {
     isFlag(e);
@@ -19,14 +17,14 @@ const ShippingReport = ({ i }) => {
     <>
       <Report>
         <div>
-          <label onClick={(flag) => clickModal(true)}>신고하기</label>
+          <label onClick={() => clickModal(true, "1")}>신고하기</label>
         </div>
         <div>
-          <label>삭제하기</label>
+          <label onClick={() => clickModal(true, "2")}>삭제하기</label>
         </div>
       </Report>
 
-      {flag && <Modal kind={"report"} clickModal={closeModal} />}
+      {flag && <Modal kind={kind} clickModal={closeModal} />}
     </>
   );
 };

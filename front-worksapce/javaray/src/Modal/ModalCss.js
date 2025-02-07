@@ -22,8 +22,18 @@ export const ModalHeader = styled.div`
 export const CloseDiv = styled.div`
   width: 25px;
   height: 25px;
-  margin-left: 375px;
+  margin-left: 355px;
   &:hover {
     cursor: pointer;
   }
+`;
+
+export const ReportTitle = styled.div`
+  width: 100%;
+  height: 25px;
+`;
+
+export const CloseImg = styled.img`
+  width: 100%;
+  height: 100%;
 `;
