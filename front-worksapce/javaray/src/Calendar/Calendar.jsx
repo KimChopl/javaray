@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import {
   CalDay,
   CalDayWeekend,
@@ -23,7 +23,6 @@ import {
   endOfMonth,
   eachDayOfInterval,
   getDay,
-  startOfToday,
 } from "date-fns";
 
 const Calendar = () => {
