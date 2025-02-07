@@ -31,7 +31,7 @@ const Calendar = () => {
   const endDate = endOfWeek(endOfMonth(date));
   const days = eachDayOfInterval({ start: startDate, end: endDate });
   const toDayMonth = format(date, "MM");
-  const toDay = new Date().getTime();
+  const toDay = new Date().getTime() - 86399999;
   const daysFormat = days.map((day, index) => ({
     date: format(day, "yyyy-MM-dd"),
     yaer: format(day, "yyyy"),
