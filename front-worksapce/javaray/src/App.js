@@ -12,8 +12,7 @@ import FundingLists from "./Funding/FundingList/FundingLists";
 import FishingInsert from "./fishing/FishingInsert/FishingInsert";
 import FishingList from "./fishing/FishingList/FishingList";
 import BusninessNoAPI from "./Funding/FundingBusinessNoAuth/BusinessNoAPI";
-
-
+import FishingGoods from "./fishing/FishingDetail/FishingGoods";
 
 function App() {
   return (
@@ -29,7 +28,8 @@ function App() {
         <Route path="fishing" element={<FishingList />} />
         <Route path="cal" element={<Calendar />} />
         <Route path="/fishing/detail" element={<FishingDetail />} />
-       <Route path="BusinessNoApi" element={<BusninessNoAPI />} />
+        <Route path="BusinessNoApi" element={<BusninessNoAPI />} />
+        <Route path="FishingGoods" element={<FishingGoods />} />
       </Routes>
       <Footer />
     </BrowserRouter>

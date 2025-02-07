@@ -40,11 +40,11 @@ function CollapsibleExample() {
               </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="민물" id="collapsible-nav-dropdown">
-              <NavDropdown.Item onClick={() => goTo("/")}>
+              <NavDropdown.Item onClick={() => goTo("/fishing")}>
                 낚시터 조회
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item onClick={() => goTo("/")}>
+              <NavDropdown.Item onClick={() => goTo("/fishing/insert")}>
                 낚시터 신청
               </NavDropdown.Item>
               <NavDropdown.Divider />
