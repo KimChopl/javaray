@@ -16,6 +16,7 @@ spring:
       enabled: true
       max-file-size: 15MB
       max-request-size: 20MB
+
 server:
   port: 80
   tomcat:
@@ -25,3 +26,15 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     jdbc-type-for-null: VARCHAR
   mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.kh.javaray.member.model.dto com.kh.javaray.token.model.dto
+
+logging:
+  level:
+    org.apache.ibatis: DEBUG
+    java.sql: DEBUG
+    jdbc.sqlonly: DEBUG
+    jdbc.resultest: DEBUG
+    jdbc.audit: DEBUG
+
+jwt:
+  secret: H7oIaBujRo6fA/a0wdk09iY6STECQZbemMj8bcs5xBMzd0IYxzT+hNQd+fgXvsyz3qHF3DIwuYXUE9m7w5tkDw==
