@@ -10,8 +10,8 @@ export const StyledShipDiv = styled.div`
   position: relative;
 `;
 export const ShippingToDetail = styled.div`
-  width: 194px;
-  height: 270px;
+  width: 208px;
+  height: 300px;
   display: inline-block;
 `;
 
@@ -35,8 +35,7 @@ export const StyledShipImage = styled.img`
 export const StyledShipTitleDiv = styled.div`
   width: 100%;
   height: 20px;
-  padding: 3px;
-  margin: 5px 0 0 0;
+  margin: 8px 3px 3px 3px;
 `;
 
 export const StyledShipRatingCover = styled.div`
@@ -46,9 +45,9 @@ export const StyledShipRatingCover = styled.div`
 `;
 
 export const StyledShipPersonDiv = styled.div`
-  width: 141px;
+  width: 140px;
   height: 15px;
-  padding: 5px;
+  margin: 5px 0 5px 5px;
   display: inline-block;
   border-right: 1px solid #cccccc;
 `;
@@ -56,7 +55,7 @@ export const StyledShipPersonDiv = styled.div`
 export const StyledShipRatingDiv = styled.div`
   width: 42px;
   height: 15px;
-  padding: 5px;
+  margin: 5px 0 5px 5px;
   display: inline-block;
 `;
 

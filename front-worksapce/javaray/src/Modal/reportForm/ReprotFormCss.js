@@ -3,24 +3,20 @@ import styled from "styled-components";
 export const ReportTitle = styled.div`
   width: 100%;
   height: 25px;
-`;
-
-export const CloseImg = styled.img`
-  width: 100%;
-  height: 100%;
+  text-align: center;
 `;
 
 export const ReportBody = styled.div`
-  width: 100%;
-  height: 575px;
+  width: 324px;
+  height: 504px;
+  margin-left: 30px;
+  margin-top: 20px;
 `;
 
 export const ReportSelectCover = styled.div`
   width: 320px;
   height: 25px;
   position: relative;
-  margin-left: 40px;
-  margin-top: 20px;
 `;
 
 export const ReportSelect = styled.select`
@@ -31,14 +27,13 @@ export const ReportSelect = styled.select`
 
 export const ReportTextareaCover = styled.div`
   width: 320px;
-  height: 400px;
+  height: 380px;
   position: relative;
-  padding-left: 40px;
-  padding-top: 10px;
+  margin-top: 10px;
 `;
 
 export const ReportTextarea = styled.textarea`
-  width: 308px;
+  width: 320px;
   height: 388px;
   padding: 5px;
 `;
@@ -46,22 +41,21 @@ export const ReportTextarea = styled.textarea`
 export const BtnCover = styled.div`
   width: 320px;
   height: 60px;
-  padding-top: 15px;
-  padding-left: 40px;
+  margin-top: 15px;
   position: relative;
 `;
 
 export const ReportBtnCover = styled.div`
   width: 130px;
-  height: 60px;
-  padding-left: 15px;
-  padding-right: 15px;
+  height: 55px;
+  margin-left: 15px;
+  margin-right: 15px;
   display: inline-block;
 `;
 
 export const ReportButton = styled.button`
   width: 130px;
-  height: 60px;
+  height: 55px;
   border: none;
   position: absolute;
   background-color: red;
@@ -75,7 +69,7 @@ export const ReportButton = styled.button`
 
 export const CancelButton = styled.button`
   width: 130px;
-  height: 60px;
+  height: 55px;
   border: none;
   position: absolute;
   background-color: blue;
@@ -85,4 +79,9 @@ export const CancelButton = styled.button`
     background-color: darkblue;
     cursor: pointer;
   }
+`;
+
+export const Hr = styled.hr`
+  margin: 0;
+  margin-top: 5px;
 `;

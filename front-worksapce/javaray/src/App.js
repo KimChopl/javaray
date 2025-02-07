@@ -1,23 +1,21 @@
 import Footer from "./Footer/Footer";
 import Shipping from "./shipping/Shipping";
 import ShippingDetail from "./shipping/shippingDetail/ShippingDetail";
-import { ModalProvider } from "./Modal/OpenOrCloseModal";
-import Modal from "./Modal/Modal";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CarouselWithIndicatorsExample } from "./WelcomPage/CarouselComponent";
+import Calendar from "./Calendar/Calendar";
 
 function App() {
   return (
-    <ModalProvider>
-      <CarouselWithIndicatorsExample />
-      <BrowserRouter>
-        <Routes>
-          <Route path="shipping" element={<Shipping />} />
-          <Route path="/shipping/detail" element={<ShippingDetail />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
-    </ModalProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<CarouselWithIndicatorsExample />} />
+        <Route path="shipping" element={<Shipping />} />
+        <Route path="/shipping/detail" element={<ShippingDetail />} />
+        <Route path="cal" element={<Calendar />} />
+      </Routes>
+      <Footer />
+    </BrowserRouter>
   );
 }
 

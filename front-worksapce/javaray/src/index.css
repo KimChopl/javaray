@@ -8,6 +8,23 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+body::-webkit-scrollbar {
+  width: 10px; /* 스크롤바 너비 */
+}
+
+body::-webkit-scrollbar-track {
+  background-color: #ffffff; /* 스크롤바 트랙 배경 */
+  border-radius: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #777; /* 스크롤바 핸들 색상 */
+  border-radius: 10px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* 핸들에 마우스 오버 시 색상 */
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
