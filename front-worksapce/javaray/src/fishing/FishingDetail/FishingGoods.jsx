@@ -25,14 +25,43 @@ const FishingGoods = () => {
             <InnerTextDiv>
               <GoodsTitleDiv>
                 <GoodsTitle>노지-잡이터(1인입어료포함)</GoodsTitle>
-                <GoodsPriceDiv>
-                  <PriceTitle>50,000원</PriceTitle>
-                </GoodsPriceDiv>
               </GoodsTitleDiv>
-              <GoodsExDiv>
-                <GoodsEx>입어료 포함</GoodsEx>
-              </GoodsExDiv>
+              <GoodsPriceDiv>
+                <PriceTitle>50,000원</PriceTitle>
+              </GoodsPriceDiv>
             </InnerTextDiv>
+            <GoodsExDiv>
+              <GoodsEx>입어료 무료</GoodsEx>
+              <GoodsEx>1인 기준 : 최소 1인 / 최대 2인</GoodsEx>
+            </GoodsExDiv>
+          </TextDiv>
+          <TextDiv>
+            <InnerTextDiv>
+              <GoodsTitleDiv>
+                <GoodsTitle>노지-잡이터(1인입어료포함)</GoodsTitle>
+              </GoodsTitleDiv>
+              <GoodsPriceDiv>
+                <PriceTitle>50,000원</PriceTitle>
+              </GoodsPriceDiv>
+            </InnerTextDiv>
+            <GoodsExDiv>
+              <GoodsEx>입어료 무료</GoodsEx>
+              <GoodsEx>1인 기준 : 최소 1인 / 최대 2인</GoodsEx>
+            </GoodsExDiv>
+          </TextDiv>
+          <TextDiv>
+            <InnerTextDiv>
+              <GoodsTitleDiv>
+                <GoodsTitle>노지-잡이터(1인입어료포함)</GoodsTitle>
+              </GoodsTitleDiv>
+              <GoodsPriceDiv>
+                <PriceTitle>50,000원</PriceTitle>
+              </GoodsPriceDiv>
+            </InnerTextDiv>
+            <GoodsExDiv>
+              <GoodsEx>입어료 무료</GoodsEx>
+              <GoodsEx>1인 기준 : 최소 1인 / 최대 2인</GoodsEx>
+            </GoodsExDiv>
           </TextDiv>
         </Content>
       </DownWrap>
