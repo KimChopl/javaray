@@ -7,23 +7,29 @@ import {
   FundingIcon,
   FundingIconContent,
   FundingTitle,
+  GoodsContent,
   GoodsContent1,
   GoodsContent2,
   GoodsContent3,
   GoodsDiv,
   GoodsImg,
+  GoodsInsert,
   Insert,
   PostItem,
   PostList,
 } from "./FundingLists.styles";
 
-import icon1 from "../FundingList/FundingImg/FishingTool1.png";
-import icon2 from "../FundingList/FundingImg/FishingTool2.png";
-import icon3 from "../FundingList/FundingImg/FishingTool3.png";
-import icon4 from "../FundingList/FundingImg/FishingTool4.png";
-import icon5 from "../FundingList/FundingImg/FishingTool5.png";
+import icon1 from "../FundingImg/FishingTool1.png";
+import icon2 from "../FundingImg/FishingTool2.png";
+import icon3 from "../FundingImg/FishingTool3.png";
+import icon4 from "../FundingImg/FishingTool4.png";
+import icon5 from "../FundingImg/FishingTool5.png";
+
+import { useNavigate } from "react-router-dom";
 
 const FundingLists = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <Container>
@@ -52,11 +58,13 @@ const FundingLists = () => {
         </FundingCategory>
         <Insert>
           {10 === 10 ? (
-            <span>사업자등록 인증</span>
+            <GoodsInsert onClick={() => navigate("/BusinessNoApi")}>
+              사업자등록 인증
+            </GoodsInsert>
           ) : 10 === 20 ? (
-            <span>사업자등록 신청</span>
+            <GoodsInsert>사업자등록 신청</GoodsInsert>
           ) : 10 === 30 ? (
-            <span>상품등록</span>
+            <GoodsInsert>상품등록</GoodsInsert>
           ) : null}
         </Insert>
 
@@ -66,7 +74,7 @@ const FundingLists = () => {
             <PostItem>
               <GoodsDiv>
                 <GoodsImg src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQhTX6sKiW0o-HmWoOYNzM1IfxdNALBegUmoYA5uLKw4iL9SCichdBhYvvZckcJQo6-KnuNgvw-IGCa0RCXvo76brL4-1Xx8lpkFw3VpOlp0QIbxinzUqtj3YgXT7W2AV-32mvlgUOl_A&usqp=CAc" />
-                <GoodsContent1>34%달성</GoodsContent1>
+                <GoodsContent>34%달성</GoodsContent>
                 <GoodsContent1>
                   PLUSINNO Hunting V11 텔레스코픽 낚시대
                 </GoodsContent1>

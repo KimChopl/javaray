@@ -30,7 +30,7 @@ export const CategoryItem = styled.li`
   height: 80px;
 
   &:hover {
-    border: solid rgb(226, 223, 223) 4px;
+    outline: solid 4px rgb(226, 223, 223);
     border-radius: 10px;
     cursor: pointer;
   }
@@ -51,6 +51,19 @@ export const FundingIconContent = styled.div`
 
 export const Insert = styled.div`
   text-align: right;
+`;
+
+export const GoodsInsert = styled.span`
+  border: solid 1px #33bfe8;
+  background-color: #33bfe8;
+  color: white;
+  border-radius: 5px;
+  padding: 5px;
+
+  &:hover {
+    box-shadow: 2px 2px 0px 0px black;
+    cursor: pointer;
+  }
 `;
 
 export const FundingHr = styled.hr`
@@ -98,16 +111,30 @@ export const GoodsImg = styled.img`
   margin: auto;
 `;
 
-export const GoodsContent1 = styled.div`
-  padding-top: 5px;
+export const GoodsContent = styled.div`
+  padding-top: 10px;
   text-align: left;
+  font-weight: 700;
+  font-size: 20px;
+  color: lightcoral;
+`;
+
+export const GoodsContent1 = styled.div`
+  padding-top: 10px;
+  text-align: left;
+  font-weight: 400;
 `;
 
 export const GoodsContent2 = styled.span`
+  padding-left: 5px;
   padding-right: 5px;
+  margin-right: 5px;
+  border: solid 1px lightgrey;
+  background-color: lightgrey;
+  border-radius: 5px;
 `;
 
 export const GoodsContent3 = styled.span`
-  font-weight: 700px;
-  color: red;
+  font-weight: 700;
+  color: lightcoral;
 `;
