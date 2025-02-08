@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.javaray.auth.service.AuthenticationService;
 import com.kh.javaray.exception.exceptions.AlreadyUseingUsernameException;
+import com.kh.javaray.exception.exceptions.FailUpdateUserInfoException;
 import com.kh.javaray.exception.exceptions.NotMatchUserInfoException;
 import com.kh.javaray.member.model.dto.ChangePassword;
 import com.kh.javaray.member.model.dto.CustomUserDetails;
@@ -78,8 +79,7 @@ public class MemberServiceImpl implements MemberService {
 		if(!user.getUsername().equals(password.getUsername())) {
 			throw new NotMatchUserInfoException("유저 정보가 일치하지 않습니다. 다시 시도해주세요.");
 		}
-		Member member = mm.findById(user.getUsername());
-		if(!pwe.matches(password.getOriginUserPwd(), member.getUserPwd())) {
+		if(!pwe.matches(password.getOriginUserPwd(), user.getPassword())) {
 			throw new NotMatchUserInfoException("비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
 		}
 		
@@ -94,8 +94,21 @@ public class MemberServiceImpl implements MemberService {
 		password.setUserNo(user.getUserNo());
 		password.setChangeUserPwd(pwe.encode(password.getChangeUserPwd()));
 		int result = mm.updatePassword(password);
-		log.info("{}", result);
+		if(result < 1) {
+			throw new FailUpdateUserInfoException("업데이트에 싪패했습니다. 다시 시도해주세요.");
+		}
 		
+	}
+
+
+	@Override
+	public void deleteMember(LoginForm userPwd) {
+		CustomUserDetails user = as.checkedUser();
+		log.info("{}", user);
+		if(!pwe.matches(userPwd.getUserPwd(), user.getPassword())) {
+			throw new NotMatchUserInfoException("비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
+		}
+		//mm.deleteMember(user.getUserNo());
 	}
 
 }

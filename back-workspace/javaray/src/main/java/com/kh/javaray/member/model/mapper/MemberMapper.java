@@ -22,4 +22,7 @@ public interface MemberMapper {
 	@Update("UPDATE TB_MEMBER SET USER_PWD = #{changeUserPwd}, MODIFY_AT = SYSDATE WHERE USER_NO = #{userNo}")
 	int updatePassword(ChangePassword password);
 
+	@Update("UPDATE TB_MEMBER SET STATUS = 'N' WHERE USER_NO = #{userNo}")
+	void deleteMember(Long userNo);
+
 }

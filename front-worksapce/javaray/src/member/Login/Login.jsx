@@ -27,26 +27,26 @@ const Login = () => {
       });
   };
   return (
-    <LoginContainer>
+    <div>
       <h2>로그인</h2>
-      <Form onSubmit={handleLogin}>
-        <Input
+      <form onSubmit={handleLogin}>
+        <input
           type="text"
           onChange={(e) => setUserId(e.target.value)}
           value={userId}
           placeholder="사용자명"
           required
         />
-        <Input
+        <input
           type="password"
           onChange={(e) => setUserPwd(e.target.value)}
           value={userPwd}
           placeholder="비밀번호"
           required
         />
-        <Button type="submit">로그인</Button>
-      </Form>
-    </LoginContainer>
+        <button type="submit">로그인</button>
+      </form>
+    </div>
   );
 };
 

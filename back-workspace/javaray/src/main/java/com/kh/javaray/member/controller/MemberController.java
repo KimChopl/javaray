@@ -2,6 +2,8 @@ package com.kh.javaray.member.controller;
 
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,6 +52,13 @@ public class MemberController {
 	public ResponseEntity<?> updatePassword (@Valid @RequestBody ChangePassword password){
 		ms.updatePassword(password);
 		return ResponseEntity.status(HttpStatusCode.valueOf(201)).body("비밀번호 변경에 성공했습니다. 다시 로그인 하세요.");
+	}
+	
+	@DeleteMapping
+	public ResponseEntity<?> deleteMember (@RequestBody LoginForm userPwd) {
+		log.info("{}", userPwd);
+		ms.deleteMember(userPwd);
+		return ResponseEntity.status(HttpStatusCode.valueOf(201)).body("회원 탈퇴에 완료하였습니다.");
 	}
 
 }

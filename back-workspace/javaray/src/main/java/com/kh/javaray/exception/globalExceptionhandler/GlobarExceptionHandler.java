@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.kh.javaray.exception.exceptions.AlreadyUseingUsernameException;
+import com.kh.javaray.exception.exceptions.FailUpdateUserInfoException;
 import com.kh.javaray.exception.exceptions.NotFoundUserInfoException;
 import com.kh.javaray.exception.exceptions.NotMatchUserInfoException;
 
@@ -23,6 +24,11 @@ public class GlobarExceptionHandler {
 	
 	@ExceptionHandler(NotMatchUserInfoException.class)
 	public ResponseEntity<?> handleMismatchUser(NotMatchUserInfoException e){
+		return ResponseEntity.badRequest().body(e.getMessage());
+	}
+	
+	@ExceptionHandler(FailUpdateUserInfoException.class)
+	public ResponseEntity<?> handleFailUpdate(FailUpdateUserInfoException e){
 		return ResponseEntity.badRequest().body(e.getMessage());
 	}
 	

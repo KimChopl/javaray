@@ -4,7 +4,6 @@ import ShippingDetail from "./shipping/shippingDetail/ShippingDetail";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CarouselWithIndicatorsExample } from "./WelcomPage/CarouselComponent";
 import Calendar from "./Calendar/Calendar";
-
 import Mypage from "./member/Mypage/Mypage";
 import FishingDetail from "./fishing/FishingDetail/FishingDetail";
 import CollapsibleExample from "./Header/Header";

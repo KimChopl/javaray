@@ -16,9 +16,8 @@ import lombok.ToString;
 @Builder
 @ToString
 public class LoginForm {
-	
 	@NotBlank
-	@Size(min = 6, max = 25, message = "6 ~ 25자 사이만 가능합니다.")
+	@Size(min = 6, max = 30, message = "너무 짧거나 깁니다.")
 	private String username;
 	
 	@NotBlank

@@ -19,4 +19,6 @@ public interface MemberService {
 
 	void updatePassword(ChangePassword password);
 
+	void deleteMember(LoginForm userPwd);
+
 }
