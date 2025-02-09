@@ -48,19 +48,19 @@ const FishingInsert = () => {
           </FormGroup>
           <FormGroup>
             <Label>업체 번호</Label>
-            <Input id="fishingPhone" type=""></Input>
+            <Input id="fishingPhone" type="" required></Input>
           </FormGroup>
           <FormGroup>
             <Label>업체 주소</Label>
-            <Input id="fishingAddress" type="text"></Input>
+            <Input id="fishingAddress" type="text" required></Input>
           </FormGroup>
           <FormGroup>
             <Label>영업 시작 시간</Label>
-            <Input id="fishingStartTime" type="time"></Input>
+            <Input id="fishingStartTime" type="time" required></Input>
           </FormGroup>
           <FormGroup>
             <Label>영업 종료 시간</Label>
-            <Input id="fishingEndTime" type="time"></Input>
+            <Input id="fishingEndTime" type="time" required></Input>
           </FormGroup>
           <FormGroup>
             <Label>상세정보</Label>
@@ -177,7 +177,7 @@ const FishingInsert = () => {
           </FormGroup>
           <FormGroup>
             <Label>사업자등록증</Label>
-            <Input id="licens" type="file"></Input>
+            <Input id="licens" type="file" required></Input>
           </FormGroup>
           <Button type="submit">신청</Button>
         </Form>

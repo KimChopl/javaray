@@ -20,6 +20,7 @@ import { TitleLine, TitleText } from "../FishingList/FishingList.styled";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import FishingGoods from "./FishingGoods";
+import FishingReview from "./FishingReview";
 
 const FishingDetail = () => {
   const navigate = useNavigate();
@@ -45,23 +46,25 @@ const FishingDetail = () => {
             </TopTextBlock>
           </TopBlock>
           <TopMenuBlock>
-            <TopMenuInnerBlock>
+            <TopMenuInnerBlock onClick={() => setMenuName("review")}>
               <MenuText>리뷰</MenuText>
             </TopMenuInnerBlock>
             <TopMenuInnerBlock onClick={() => setMenuName("product")}>
               <MenuText>상세 정보</MenuText>
             </TopMenuInnerBlock>
-            <TopMenuInnerBlock onClick={() => setMenuName("detail")}>
+            <TopMenuInnerBlock onClick={() => setMenuName("goods")}>
               <MenuText>상품 종류</MenuText>
             </TopMenuInnerBlock>
           </TopMenuBlock>
         </TopWrap>
         {menuName === "product" ? (
           <FishingProduct />
-        ) : menuName === "detail" ? (
+        ) : menuName === "goods" ? (
           <FishingGoods />
+        ) : menuName === "review" ? (
+          <FishingReview />
         ) : (
-          <></>
+          <></> //예외상황을 위한 빈 div
         )}
       </DetailWrap>
     </>

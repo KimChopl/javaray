@@ -13,6 +13,8 @@ import FishingInsert from "./fishing/FishingInsert/FishingInsert";
 import FishingList from "./fishing/FishingList/FishingList";
 import BusninessNoAPI from "./Funding/FundingBusinessNoAuth/BusinessNoAPI";
 import FishingGoods from "./fishing/FishingDetail/FishingGoods";
+import FishingReview from "./fishing/FishingDetail/FishingReview";
+import FishingReviewInsert from "./fishing/FishingDetail/FishingReviewInsert";
 
 function App() {
   return (
@@ -30,6 +32,11 @@ function App() {
         <Route path="/fishing/detail" element={<FishingDetail />} />
         <Route path="BusinessNoApi" element={<BusninessNoAPI />} />
         <Route path="FishingGoods" element={<FishingGoods />} />
+        <Route path="/fishing/review" element={<FishingReview />} />
+        <Route
+          path="/fishing/review/insert"
+          element={<FishingReviewInsert />}
+        />
       </Routes>
       <Footer />
     </BrowserRouter>
