@@ -53,20 +53,21 @@ const BusninessNoAPI = () => {
 
   useEffect(() => {
     if (taxType !== "" && taxTypeCd !== "") {
-      const FundingBusinessNoAPIDTO = new FormData();
-      FundingBusinessNoAPIDTO.append("companyBusinessNo", companyNo);
-      FundingBusinessNoAPIDTO.append("resultContent", taxType);
-      FundingBusinessNoAPIDTO.append("resultCode", taxTypeCd);
-
-      console.log(FundingBusinessNoAPIDTO);
       axios
-        .post("http://localhost/funding", FundingBusinessNoAPIDTO, {
-          headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJya2R0bXhoIiwiaWF0IjoxNzM5MTU1OTM3LCJleHAiOjE3MzkyNDIzMzd9.d1oSPezNFHemHmOnJ0TvMl7j0e1cI1PL5AYVPCHAEV9djUkLPFjL34iPq--OKhJwDSNJfHKnVZD6qUpcO_5Ejw",
-            "Content-Type": "multipart/form-data",
+        .post(
+          "http://localhost/funding",
+          {
+            companyBusinessNo: companyNo,
+            resultContent: taxType,
+            resultCode: taxTypeCd,
           },
-        })
+          {
+            headers: {
+              Authorization:
+                "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJya2R0bXhoIiwiaWF0IjoxNzM5MTU1OTM3LCJleHAiOjE3MzkyNDIzMzd9.d1oSPezNFHemHmOnJ0TvMl7j0e1cI1PL5AYVPCHAEV9djUkLPFjL34iPq--OKhJwDSNJfHKnVZD6qUpcO_5Ejw",
+            },
+          }
+        )
         .then((response) => {
           if (response.status === 201) {
             alert("사업자인증번호 조회 성공하셨습니다.");
