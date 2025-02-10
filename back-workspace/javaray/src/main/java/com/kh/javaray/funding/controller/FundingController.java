@@ -26,9 +26,7 @@ public class FundingController {
 	@PostMapping
 	public ResponseEntity<?> insertBusinessNumber(@RequestBody FundingBusinessNoAPIDTO BusinessNoAPIData){
 		
-		
 		fundingService.save(BusinessNoAPIData);
-		
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body("사업자등록 인증을 성공했습니다.");
 	}

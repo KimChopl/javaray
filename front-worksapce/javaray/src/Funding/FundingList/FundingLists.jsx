@@ -25,10 +25,14 @@ import icon3 from "../FundingImg/FishingTool3.png";
 import icon4 from "../FundingImg/FishingTool4.png";
 import icon5 from "../FundingImg/FishingTool5.png";
 
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../UseContext/Auth/AuthContext";
 
 const FundingLists = () => {
   const navigate = useNavigate();
+  const { auth } = useContext(AuthContext);
+  const [role, setRole] = useState("");
 
   return (
     <>
@@ -57,15 +61,15 @@ const FundingLists = () => {
           </CategoryItem>
         </FundingCategory>
         <Insert>
-          {10 === 10 ? (
+          {auth.isAuthenticated ? (
             <GoodsInsert onClick={() => navigate("/BusinessNoApi")}>
               사업자등록 인증
             </GoodsInsert>
-          ) : 10 === 20 ? (
+          ) : role === "BusinessAPI" ? (
             <GoodsInsert onClick={() => navigate("/BuninessApply")}>
               사업자등록 신청
             </GoodsInsert>
-          ) : 10 === 30 ? (
+          ) : role === "FundingCompany" ? (
             <GoodsInsert onClick={() => navigate("/FundingGoodsForm")}>
               상품등록
             </GoodsInsert>

@@ -21,12 +21,12 @@ public class ManagerServiceImpl implements ManagerService {
 	private final ManagerMapper mgm;
 
 	@Override
-	public void changeRole(ManagingDTO member) {
+	public int changeRole(ManagingDTO member) {
 
 		Member checkedMember = mm.findById(member.getUsername());
 		chekedMember(member, checkedMember);
 		member.setChangeRole("ROLE_" + member.getChangeRole());
-		mgm.changeRole(member);
+		return mgm.changeRole(member);
 
 	}
 
