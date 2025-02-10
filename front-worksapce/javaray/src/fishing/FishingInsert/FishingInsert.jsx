@@ -55,6 +55,18 @@ const FishingInsert = () => {
             <Input id="fishingAddress" type="text" required></Input>
           </FormGroup>
           <FormGroup>
+            <Label>영업요일</Label>
+            <AmenitiesContainer>
+              <FishText>월</FishText>
+              <FishText>화</FishText>
+              <FishText>수</FishText>
+              <FishText>목</FishText>
+              <FishText>금</FishText>
+              <FishText>토</FishText>
+              <FishText>일</FishText>
+            </AmenitiesContainer>
+          </FormGroup>
+          <FormGroup>
             <Label>영업 시작 시간</Label>
             <Input id="fishingStartTime" type="time" required></Input>
           </FormGroup>
