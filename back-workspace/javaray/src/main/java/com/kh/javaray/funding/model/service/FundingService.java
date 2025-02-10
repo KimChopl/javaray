@@ -4,6 +4,6 @@ import com.kh.javaray.funding.model.dto.FundingBusinessNoAPIDTO;
 
 public interface FundingService {
 
-	String save(String companyBusinessNo);
+	void save(FundingBusinessNoAPIDTO BusinessNoAPIData);
 
 }
