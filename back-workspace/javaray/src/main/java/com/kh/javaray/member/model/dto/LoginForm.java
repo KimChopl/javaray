@@ -16,12 +16,13 @@ import lombok.ToString;
 @Builder
 @ToString
 public class LoginForm {
-	@NotBlank
+	
+	@NotBlank(message ="아이디 또는 비밀번호를 입력하세요.")
 	@Size(min = 6, max = 30, message = "너무 짧거나 깁니다.")
 	private String username;
 	
-	@NotBlank
-	@Size(min = 6, max = 30, message = "너무 짧거나 긴 비밀번호 입니다.")
+	@NotBlank(message ="아이디 또는 비밀번호를 입력하세요.")
+	@Size(min = 6, max = 30, message = "너무 짧거나 깁니다.")
 	private String userPwd;
 
 }

@@ -53,7 +53,7 @@ public class MemberServiceImpl implements MemberService {
 	public LoginResponse login(LoginForm requestMember) {
 		Map<String, String> token = as.login(requestMember);
 		Member member = mm.findById(requestMember.getUsername());
-		LoginResponse user = LoginResponse.builder().username(member.getUsername()).role(cutRole(member.getRole())).tokens(token).nickname(member.getNickname()).build();
+		LoginResponse user = LoginResponse.builder().username(member.getUsername()).role(cutRole(member.getRole())).tokens(token).nickname(member.getNickname()).userNo(member.getUserNo()).build();
 		return user;
 	}
 	

@@ -5,17 +5,16 @@ import ShippingReport from "./shippingReport/ShippingReport";
 const ShippingSmallMenu = () => {
   const [displayDiv, setDisplayDiv] = useState(false);
   const onClickDiv = () => {
-    //console.log("먼디");
-    if (displayDiv === false) {
-      setDisplayDiv(true);
-    } else {
-      //setDisplayDiv(false);
-    }
+    setDisplayDiv(true);
+  };
+
+  const closeDiv = () => {
+    setDisplayDiv(false);
   };
 
   return (
-    <CircleCover onClick={onClickDiv}>
-      <PositionDiv>
+    <CircleCover>
+      <PositionDiv onClick={!displayDiv ? onClickDiv : closeDiv}>
         <CircleDiv />
         <CircleDiv />
         <CircleDiv />

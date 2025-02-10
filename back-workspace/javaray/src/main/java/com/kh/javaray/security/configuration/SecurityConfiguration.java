@@ -47,7 +47,7 @@ public class SecurityConfiguration {
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
 		return httpSecurity.formLogin(AbstractHttpConfigurer::disable).httpBasic(AbstractHttpConfigurer::disable)
-				.csrf(AbstractHttpConfigurer::disable).cors(AbstractHttpConfigurer::disable)
+				.csrf(AbstractHttpConfigurer::disable).cors(Customizer.withDefaults())
 				.authorizeHttpRequests(requests -> {
 					requests.requestMatchers("/members", "/members/login", "/uploads/**").permitAll();
 					requests.requestMatchers(HttpMethod.PUT, "/members/update/**").authenticated();
