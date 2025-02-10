@@ -7,25 +7,26 @@ import {
   Title,
 } from "./BusinessNoAPI.styles";
 
-import { useEffect, useState } from "react";
+import { useState, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const BusninessNoAPI = () => {
-  const [companyNo, setCompanyNo] = useState();
+  const [companyNo, setCompanyNo] = useState(0);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [taxType, setTaxType] = useState("");
   const [taxTypeCd, setTaxTypeCd] = useState("");
   const navi = useNavigate();
+  const isFirstRender = useRef(true);
 
-  const handleInsertAPI = (e) => {
+  const handleInsertAPI = async (e) => {
     e.preventDefault();
 
     const requestData = { b_no: [companyNo] };
 
-    axios
-      .post(
+    const aaa = async () => {
+      const response = await axios.post(
         "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=rLUqNnUbI4GCnrviVkaBCrWotodsN1CKcxmhdtyVLVUggoHUwU%2FGvbjzdi80ODvdq4JpQve26aZub0zA29yezA%3D%3D",
         requestData,
         {
@@ -34,51 +35,42 @@ const BusninessNoAPI = () => {
             Accept: "application/json",
           },
         }
-      )
-      .then((result) => {
-        setTaxType(result.data.data[0].tax_type);
-        setTaxTypeCd(result.data.data[0].tax_type_cd);
-        console.log(result);
-      })
-      .catch((error) => {
-        if (error.response) {
-          console.log("Error Response:", error.response.data); // 서버 응답 에러 메시지 출력
-        } else if (error.request) {
-          console.log("No Response Received:", error.request); // 요청이 전송되었으나 응답이 없는 경우
-        } else {
-          console.log("Request Error:", error.message); // 요청 설정 중 발생한 에러
-        }
-      });
+      );
+      return response;
+    };
+
+    const response = await aaa();
+
+    await fff(response);
   };
 
-  useEffect(() => {
-    if (taxType !== "" && taxTypeCd !== "") {
-      axios
-        .post(
-          "http://localhost/funding",
-          {
-            companyBusinessNo: companyNo,
-            resultContent: taxType,
-            resultCode: taxTypeCd,
+  const fff = async (response) => {
+    await axios
+      .post(
+        "http://localhost/funding",
+        {
+          companyBusinessNo: companyNo,
+          resultContent: response.data.data[0].tax_type,
+          resultCode: response.data.data[0].tax_type_cd,
+          boardWriter: "rkdtmxh",
+        },
+        {
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJya2R0bXhoIiwiaWF0IjoxNzM5MTU1OTM3LCJleHAiOjE3MzkyNDIzMzd9.d1oSPezNFHemHmOnJ0TvMl7j0e1cI1PL5AYVPCHAEV9djUkLPFjL34iPq--OKhJwDSNJfHKnVZD6qUpcO_5Ejw",
           },
-          {
-            headers: {
-              Authorization:
-                "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJya2R0bXhoIiwiaWF0IjoxNzM5MTU1OTM3LCJleHAiOjE3MzkyNDIzMzd9.d1oSPezNFHemHmOnJ0TvMl7j0e1cI1PL5AYVPCHAEV9djUkLPFjL34iPq--OKhJwDSNJfHKnVZD6qUpcO_5Ejw",
-            },
-          }
-        )
-        .then((response) => {
-          if (response.status === 201) {
-            alert("사업자인증번호 조회 성공하셨습니다.");
-            navi("/funding");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  });
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        alert("사업자등록번호가 인증되었습니다");
+        navi("/");
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("사업자등록번호 인증을 실패했습니다.");
+      });
+  };
 
   return (
     <>
@@ -87,7 +79,12 @@ const BusninessNoAPI = () => {
         <Form onSubmit={handleInsertAPI}>
           <div>
             <Label htmlFor="username">작성자 ID</Label>
-            <Input id="username" type="text" readOnly /*value={userId}*/ />
+            <Input
+              id="username"
+              type="text"
+              readOnly
+              value="작성자" /*value={userId}*/
+            />
           </div>
           <div>
             <Label htmlFor="companyNo">사업자등록번호</Label>
