@@ -1,5 +1,6 @@
 package com.kh.javaray.funding.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,12 +26,11 @@ public class FundingController {
 	@PostMapping
 	public ResponseEntity<?> insertBusinessNumber(@RequestBody FundingBusinessNoAPIDTO BusinessNoAPIData){
 		
-		log.info("{}",BusinessNoAPIData);
 		
-		//String response = fundingService.save(companyBusinessNo);
+		fundingService.save(BusinessNoAPIData);
 		
-		//return ResponseEntity.status(HttpStatus.CREATED).body("사업자등록 인증을 성공했습니다.");
-		return null;
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body("사업자등록 인증을 성공했습니다.");
 	}
 	
 

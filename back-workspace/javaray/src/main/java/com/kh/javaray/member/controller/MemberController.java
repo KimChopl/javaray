@@ -31,6 +31,7 @@ public class MemberController {
 	
 	@PostMapping
 	public ResponseEntity<?> insertMember(@Valid @RequestBody MemberDTO member) {
+		log.info("{}", member);
 		ms.insertMember(member);
 		return ResponseEntity.ok("회원가입에 완료하였습니다.");
 	}

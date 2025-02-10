@@ -26,4 +26,7 @@ public class FundingBusinessNoAPIDTO {
 	
 	@Pattern(regexp = "^[0~9]*$", message = "등록되어 있지 않은 사업자등록번호입니다.")
 	private Long resultCode;
+	
+	@NotBlank(message = "신청 게시글 작성자는 비어있을 수 없습니다.")
+	private String boardWriter;
 }

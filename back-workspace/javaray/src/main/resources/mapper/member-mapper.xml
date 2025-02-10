@@ -26,6 +26,18 @@
 		INSERT
 		  INTO
 		       TB_MEMBER
+		       (
+				USER_NO,
+				USER_NAME,
+				USER_ID,
+				USER_PWD,
+				NICKNAME,
+				EMAIL,
+				PHONE,
+				ROLE,
+				CREATE_AT,
+				STATUS
+			   )
 		VALUES
 		       (
 				SEQ_USER_NO.NEXTVAL,
