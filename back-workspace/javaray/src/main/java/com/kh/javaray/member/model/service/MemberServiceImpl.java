@@ -52,7 +52,6 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public LoginResponse login(LoginForm requestMember) {
 		Map<String, String> token = as.login(requestMember);
-		log.info("{}", token);
 		Member member = mm.findById(requestMember.getUsername());
 		LoginResponse user = LoginResponse.builder().username(member.getUsername()).role(cutRole(member.getRole())).tokens(token).nickname(member.getNickname()).build();
 		return user;
@@ -108,7 +107,7 @@ public class MemberServiceImpl implements MemberService {
 		if(!pwe.matches(userPwd.getUserPwd(), user.getPassword())) {
 			throw new NotMatchUserInfoException("비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
 		}
-		//mm.deleteMember(user.getUserNo());
+		mm.deleteMember(user.getUserNo());
 	}
 
 }

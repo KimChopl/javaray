@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Member member = mm.findById(username);
 		if(member == null) {
-			throw new NotFoundUserInfoException("존재하지 않는 사용자 입니다.");
+			throw new NotFoundUserInfoException("아이디 또는 비밀번호가 일치하지 않습니다.");
 		}
 		return CustomUserDetails.builder().userNo(member.getUserNo()).username(member.getUsername()).password(member.getUserPwd()).
 				userRealName(member.getUserRealName()).nickname(member.getNickname()).

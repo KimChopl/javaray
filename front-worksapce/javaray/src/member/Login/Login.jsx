@@ -1,12 +1,9 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import axios from "axios";
-import { AuthContext } from "../../context/AuthContext";
 
 const Login = () => {
   const [userId, setUserId] = useState("");
   const [userPwd, setUserPwd] = useState("");
-
-  const { login } = useContext(AuthContext);
 
   const handleLogin = (e) => {
     e.preventDefault();

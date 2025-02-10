@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import {
   CalDay,
   CalDayWeekend,
@@ -39,7 +39,7 @@ const Calendar = () => {
     day: format(day, "dd"),
     weekIndex: getDay(day),
     index: index,
-    dateNumber : day.getTime()
+    dateNumber: day.getTime(),
   }));
 
   const preBtn = () => {
@@ -47,7 +47,7 @@ const Calendar = () => {
   };
   const nextBtn = () => {
     setDate(addMonths(date, 1));
-    console.log('현재시간 : ' || toDay)
+    console.log("현재시간 : " || toDay);
   };
   return (
     <>
@@ -71,41 +71,49 @@ const Calendar = () => {
           </tr>
         </thead>
         <tbody>
-        {daysFormat
-          .reduce((rows, day, index) => {
-            if (index % 7 === 0) rows.push([]);
-            rows[rows.length - 1].push(day);
-            return rows;
-          }, [])
-          .map((week, index) => (
-            <tr key={index}>
-              {week.map((day, dayIndex) => (
-                <CalTd key={`${index}-${dayIndex}`}>
-                  {day.dateNumber < toDay ? (
-                    dayIndex % 7 === 0 || dayIndex % 7 === 6 ? (
-                      <GrayDiv><GrayWeekEnd>{day.day}</GrayWeekEnd></GrayDiv>
-                    ) : (
-                      <GrayDiv><GrayWeekday>{day.day}</GrayWeekday></GrayDiv>
-                    )
-                  ) : (
-                    dayIndex % 7 === 0 || dayIndex % 7 === 6 ? (
-                      day.month === toDayMonth ? (
-                        <CalDiv><CalWeekend>{day.day}</CalWeekend></CalDiv>
+          {daysFormat
+            .reduce((rows, day, index) => {
+              if (index % 7 === 0) rows.push([]);
+              rows[rows.length - 1].push(day);
+              return rows;
+            }, [])
+            .map((week, index) => (
+              <tr key={index}>
+                {week.map((day, dayIndex) => (
+                  <CalTd key={`${index}-${dayIndex}`}>
+                    {day.dateNumber < toDay ? (
+                      dayIndex % 7 === 0 || dayIndex % 7 === 6 ? (
+                        <GrayDiv>
+                          <GrayWeekEnd>{day.day}</GrayWeekEnd>
+                        </GrayDiv>
                       ) : (
-                        <GrayDiv><GrayWeekEnd>{day.day}</GrayWeekEnd></GrayDiv>
+                        <GrayDiv>
+                          <GrayWeekday>{day.day}</GrayWeekday>
+                        </GrayDiv>
                       )
-                    ) : (
+                    ) : dayIndex % 7 === 0 || dayIndex % 7 === 6 ? (
                       day.month === toDayMonth ? (
-                        <CalDiv><CalWeekday>{day.day}</CalWeekday></CalDiv>
+                        <CalDiv>
+                          <CalWeekend>{day.day}</CalWeekend>
+                        </CalDiv>
                       ) : (
-                        <GrayDiv><GrayWeekday>{day.day}</GrayWeekday></GrayDiv>
+                        <GrayDiv>
+                          <GrayWeekEnd>{day.day}</GrayWeekEnd>
+                        </GrayDiv>
                       )
-                    )
-                  )}
-                </CalTd>
-              ))}
-            </tr>
-          ))}
+                    ) : day.month === toDayMonth ? (
+                      <CalDiv>
+                        <CalWeekday>{day.day}</CalWeekday>
+                      </CalDiv>
+                    ) : (
+                      <GrayDiv>
+                        <GrayWeekday>{day.day}</GrayWeekday>
+                      </GrayDiv>
+                    )}
+                  </CalTd>
+                ))}
+              </tr>
+            ))}
         </tbody>
       </CalTable>
     </>

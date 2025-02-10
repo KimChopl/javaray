@@ -18,6 +18,8 @@
 		       TB_MEMBER
 		WHERE
 		      USER_ID = #{username}
+		  AND
+		      STATUS = 'Y'
 	</select>
 	
 	<insert id="insertMember" parameterType="MemberDTO">
