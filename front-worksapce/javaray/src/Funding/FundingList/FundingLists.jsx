@@ -57,15 +57,15 @@ const FundingLists = () => {
           </CategoryItem>
         </FundingCategory>
         <Insert>
-          {30 === 10 ? (
+          {10 === 10 ? (
             <GoodsInsert onClick={() => navigate("/BusinessNoApi")}>
               사업자등록 인증
             </GoodsInsert>
-          ) : 30 === 20 ? (
+          ) : 10 === 20 ? (
             <GoodsInsert onClick={() => navigate("/BuninessApply")}>
               사업자등록 신청
             </GoodsInsert>
-          ) : 30 === 30 ? (
+          ) : 10 === 30 ? (
             <GoodsInsert onClick={() => navigate("/FundingGoodsForm")}>
               상품등록
             </GoodsInsert>
