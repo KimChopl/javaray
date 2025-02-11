@@ -51,8 +51,8 @@ public class JwtFilter extends OncePerRequestFilter{
 			return;
 		}
 		String token = authorization.split(" ")[1];
+		log.info("{}", token);
 		try {
-			
 			Claims claims =  jwtUtil.parseJwt(token);
 			
 			String username = claims.getSubject();
