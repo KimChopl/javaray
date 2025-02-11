@@ -12,7 +12,7 @@ import jakarta.validation.Valid;
 
 public interface FishingService {
 
-	void fishingSave(@Valid FishingDTO fishing, AmenitiesDTO amenities, FishDTO fish, MultipartFile file);
+	//void fishingSave(@Valid FishingDTO fishing, AmenitiesDTO amenities, FishDTO fish, MultipartFile file);
 
 	List<FishingDTO> findAll(int page);
 

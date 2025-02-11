@@ -41,6 +41,10 @@ public class JwtFilter extends OncePerRequestFilter{
 			filterChain.doFilter(request, response);
 			return;
 		}
+		if((header.equals("/fishing")) && method.equals("GET")){
+			filterChain.doFilter(request, response);
+			return;
+		}
 		
 		String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
 		

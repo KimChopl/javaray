@@ -10,7 +10,6 @@
     <resultMap id="FishingResultMap" type="com.kh.javaray.fishing.fishing.model.dto.FishingDTO">
         <id property="fishingNo" column="FISHING_NO" />
         <result property="fishingWriter" column="USER_NO" />
-        <result property="nickname" column="NICKNAME" />
         <result property="fishingName" column="FISHING_NAME" />
         <result property="phone" column="PHONE" />
         <result property="address" column="ADDRESS" />
@@ -39,7 +38,6 @@
 		SELECT 
 				fs.FISHING_NO ,
 				tm.USER_NO ,
-				tm.NICKNAME ,
 				fs.FISHING_NAME,
 				fs.PHONE,
 				fs.ADDRESS,

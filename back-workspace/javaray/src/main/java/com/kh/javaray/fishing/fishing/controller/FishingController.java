@@ -30,7 +30,8 @@ public class FishingController {
 	
 	private final FishingService service;
 	
-	@PostMapping
+	/*
+	@PostMapping("/insert")
 	public ResponseEntity<?> fishingSave(@ModelAttribute @Valid FishingDTO fishing, AmenitiesDTO amenities, FishDTO fish, @RequestParam(name="file", required=false)MultipartFile file){
 		
 		service.fishingSave(fishing, amenities, fish , file);
@@ -38,6 +39,7 @@ public class FishingController {
 		return ResponseEntity.status(HttpStatus.CREATED).body("게시물 등록 성공");
 		
 	}
+	*/
 	
 	@GetMapping
 	public ResponseEntity<List<FishingDTO>> findAll(@RequestParam(name="page", defaultValue="0")int page){
