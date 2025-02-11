@@ -32,7 +32,9 @@ import { AuthContext } from "../../UseContext/Auth/AuthContext";
 const FundingLists = () => {
   const navigate = useNavigate();
   const { auth } = useContext(AuthContext);
-  const [role, setRole] = useState("");
+  const { role } = auth;
+
+  console.log(auth);
 
   return (
     <>
@@ -61,11 +63,11 @@ const FundingLists = () => {
           </CategoryItem>
         </FundingCategory>
         <Insert>
-          {auth.isAuthenticated ? (
+          {role === "USER" ? (
             <GoodsInsert onClick={() => navigate("/BusinessNoApi")}>
               사업자등록 인증
             </GoodsInsert>
-          ) : role === "BusinessAPI" ? (
+          ) : role === "BUSINESSNOAPI" ? (
             <GoodsInsert onClick={() => navigate("/BuninessApply")}>
               사업자등록 신청
             </GoodsInsert>

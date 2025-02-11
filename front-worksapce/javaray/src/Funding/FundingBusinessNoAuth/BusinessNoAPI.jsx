@@ -17,11 +17,10 @@ const BusninessNoAPI = () => {
   const [username, setUsername] = useState("");
   const [accessToken, setAccessToken] = useState("");
   const navi = useNavigate();
-  const { auth } = useContext(AuthContext);
+  const { auth, signout } = useContext(AuthContext);
 
   useEffect(() => {
     if (!auth.isAuthenticated) {
-      alert("로그인하고 접근해주세요.");
       navi("/");
     } else {
       setUsername(auth.username);
@@ -61,7 +60,7 @@ const BusninessNoAPI = () => {
           companyBusinessNo: companyNo,
           resultContent: response.data.data[0].tax_type,
           resultCode: response.data.data[0].tax_type_cd,
-          boardWriter: "rkdtmxh",
+          boardWriter: username,
         },
         {
           headers: {
@@ -71,8 +70,8 @@ const BusninessNoAPI = () => {
       )
       .then((response) => {
         console.log(response);
-        alert("사업자등록번호가 인증되었습니다");
-        navi("/");
+        alert("사업자등록번호가 인증되었습니다. 다시 로그인해주세요.");
+        signout();
       })
       .catch((error) => {
         console.log(error);
