@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.javaray.shipping.shippings.model.mapper.ShippingMapper">
+	<resultMap id="shippingDetail" type="Shipping">
+		<id property="shippingNo" column="shippingNo"/>
+		<result property="shippingTitle" column="shippingTitle"/>
+		<result property="shippingContent" column="shippingContent" />
+		<result property="allowPepleNo" column="allowPepleNo"/>
+		<result property="shippingCreateDate" column="shippingCreateDate"/>
+		<result property="shippingModifyDate" column="shippingModifyDate"/>
+		<result property="rating" column="avgRating" />
+		<result property="attention" column="attention" />	
+		<result property="price" column="price" />
+		<collection property="member" ofType="Member">
+			<id property="userNo" column="userNo"/>
+			<result property="username" column="username"/>
+			<result property="nickname" column="nickname"/>
+			<result property="phone" column="phone"/>
+			<result property="email" column="email" />
+		</collection>	
+		<collection property="options" ofType="ShippingOption">
+			<id property="serviceNo" column="serviceNo" />
+			<result property="serviceName" column="serviceName" />
+		</collection>
+		<collection property="images" ofType="Image">
+			<result property="imagePath" column="imagePath"/>
+			<result property="imageOriginName" column="imageOriginName"/>
+			<result property="imageChangeName" column="imageChangeName" />
+			<result property="imageLevel" column="imageLevel"/>
+		</collection>
+		<collection property="reviews" ofType="Review">
+			<id property="reviewNo" column="reviewNo" />
+			<result property="reviewContent" column="reviewContent"/>
+			<result property="createDate" column="reviewCreateDate" />
+			<result property="rating" column="ratings" />
+			<collection property="member" ofType="Member">
+				<id property="userNo" column="reviewUserNo"/>
+				<result property="username" column="reviewer"/>
+			</collection>
+		</collection>
+		<collection property="port" ofType="Port">
+			<id property="portNo" column="portNo" />
+			<result property="address" column="address" />
+			<result property="let" column="let" />
+			<result property="lon" column="lon" />
+			<result property="spotCode" column="spotCode" />
+		</collection>
+		</resultMap>
+		
+		<resultMap id="shippings" type="Shipping">
+			<id property="shippingNo" column="shippingNo"/>
+			<result property="shippingTitle" column="shippingTitle"/>
+			<result property="allowPepleNo" column="allowPepleNo"/>
+			<result property="shippingCreateDate" column="shippingCreateDate"/>
+			<result property="rating" column="avgRating" />
+			<result property="attention" column="attention" />	
+			<result property="price" column="price" />
+		<collection property="member" ofType="Member">
+			<id property="userNo" column="userNo"/>
+			<result property="username" column="username"/>
+			<result property="nickname" column="nickname"/>
+		</collection>	
+		<collection property="port" ofType="Port">
+			<id property="portNo" column="portNo" />
+			<result property="address" column="address" />
+		</collection>
+		</resultMap>
+	<select id="selectShipping" resultMap="shippings">
+		SELECT
+		       TS.SHIPPING_NO shippingNo,
+		       TS.PORT_NO portNo,
+		       TM.USER_NO userNo,
+		       TM.USER_ID username,
+		       TM.NICKNAME nickname,
+		       SHIPPING_TITLE shippingTitle,
+		       ALLOW_PEPLE_NO allowPepleNo,
+		       PRICE price,
+		       ADDRESS address,
+		       PORT_NO portNo,
+		       SHIPPING_CREATE_DATE shippingCreateDate,
+		       avgRating
+		  FROM 
+		       TB_SHIPPING TS
+		  JOIN
+		       TB_MEMBER TM ON (TS.USER_NO = TM.USER_NO)
+		  JOIN
+		       TB_PORT TP ON (TP.PORT_NO = TS.PORT_NO)
+		  LEFT
+		  JOIN
+		       (SELECT
+				       AVG(RATING) AS avgRating,
+				       TS.SHIPPING_NO SHIPPING_NO
+				  FROM
+				       TB_SHIPPING_REVIEW TSR
+				  JOIN
+				       TB_SHIPPING_PLAY TSP ON (TSR.BOOK_NO = TSP.BOOK_NO)
+				  JOIN
+				       TB_SHIPPING_DECIDE TSD ON (TSD.BOOK_NO = TSP.BOOK_NO)
+				  JOIN
+				       TB_SHIPPING_BOOK TSB ON (TSD.BOOK_NO = TSB.BOOK_NO)
+				  JOIN
+				        TB_SHIPPING TS ON (TS.SHIPPING_NO = TSB.SHIPPING_NO)
+				 GROUP
+				    BY
+				        TS.SHIPPING_NO) RA ON (RA.SHIPPING_NO = TS.SHIPPING_NO)	
+		 WHERE
+		       (TS.SHIPPING_NO IS NOT NULL OR TS.SHIPPING_NO IN (SELECT
+														       SHIPPING_NO
+														  FROM
+														       TB_SHIPPING_BOOK
+														  GROUP
+														     BY
+														        SHIPPING_NO))
+		 ORDER
+		    BY
+		       SHIPPING_CREATE_DATE DESC
+	</select>
+</mapper>

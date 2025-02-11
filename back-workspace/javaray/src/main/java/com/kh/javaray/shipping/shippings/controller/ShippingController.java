@@ -12,16 +12,19 @@ import com.kh.javaray.shipping.shippings.model.dto.Shipping;
 import com.kh.javaray.shipping.shippings.model.service.ShippingService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("shippings")
+@Slf4j
 public class ShippingController {
 	
 	private final ShippingService ss;
 
 	@GetMapping
 	public ResponseEntity<List<Shipping>> selectShippings(@RequestParam(name = "page", defaultValue = "0") int page){
+		
 		
 		List<Shipping> shipping = ss.selectShipping(page);
 		

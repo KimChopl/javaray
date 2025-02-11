@@ -18,4 +18,5 @@ public class Image {
 	private String imageChangeName;
 	private String boardNo;
 	private String status;
+	private int iangeLevel;
 }

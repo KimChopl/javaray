@@ -12,7 +12,7 @@ import lombok.ToString;
 public class ShippingPlay {
 	
 	private String bookNo;
-	private String Play;
+	private String Play; 
 	private String captainComment;
 	private String playDecideDate;
 
