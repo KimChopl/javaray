@@ -9,7 +9,7 @@ import com.kh.javaray.manager.model.dto.ManagingDTO;
 public interface ManagerMapper {
 
 	@Update("UPDATE TB_MEMBER SET ROLE = #{changeRole} WHERE USER_ID = #{username}")
-	void changeRole(ManagingDTO member);
+	int changeRole(ManagingDTO member);
 	
 	
 

@@ -6,6 +6,6 @@ import jakarta.validation.Valid;
 
 public interface ManagerService {
 
-	void changeRole(ManagingDTO member);
+	int changeRole(ManagingDTO member);
 
 }

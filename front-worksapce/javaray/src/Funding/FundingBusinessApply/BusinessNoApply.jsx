@@ -8,7 +8,10 @@ import {
   Title,
 } from "./BusinessNoApply.styles";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useContext } from "react";
+import axios from "axios";
+import { AuthContext } from "../../UseContext/Auth/AuthContext";
 
 const BusinessNoApply = () => {
   const [companyNo, setCompanyNo] = useState();
@@ -18,8 +21,30 @@ const BusinessNoApply = () => {
   const [ceoName, setCeoName] = useState();
   const [businessNoFile, setBusinessNoFile] = useState();
   const [content, setContent] = useState();
+  const { auth } = useContext(AuthContext);
+  //alert(auth.accessToken);
 
-  const handleInsertFundingCompany = () => {};
+  useEffect(() => {
+    if (auth.accessToken) {
+      axios
+        .get(`http://localhost/businessNo`, {
+          headers: {
+            Authorization: `Bearer ${auth.accessToken}`,
+          },
+        })
+        .then((response) => {
+          setCompanyNo(response.data.companyBusinessNo);
+        });
+    }
+  }, [auth]);
+
+  const handleInsertFundingCompany = () => {
+    axios.post("http://localhost/apply", {
+      headers: {
+        Authorization: `Bearer ${auth.accessToken}`,
+      },
+    });
+  };
 
   return (
     <>
@@ -28,7 +53,7 @@ const BusinessNoApply = () => {
         <Form onSubmit={handleInsertFundingCompany}>
           <div>
             <Label>작성자 ID</Label>
-            <Input id="username" type="text" readOnly /*value={userId}*/ />
+            <Input id="username" type="text" readOnly value={auth.username} />
           </div>
           <div>
             <Label htmlFor="companyNo">사업자등록번호</Label>
