@@ -31,4 +31,12 @@ public class ShippingController {
 		return ResponseEntity.ok().body(shipping);
 	}
 	
+	@GetMapping("detail")
+	public ResponseEntity<Shipping> selectShippingDetail(@RequestParam(name = "shippingNo") String shippingNo){
+		log.info(shippingNo);
+		Shipping shipping = ss.selectShippingDetail(shippingNo);
+		log.info("{}", shipping);
+		return ResponseEntity.ok().body(shipping);
+	}
+	
 }

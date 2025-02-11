@@ -8,4 +8,6 @@ public interface ShippingService {
 
 	List<Shipping> selectShipping(int page);
 
+	Shipping selectShippingDetail(String shippingNo);
+
 }

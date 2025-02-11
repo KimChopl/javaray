@@ -1,5 +1,6 @@
 package com.kh.javaray.shipping.book.model.dto;
 
+import java.sql.Date;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -18,8 +19,8 @@ public class Book {
 	private String playDate;
 	private String bookPepleNo;
 	private String bookContent;
-	private String bookCreateDate;
-	private String bookModifyDate;
+	private Date bookCreateDate;
+	private Date bookModifyDate;
 	private ShippingDecide shippingDecide;
 	private ShippingCancel shippingCancel;
 	private ShippingPlay shippingPlay;

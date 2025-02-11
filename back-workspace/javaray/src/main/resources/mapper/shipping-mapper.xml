@@ -8,18 +8,28 @@
 		<result property="shippingTitle" column="shippingTitle"/>
 		<result property="shippingContent" column="shippingContent" />
 		<result property="allowPepleNo" column="allowPepleNo"/>
+		<!--
+			
 		<result property="shippingCreateDate" column="shippingCreateDate"/>
 		<result property="shippingModifyDate" column="shippingModifyDate"/>
+		-->
 		<result property="rating" column="avgRating" />
 		<result property="attention" column="attention" />	
 		<result property="price" column="price" />
-		<collection property="member" ofType="Member">
+		<association property="member" javaType="Member">
 			<id property="userNo" column="userNo"/>
 			<result property="username" column="username"/>
 			<result property="nickname" column="nickname"/>
 			<result property="phone" column="phone"/>
 			<result property="email" column="email" />
-		</collection>	
+		</association>	
+		<association property="port" javaType="Port">
+			<id property="portNo" column="portNo" />
+			<result property="address" column="address" />
+			<result property="let" column="let" />
+			<result property="lon" column="lon" />
+			<result property="spotCode" column="spotCode" />
+		</association>
 		<collection property="options" ofType="ShippingOption">
 			<id property="serviceNo" column="serviceNo" />
 			<result property="serviceName" column="serviceName" />
@@ -30,22 +40,9 @@
 			<result property="imageChangeName" column="imageChangeName" />
 			<result property="imageLevel" column="imageLevel"/>
 		</collection>
-		<collection property="reviews" ofType="Review">
-			<id property="reviewNo" column="reviewNo" />
-			<result property="reviewContent" column="reviewContent"/>
-			<result property="createDate" column="reviewCreateDate" />
-			<result property="rating" column="ratings" />
-			<collection property="member" ofType="Member">
-				<id property="userNo" column="reviewUserNo"/>
-				<result property="username" column="reviewer"/>
-			</collection>
-		</collection>
-		<collection property="port" ofType="Port">
-			<id property="portNo" column="portNo" />
-			<result property="address" column="address" />
-			<result property="let" column="let" />
-			<result property="lon" column="lon" />
-			<result property="spotCode" column="spotCode" />
+		<collection property="fishs" javaType="java.util.ArrayList" ofType="Fishs">
+			<id property="fishNo" column="fishNo"/>
+			<result property="fishName" column="fishName"/>
 		</collection>
 		</resultMap>
 		
@@ -55,18 +52,17 @@
 			<result property="allowPepleNo" column="allowPepleNo"/>
 			<result property="shippingCreateDate" column="shippingCreateDate"/>
 			<result property="rating" column="avgRating" />
-			<result property="attention" column="attention" />	
 			<result property="price" column="price" />
-		<collection property="member" ofType="Member">
-			<id property="userNo" column="userNo"/>
-			<result property="username" column="username"/>
-			<result property="nickname" column="nickname"/>
-		</collection>	
-		<collection property="port" ofType="Port">
-			<id property="portNo" column="portNo" />
-			<result property="address" column="address" />
-		</collection>
-		</resultMap>
+				<association property="member" javaType="Member">
+					<id property="userNo" column="userNo"/>
+					<result property="username" column="username"/>
+					<result property="nickname" column="nickname"/>
+				</association>	
+				<association property="port" javaType="Port">
+					<id property="portNo" column="portNo" />
+					<result property="address" column="address" />
+				</association>
+			</resultMap>
 	<select id="selectShipping" resultMap="shippings">
 		SELECT
 		       TS.SHIPPING_NO shippingNo,
@@ -78,9 +74,8 @@
 		       ALLOW_PEPLE_NO allowPepleNo,
 		       PRICE price,
 		       ADDRESS address,
-		       PORT_NO portNo,
 		       SHIPPING_CREATE_DATE shippingCreateDate,
-		       avgRating
+		       ROUND(avgRating, 2) avgRating
 		  FROM 
 		       TB_SHIPPING TS
 		  JOIN
@@ -113,8 +108,116 @@
 														  GROUP
 														     BY
 														        SHIPPING_NO))
+	      AND
+	           TS.STATUS = 'Y'
 		 ORDER
 		    BY
 		       SHIPPING_CREATE_DATE DESC
+	</select>
+	<select id="selectShippingDetail" parameterType="string" resultMap="shippingDetail">
+		SELECT
+		       TS.SHIPPING_NO shippingNo,
+		       TS.SHIPPING_TITLE shippingTitle,
+		       TS.SHIPPING_CONTENT shippingCOntent,
+		       TS.ALLOW_PEPLE_NO allowPepleNo,
+		     
+				
+		       TS.SHIPPING_CREATE_DATE shippingCreateDate,
+		       TS.SHIPPING_MODIFY_DATE shippingModifyDate,
+			   
+		       ROUND(avgRating, 2) avgRating,
+		       ATTENTION as "attention",
+		       TS.PRICE price,
+		       TM.USER_NO userNo,
+		       TM.USER_ID username,
+		       TM.NICKNAME nickname,
+		       TM.PHONE phone,
+		       TM.EMAIL email, 
+		       TSV.SHIPPING_SERVICE_NO serviceNo,
+		       TSV.SHIPPING_SERVICE_CONTENT serviceName,
+		       TSI1.IMAGE_PATH inagePath,
+		       TSI1.IMAGE_ORIGIN_NAME imageOriginName,
+		       TSI1.IMAGE_CHANGE_NAME imageChangeName,
+		       TSI1.IMAGE_LEVEL imageLevel,
+		       TSR.BOOK_NO as bookNo,
+		       TSR.REVIEW_CONTENT reviewContent,
+		       TSR.REVIEW_CREATE_DATE createDate,
+		       TSR.RATING rating,
+		       TM2.USER_NO reviewerNo,
+		       TM2.NICKNAME reviewerNickname,
+		       TM2.USER_ID reviewerUsername,
+		       TP.PORT_NO portNo,
+		       TP.ADDRESS address,
+		       TP.LAT lat,
+		       TP.LON lon,
+		       TP.SPOT_CODE spotCode,
+		       TF.FISH_NO fishNo,
+		       TF.FISH_NAME fishName
+		  FROM
+		       TB_SHIPPING TS
+		  JOIN
+		       TB_MEMBER TM ON (TS.USER_NO = TM.USER_NO)
+		  LEFT
+		  JOIN
+		       TB_SHIPPING_BOOK TSB ON(TS.SHIPPING_NO = TSB.SHIPPING_NO)
+		  LEFT
+		  JOIN
+		       TB_SHIPPING_DECIDE TSD ON (TSB.BOOK_NO = TSD.BOOK_NO)
+		  LEFT
+		  JOIN
+		       TB_SHIPPING_PLAY TSP ON (TSD.BOOK_NO = TSP.BOOK_NO)
+		  LEFT
+		  JOIN
+		       TB_SHIPPING_REVIEW TSR ON (TSP.BOOK_NO = TSR.BOOK_NO)
+		  LEFT
+		  JOIN 
+		       TB_PORT TP ON (TS.PORT_NO = TP.PORT_NO)
+		  LEFT
+		  JOIN
+		       TB_SHIPPING_SERVICE TSS ON(TS.SHIPPING_NO = TSS.SHIPPING_NO)
+		  LEFT
+		  JOIN 
+		       TB_SERVICE TSV ON(TSS.SHIPPING_SERVICE = TSV.SHIPPING_SERVICE_NO )
+		  LEFT
+		  JOIN
+		       TB_ENABLE_FISH TEF ON (TS.SHIPPING_NO = TEF.SHIPPING_NO)
+		  LEFT
+		  JOIN
+		       TB_FISH TF ON (TF.FISH_NO = TEF.FISH_NO)
+		  LEFT
+		  JOIN
+		       TB_SHIPPING_IMAGE TSI1 ON (TS.SHIPPING_NO = TSI1.REF_BOARD_NO)
+		  LEFT
+		  JOIN
+		       (SELECT
+				       AVG(RATING) AS avgRating,
+				       TS.SHIPPING_NO SHIPPING_NO
+				  FROM
+				       TB_SHIPPING_REVIEW TSR
+				  JOIN
+				       TB_SHIPPING_PLAY TSP ON (TSR.BOOK_NO = TSP.BOOK_NO)
+				  JOIN
+				       TB_SHIPPING_DECIDE TSD ON (TSD.BOOK_NO = TSP.BOOK_NO)
+				  JOIN
+				       TB_SHIPPING_BOOK TSB ON (TSD.BOOK_NO = TSB.BOOK_NO)
+				  JOIN
+				        TB_SHIPPING TS ON (TS.SHIPPING_NO = TSB.SHIPPING_NO)
+				 GROUP
+				    BY
+				        TS.SHIPPING_NO) RA ON (RA.SHIPPING_NO = TS.SHIPPING_NO)	
+		  LEFT
+		  JOIN
+		       (SELECT
+		               COUNT(SHIPPING_NO) ATTENTION,
+		               TA.SHIPPING_NO
+		          FROM
+		               TB_SHIPPING_ATTENTION TA
+		         GROUP
+		            BY
+		               SHIPPING_NO) TSA ON (TSA.SHIPPING_NO = TS.SHIPPING_NO)
+		  JOIN
+		        TB_MEMBER TM2 ON (TSB.USER_NO = TM2.USER_NO)
+		 WHERE
+		       TS.SHIPPING_NO = #{shippingNo}
 	</select>
 </mapper>

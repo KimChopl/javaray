@@ -53,7 +53,7 @@ public class SecurityConfiguration {
 					requests.requestMatchers(HttpMethod.PUT, "/members/update/**").authenticated();
 					requests.requestMatchers(HttpMethod.DELETE, "/members").authenticated();
 					requests.requestMatchers(HttpMethod.POST, "/members/refresh", "/businessNo/**").authenticated();
-					requests.requestMatchers(HttpMethod.GET, "/boards/**", "/comments/**", "/shippings").permitAll();
+					requests.requestMatchers(HttpMethod.GET, "/shippings", "/shippings/detail/**").permitAll();
 					requests.requestMatchers("/manager/**").hasRole("ADMIN");
 				})
 				.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

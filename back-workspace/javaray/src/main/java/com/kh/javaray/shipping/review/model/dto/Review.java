@@ -1,5 +1,7 @@
 package com.kh.javaray.shipping.review.model.dto;
 
+import java.sql.Date;
+
 import com.kh.javaray.member.model.dto.Member;
 
 import lombok.AllArgsConstructor;
@@ -14,7 +16,7 @@ import lombok.ToString;
 public class Review {
 	private String reviewNo;
 	private String reviewContent;
-	private String createDate;
+	private Date createDate;
 	private double rating;
-	private Member member;
+	private Member reviewMember;
 }
