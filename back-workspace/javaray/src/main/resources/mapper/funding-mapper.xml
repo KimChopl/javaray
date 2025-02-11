@@ -24,4 +24,21 @@
 		 WHERE
 			   USER_NO = #{userNo}
 	</select>
+	
+	<insert id="insertBoard">
+		INSERT
+		  INTO
+		  	   TB_FUNDING_COMPANY
+		VALUES
+			   (
+				#{companyNo},
+				#{companyName},
+				#{phoneNo},
+				#{openingDate},
+				#{ceoName},
+				#{companyIntroduce},
+				SYSDATE,
+				DEFAULT
+			   )
+	</insert>
 </mapper>

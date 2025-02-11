@@ -69,7 +69,7 @@ const FundingLists = () => {
             <GoodsInsert onClick={() => navigate("/BuninessApply")}>
               사업자등록 신청
             </GoodsInsert>
-          ) : role === "FundingCompany" ? (
+          ) : role === "FUNDINGCOMPANY" ? (
             <GoodsInsert onClick={() => navigate("/FundingGoodsForm")}>
               상품등록
             </GoodsInsert>
