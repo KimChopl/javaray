@@ -22,20 +22,20 @@
         <result property="status" column="STATUS" />
 
         <!-- Amenities 리스트 매핑 -->
-        <collection property="amenitiesList" ofType="com.kh.javaray.fishing.amenities.model.dto.AmenitiesDTO">
+        <collection property="amenitiesList" javaType="java.util.ArrayList" ofType="com.kh.javaray.fishing.amenities.model.dto.AmenitiesDTO">
             <id property="amenitiesNo" column="AMENITIES_NO" />
             <result property="amenitiesName" column="AMENITIES_NAME" />
         </collection>
 
         <!-- Fish 리스트 매핑 -->
-        <collection property="fishList" ofType="com.kh.javaray.fishing.fish.model.dto.FishDTO">
+        <collection property="fishList" javaType="java.util.ArrayList" ofType="com.kh.javaray.fishing.fish.model.dto.FishDTO">
             <id property="fishNo" column="FISH_NO" />
             <result property="fishName" column="FISH_NAME" />
         </collection>
     </resultMap>
 
 	
-	<select id="findAll" resultMap="com.kh.javaray.fishing.fishing.model.dto.FishingDTO">
+	<select id="findAll" resultMap="FishingResultMap">
 		SELECT 
 				fs.FISHING_NO ,
 				tm.USER_NO ,
