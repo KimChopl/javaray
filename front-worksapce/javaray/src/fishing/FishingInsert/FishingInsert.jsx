@@ -187,10 +187,6 @@ const FishingInsert = () => {
             <Input type="file"></Input> <br />
             <Input type="file"></Input> <br />
           </FormGroup>
-          <FormGroup>
-            <Label>사업자등록증</Label>
-            <Input id="licens" type="file" required></Input>
-          </FormGroup>
           <Button type="submit">신청</Button>
         </Form>
       </InsertWrap>
