@@ -15,4 +15,13 @@
 				#{resultCode}
 			   )
 	</insert>
+	
+	<select id="selectBusinessNo" parameterType="String" resultType="com.kh.javaray.funding.model.dto.FundingBusinessNoAPIDTO">
+		SELECT
+			   BUSINESS_NUMBER companyBusinessNo
+		  FROM
+		  	   TB_BUSINESS_NUMBER_INFO
+		 WHERE
+			   USER_NO = #{userNo}
+	</select>
 </mapper>

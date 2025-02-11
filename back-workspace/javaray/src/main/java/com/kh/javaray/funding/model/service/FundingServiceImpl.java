@@ -46,4 +46,14 @@ public class FundingServiceImpl implements FundingService {
 		
 	}
 
+	@Override
+	public FundingBusinessNoAPIDTO selectBusinessNo() {
+		
+		CustomUserDetails user = authService.checkedUser();
+		//authService.validWriter(, user.getUsername());
+		
+		return fundingMapper.selectBusinessNo(String.valueOf(user.getUserNo()));
+		
+	}
+
 }

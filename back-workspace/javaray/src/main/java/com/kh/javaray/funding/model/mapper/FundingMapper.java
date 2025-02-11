@@ -9,4 +9,6 @@ public interface FundingMapper {
 
 	void save(FundingBusinessNoAPIDTO businessNoAPIData);
 
+	FundingBusinessNoAPIDTO selectBusinessNo(String userNo);
+
 }

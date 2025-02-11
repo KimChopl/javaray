@@ -34,8 +34,6 @@ const FundingLists = () => {
   const { auth } = useContext(AuthContext);
   const { role } = auth;
 
-  console.log(auth);
-
   return (
     <>
       <Container>

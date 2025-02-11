@@ -36,7 +36,8 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 	@Override
 	public CustomUserDetails checkedUser() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		return (CustomUserDetails) auth.getPrincipal();
+		log.info("{}", auth);
+		return (CustomUserDetails) auth.getPrincipal(); // 어이없네 왜 그냥 코드짬?? 어이없이
 	}
 
 	@Override

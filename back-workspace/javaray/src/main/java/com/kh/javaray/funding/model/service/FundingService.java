@@ -6,4 +6,6 @@ public interface FundingService {
 
 	void save(FundingBusinessNoAPIDTO BusinessNoAPIData);
 
+	FundingBusinessNoAPIDTO  selectBusinessNo();
+
 }
