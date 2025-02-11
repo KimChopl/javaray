@@ -61,15 +61,30 @@ const BusinessNoApply = () => {
           </div>
           <div>
             <Label htmlFor="companyName">상호</Label>
-            <Input id="companyName" value={companyName} type="text" />
+            <Input
+              id="companyName"
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+              type="text"
+            />
           </div>
           <div>
             <Label htmlFor="phoneNo">전화번호</Label>
-            <Input id="phoneNo" value={phoneNo} type="number" />
+            <Input
+              id="phoneNo"
+              value={phoneNo}
+              onChange={(e) => setPhoneNo(e.target.value)}
+              type="number"
+            />
           </div>
           <div>
             <Label htmlFor="openingDate">개업일자(사업자등록증 기준)</Label>
-            <Input id="openingDate" value={openingDate} type="date" />
+            <Input
+              id="openingDate"
+              value={openingDate}
+              onChange={(e) => setOpeningDate(e.target.value)}
+              type="date"
+            />
           </div>
           <div>
             <Label htmlFor="ceoName">대표자 성명</Label>
