@@ -12,7 +12,7 @@ import jakarta.validation.Valid;
 @Mapper
 public interface FishingMapper {
 
-	void fishingSave(@Valid FishingDTO fishing);
+	//void fishingSave(@Valid FishingDTO fishing);
 
 	List<FishingDTO> findAll(RowBounds rowBounds);
 	

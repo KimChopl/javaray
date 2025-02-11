@@ -42,6 +42,10 @@ public class JwtFilter extends OncePerRequestFilter{
 			filterChain.doFilter(request, response);
 			return;
 		}
+		if((header.equals("/fishing")) && method.equals("GET")){
+			filterChain.doFilter(request, response);
+			return;
+		}
 		
 		if((header.equals("/shippings") || header.equals("/shippings/detail")) && method.equals("GET")) {
 			filterChain.doFilter(request, response);
@@ -71,7 +75,7 @@ public class JwtFilter extends OncePerRequestFilter{
 			authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request)); 
 			
 			SecurityContextHolder.getContext().setAuthentication(authentication);
-			
+			log.info("{}", userDetails.getUsername());
 		} catch(ExpiredJwtException e) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); 
 			response.getWriter().write("Expired Token");
