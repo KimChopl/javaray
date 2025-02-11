@@ -22,11 +22,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FishingServiceImpl implements FishingService {
 	
-	private final FishingFileService fileService;
+	//private final FishingFileService fileService;
 	private final FishingMapper fishingMapper;
-	private final AuthenticationService authService;
+	//private final AuthenticationService authService;
 	
-	
+	/*
+	//게시물 등록
 	@Override
 	public void fishingSave(@Valid FishingDTO fishing, AmenitiesDTO amenities, FishDTO fish, MultipartFile file) {
 	
@@ -44,13 +45,15 @@ public class FishingServiceImpl implements FishingService {
 		fishing.setFishingWriter(String.valueOf(user.getUserNo()));
 		fishingMapper.fishingSave(fishing);
 	}
+	*/
 
-
+	// 게시물 전체 조회
 	@Override
 	public List<FishingDTO> findAll(int page) {
 		
 		int size = 6;
 		RowBounds rowBounds = new RowBounds(page*size, size);
+		System.out.println(rowBounds);
 		return fishingMapper.findAll(rowBounds);
 	}
 

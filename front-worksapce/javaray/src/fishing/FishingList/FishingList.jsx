@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Container,
   FishingListBox,
@@ -18,9 +19,40 @@ import {
   TitleText,
 } from "./FishingList.styled";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const FishingList = () => {
   const navigate = useNavigate();
+
+  const [fishings, setFishings] = useState([]);
+  const [fish, setFish] = useState([]);
+  const [amenities, setAmenities] = useState([]);
+
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost/fishing", {
+        params: {
+          page: page,
+        },
+      })
+      .then((response) => {
+        setFishings([...fishings, ...response.data]);
+        if (response.data.lenght < 6) {
+          setHasMore(false);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [page]);
+
+  const handelMore = () => {
+    setPage((page) => page + 1);
+  };
+
   return (
     <>
       <TitleLine>
@@ -28,59 +60,32 @@ const FishingList = () => {
       </TitleLine>
       <Container>
         <Block1>
-          <FishingListBox onClick={() => navigate("./detail")}>
-            <ImageDiv></ImageDiv>
-            <TextDiv>
-              <InnerTextDiv>
-                <TitleP>남촌낚시터</TitleP>
-              </InnerTextDiv>
-              <InnerTextDiv>
-                <FishP>붕어 외 2종</FishP>
-              </InnerTextDiv>
-              <InnerTextDiv>
-                <AddressP>인천 남동구</AddressP>
-              </InnerTextDiv>
-              <PriceDiv>
-                <TitleP>20,000~</TitleP>
-              </PriceDiv>
-            </TextDiv>
-          </FishingListBox>
+          {fishings.map((fishing) => (
+            <FishingListBox
+              key={fishing.fishingNo}
+              onClick={() => navigate(`/detail/${fishing.fishingNo}`)}
+            >
+              <ImageDiv></ImageDiv>
+              <TextDiv>
+                <InnerTextDiv>
+                  <TitleP>{fishing.fishingName}</TitleP>
+                </InnerTextDiv>
 
-          <FishingListBox>
-            <ImageDiv></ImageDiv>
-            <TextDiv>
-              <InnerTextDiv>
-                <TitleP>남촌낚시터</TitleP>
-              </InnerTextDiv>
-              <InnerTextDiv>
-                <FishP>붕어 외 2종</FishP>
-              </InnerTextDiv>
-              <InnerTextDiv>
-                <AddressP>인천 남동구</AddressP>
-              </InnerTextDiv>
-              <PriceDiv>
-                <TitleP>20,000~</TitleP>
-              </PriceDiv>
-            </TextDiv>
-          </FishingListBox>
-
-          <FishingListBox>
-            <ImageDiv></ImageDiv>
-            <TextDiv>
-              <InnerTextDiv>
-                <TitleP>남촌낚시터</TitleP>
-              </InnerTextDiv>
-              <InnerTextDiv>
-                <FishP>붕어 외 2종</FishP>
-              </InnerTextDiv>
-              <InnerTextDiv>
-                <AddressP>인천 남동구</AddressP>
-              </InnerTextDiv>
-              <PriceDiv>
-                <TitleP>20,000~</TitleP>
-              </PriceDiv>
-            </TextDiv>
-          </FishingListBox>
+                <InnerTextDiv>
+                  {fishing.fishList.map((fish) => {
+                    return <FishP>{fish.fishName}</FishP>;
+                  })}
+                </InnerTextDiv>
+                <InnerTextDiv>
+                  <AddressP>{fishing.address}</AddressP>
+                </InnerTextDiv>
+                <PriceDiv>
+                  <TitleP>20,000~</TitleP>
+                </PriceDiv>
+              </TextDiv>
+            </FishingListBox>
+          ))}
+          ;
         </Block1>
         <Block2>
           <FishingAreaFilterBox>

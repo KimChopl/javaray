@@ -23,11 +23,13 @@ public class FishingDTO {
 	
 	private Long fishingNo;
 	private String fishingWriter;
-	private String nickName;
 	
 	@NotBlank(message="낚시명은 비어있을 수 없습니다.")
 	@Size(min=3, max=10, message="낚시터명은 10자 이하만 사용가능합니다.")
 	private String fishingName;
+	
+	@NotBlank(message="주소는 비어있을 수 없습니다.")
+	private String address;
 	
 	@NotBlank(message="낚시터 전화번호는 비어있을 수 없습니다.")
 	private String phone;
@@ -43,8 +45,8 @@ public class FishingDTO {
 	private Long lng;
 	private char status;
 	private String fishingFileUrl;
-	private List<FishDTO> fish;
-	private List<AmenitiesDTO> amenities;
+	private List<FishDTO> fishList;
+	private List<AmenitiesDTO> amenitiesList;
 	private List<ProductDTO> product;
 
 }
