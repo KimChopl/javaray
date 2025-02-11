@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.kh.javaray.fishing.fishing.model.mapper.FishingMapper">
+	
+
+    <!-- FishingDTO 매핑 -->
+    <resultMap id="FishingResultMap" type="com.kh.javaray.fishing.fishing.model.dto.FishingDTO">
+        <id property="fishingNo" column="FISHING_NO" />
+        <result property="fishingWriter" column="USER_NO" />
+        <result property="nickname" column="NICKNAME" />
+        <result property="fishingName" column="FISHING_NAME" />
+        <result property="phone" column="PHONE" />
+        <result property="address" column="ADDRESS" />
+        <result property="startTime" column="START_TIME" />
+        <result property="endTime" column="END_TIME" />
+        <result property="introduce" column="INTRODUCE" />
+        <result property="lat" column="LATITUDE" />
+        <result property="lng" column="LONGITUDE" />
+        <result property="status" column="STATUS" />
+
+        <!-- Amenities 리스트 매핑 -->
+        <collection property="amenitiesList" ofType="com.kh.javaray.fishing.amenities.model.dto.AmenitiesDTO">
+            <id property="amenitiesNo" column="AMENITIES_NO" />
+            <result property="amenitiesName" column="AMENITIES_NAME" />
+        </collection>
+
+        <!-- Fish 리스트 매핑 -->
+        <collection property="fishList" ofType="com.kh.javaray.fishing.fish.model.dto.FishDTO">
+            <id property="fishNo" column="FISH_NO" />
+            <result property="fishName" column="FISH_NAME" />
+        </collection>
+    </resultMap>
+
+	
+	<select id="findAll" resultMap="com.kh.javaray.fishing.fishing.model.dto.FishingDTO">
+		SELECT 
+				fs.FISHING_NO ,
+				tm.USER_NO ,
+				tm.NICKNAME ,
+				fs.FISHING_NAME,
+				fs.PHONE,
+				fs.ADDRESS,
+				fs.START_TIME,
+				fs.END_TIME,
+				fs.INTRODUCE,
+				fs.LATITUDE,
+				fs.LONGITUDE,
+				fs.STATUS,
+			 	a.AMENITIES_NO AS AMENITIES_NO,
+			 	a.AMENITIES_NAME AS AMENITIES_NAME,
+			 	fwf.FISH_NO AS FISH_NO ,
+			 	fwf.FISH_NAME AS FISH_NAME 
+		FROM 
+				TB_FISHING  fs
+		JOIN
+				TB_MEMBER tm ON (fs.USER_NO = tm.USER_NO)
+		LEFT 
+		JOIN
+				TB_REGISTERED_AMENITIES fa ON fs.FISHING_NO = fa.FISHING_NO 
+		LEFT 
+		JOIN 	
+				TB_AMENITIES a ON fa.AMENITIES_NO = a.AMENITIES_NO 
+		LEFT 
+		JOIN 
+				TB_REGISTERED_FISH rf ON fs.FISHING_NO = rf.FISHING_NO 
+		LEFT 
+		JOIN 	
+				TB_FRESH_WATHER_FISH fwf ON rf.FISH_NO = fwf.FISH_NO
+	</select>
+	
+</mapper>

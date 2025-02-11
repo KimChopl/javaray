@@ -13,8 +13,8 @@ import lombok.ToString;
 @Builder
 public class Port {
 	private String portNo;
-	private String portName;
 	private double lat;
 	private double lon;
 	private String address;
+	private String spotCode;
 }

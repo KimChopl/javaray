@@ -12,5 +12,5 @@ import lombok.ToString;
 public class ShippingDecide {
 	private String bookNo;
 	private String captainComment;
-	private String bookDecideDate;
+	private String bookDecideDate; 
 }

@@ -11,6 +11,6 @@ import lombok.ToString;
 @Builder
 public class ShippingBookStatus {
 	private String bookNo;
-	private Long userNo;
+	private Long userNo; 
 	private String bookDeleteDate;
 }

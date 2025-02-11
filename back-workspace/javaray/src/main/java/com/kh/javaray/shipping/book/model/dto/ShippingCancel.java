@@ -12,6 +12,6 @@ import lombok.ToString;
 public class ShippingCancel {
 	private String bookNo;
 	private String cancelReason;
-	private String cancelDate;
+	private String cancelDate; 
 	private String cancelMemberType;
 }
