@@ -26,13 +26,12 @@ public class Shipping {
 	private int allowPepleNo;
 	private Date shippingCreateDate;
 	private Date shippingModifyDate;
-	private double rating;
+	private double avgRating;
 	private int attention;
 	private int price;
 	private Port port;
 	private Member member;
 	private List<ShippingOption> options;
 	private List<Image> images;
-	private List<Review> reviews;
 	private List<Fishs> fishs;
 }

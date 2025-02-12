@@ -3,66 +3,65 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.javaray.shipping.shippings.model.mapper.ShippingMapper">
+	
 	<resultMap id="shippingDetail" type="Shipping">
-		<id property="shippingNo" column="shippingNo"/>
+		<id property="shippingNo" column="shippingNo" />
 		<result property="shippingTitle" column="shippingTitle"/>
-		<result property="shippingContent" column="shippingContent" />
-		<result property="allowPepleNo" column="allowPepleNo"/>
-		<!--
-			
-		<result property="shippingCreateDate" column="shippingCreateDate"/>
+		<result property="shippingContent" column="shippingContent"/>
+		<result property="allowPepleNo" column="allowPepleNo" />
+		<result property="shippingCreateDate" column="shippingCreateDate" />
 		<result property="shippingModifyDate" column="shippingModifyDate"/>
-		-->
-		<result property="rating" column="avgRating" />
-		<result property="attention" column="attention" />	
+		<result property="avgRating" column="avgRating" />
+		<result property="attention" column="attention" />
 		<result property="price" column="price" />
-		<association property="member" javaType="Member">
+		<association property="member" javaType="Member" >
 			<id property="userNo" column="userNo"/>
+			<result property="nickname" column="nicname"/>
 			<result property="username" column="username"/>
-			<result property="nickname" column="nickname"/>
 			<result property="phone" column="phone"/>
-			<result property="email" column="email" />
-		</association>	
-		<association property="port" javaType="Port">
-			<id property="portNo" column="portNo" />
-			<result property="address" column="address" />
-			<result property="let" column="let" />
-			<result property="lon" column="lon" />
-			<result property="spotCode" column="spotCode" />
+			<result property="email" column="email"/>
 		</association>
-		<collection property="options" ofType="ShippingOption">
-			<id property="serviceNo" column="serviceNo" />
-			<result property="serviceName" column="serviceName" />
+		<association property="port" javaType="Port" >
+			<id property="portNo" column="portNo" />
+			<result property="lat" column="lat"/>
+			<result property="lon" column="lon"/>
+			<result property="address" column="address"/>
+			<result property="spotCode" column="spotCode"/>
+		</association>
+		<collection property="options" javaType="java.util.ArrayList" ofType="ShippingOption">
+			<result property="serviceNo" column="serviceNo"/>
+			<result property="serviceName" column="serviceName"/>
 		</collection>
-		<collection property="images" ofType="Image">
+		<collection property="images" javaType="java.util.ArrayList" ofType="Image">
 			<result property="imagePath" column="imagePath"/>
 			<result property="imageOriginName" column="imageOriginName"/>
-			<result property="imageChangeName" column="imageChangeName" />
+			<result property="imageChangeName" column="imageChangeName"/>
 			<result property="imageLevel" column="imageLevel"/>
 		</collection>
 		<collection property="fishs" javaType="java.util.ArrayList" ofType="Fishs">
-			<id property="fishNo" column="fishNo"/>
+			<result property="fishNo" column="fishNo"/>
 			<result property="fishName" column="fishName"/>
 		</collection>
-		</resultMap>
+	</resultMap>
 		
-		<resultMap id="shippings" type="Shipping">
-			<id property="shippingNo" column="shippingNo"/>
-			<result property="shippingTitle" column="shippingTitle"/>
-			<result property="allowPepleNo" column="allowPepleNo"/>
-			<result property="shippingCreateDate" column="shippingCreateDate"/>
-			<result property="rating" column="avgRating" />
-			<result property="price" column="price" />
-				<association property="member" javaType="Member">
-					<id property="userNo" column="userNo"/>
-					<result property="username" column="username"/>
-					<result property="nickname" column="nickname"/>
-				</association>	
-				<association property="port" javaType="Port">
-					<id property="portNo" column="portNo" />
-					<result property="address" column="address" />
-				</association>
-			</resultMap>
+		
+	<resultMap id="shippings" type="Shipping">
+		<id property="shippingNo" column="shippingNo"/>
+		<result property="shippingTitle" column="shippingTitle"/>
+		<result property="allowPepleNo" column="allowPepleNo"/>
+		<result property="shippingCreateDate" column="shippingCreateDate"/>
+		<result property="rating" column="avgRating" />
+		<result property="price" column="price" />
+			<association property="member" javaType="Member">
+				<id property="userNo" column="userNo"/>
+				<result property="username" column="username"/>
+				<result property="nickname" column="nickname"/>
+			</association>	
+		<association property="port" javaType="Port">
+			<id property="portNo" column="portNo" />
+			<result property="address" column="address" />
+		</association>
+		</resultMap>
 	<select id="selectShipping" resultMap="shippings">
 		SELECT
 		       TS.SHIPPING_NO shippingNo,
@@ -120,11 +119,8 @@
 		       TS.SHIPPING_TITLE shippingTitle,
 		       TS.SHIPPING_CONTENT shippingCOntent,
 		       TS.ALLOW_PEPLE_NO allowPepleNo,
-		     
-				
 		       TS.SHIPPING_CREATE_DATE shippingCreateDate,
 		       TS.SHIPPING_MODIFY_DATE shippingModifyDate,
-			   
 		       ROUND(avgRating, 2) avgRating,
 		       ATTENTION as "attention",
 		       TS.PRICE price,
@@ -133,19 +129,12 @@
 		       TM.NICKNAME nickname,
 		       TM.PHONE phone,
 		       TM.EMAIL email, 
-		       TSV.SHIPPING_SERVICE_NO serviceNo,
-		       TSV.SHIPPING_SERVICE_CONTENT serviceName,
+		       TSV.SHIPPING_SERVICE_NO as serviceNo,
+		       TSV.SHIPPING_SERVICE_CONTENT as serviceName,
 		       TSI1.IMAGE_PATH inagePath,
 		       TSI1.IMAGE_ORIGIN_NAME imageOriginName,
 		       TSI1.IMAGE_CHANGE_NAME imageChangeName,
 		       TSI1.IMAGE_LEVEL imageLevel,
-		       TSR.BOOK_NO as bookNo,
-		       TSR.REVIEW_CONTENT reviewContent,
-		       TSR.REVIEW_CREATE_DATE createDate,
-		       TSR.RATING rating,
-		       TM2.USER_NO reviewerNo,
-		       TM2.NICKNAME reviewerNickname,
-		       TM2.USER_ID reviewerUsername,
 		       TP.PORT_NO portNo,
 		       TP.ADDRESS address,
 		       TP.LAT lat,
@@ -166,9 +155,6 @@
 		  LEFT
 		  JOIN
 		       TB_SHIPPING_PLAY TSP ON (TSD.BOOK_NO = TSP.BOOK_NO)
-		  LEFT
-		  JOIN
-		       TB_SHIPPING_REVIEW TSR ON (TSP.BOOK_NO = TSR.BOOK_NO)
 		  LEFT
 		  JOIN 
 		       TB_PORT TP ON (TS.PORT_NO = TP.PORT_NO)
@@ -215,8 +201,6 @@
 		         GROUP
 		            BY
 		               SHIPPING_NO) TSA ON (TSA.SHIPPING_NO = TS.SHIPPING_NO)
-		  JOIN
-		        TB_MEMBER TM2 ON (TSB.USER_NO = TM2.USER_NO)
 		 WHERE
 		       TS.SHIPPING_NO = #{shippingNo}
 	</select>
