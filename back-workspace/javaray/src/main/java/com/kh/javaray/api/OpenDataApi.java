@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.kh.javaray.exception.exceptions.NotMatchUserInfoException;
+import com.kh.javaray.shipping.dto.MiddleWeather;
 import com.kh.javaray.shipping.dto.Weather;
 
 import lombok.extern.slf4j.Slf4j;
@@ -41,14 +42,13 @@ public class OpenDataApi {
 			URI uri = new URI(requestUrl.toString());
 			RestTemplate rt = new RestTemplate();
 			String result = rt.getForObject(uri, String.class);
+			log.info(result);
 			List<Weather> list = new ArrayList<Weather>();
-			String[] split = result.split(",=\n");
-			for(int i = 0; i < split.length; i ++) {
-				if(1 < i && i < split.length - 2 ) {
-					String[] infos = split[i].split(",");
-					Weather weather = Weather.builder().regName(infos[0]).tmef(infos[2]).s1(infos[12]).s2(infos[13]).wh1(infos[14]).wh2(infos[15]).prep(infos[17]).wf(infos[18]).build();
-					list.add(weather);
-				}
+			String[] split = result.split(",=\n");	
+			for(int i = 1; i < 9; i ++) {
+				String[] infos = split[i].split(",");
+				Weather weather = Weather.builder().regName(infos[0]).tmef(infos[2]).s1(infos[12]).s2(infos[13]).wh1(infos[14]).wh2(infos[15]).prep(infos[17]).wf(infos[18]).sky(infos[16]).build();
+				list.add(weather);
 			}
 			return list;
 		} catch (UnsupportedEncodingException e) {
@@ -59,7 +59,6 @@ public class OpenDataApi {
 			throw new NotMatchUserInfoException("네트워크 오류.");
 		}
 		
-		
-		
 	}
+	
 }

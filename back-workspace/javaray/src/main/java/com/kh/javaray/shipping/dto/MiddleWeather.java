@@ -5,22 +5,18 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
-public class Weather {
+public class MiddleWeather {
 	private String regName;
 	private String tmef;
-	private String s1;
-	private String s2;
-	private String wh1;
-	private String wh2;
-	private String wf;
-	private String prep;
 	private String sky;
+	private String pre;
+	private String wf;
+	private String wha;
+	private String whb;
 }

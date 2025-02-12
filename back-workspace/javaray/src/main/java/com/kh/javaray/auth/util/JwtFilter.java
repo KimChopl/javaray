@@ -42,22 +42,18 @@ public class JwtFilter extends OncePerRequestFilter{
 			filterChain.doFilter(request, response);
 			return;
 		}
-		if((header.equals("/fishing")) && method.equals("GET")){
-			filterChain.doFilter(request, response);
-			return;
-		}
 		
-		if((header.equals("/shippings") || header.equals("/shippings/detail")) && method.equals("GET")) {
+		if((header.equals("/shippings") || header.equals("/shippings/detail") || (header.equals("/fishing") || header.equals("/shippings/fish"))) && method.equals("GET")) {
 			filterChain.doFilter(request, response);
 			return;
 		}
 		/*---------------------------------------Authorization 이 필요없는 친구들이 getWriter() 메소드에 접근하지 않도록 설정------------------------------------------------------------------------*/
 		
 		String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
-		
 		if(authorization == null || !authorization.startsWith("Bearer ")) {
+			log.info("??");
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			response.getWriter().write("접근 권환이 없음.");
+			response.getWriter().write("접근 권한이 없음.");
 			filterChain.doFilter(request, response);
 			return;
 		}
@@ -67,9 +63,7 @@ public class JwtFilter extends OncePerRequestFilter{
 			
 			String username = claims.getSubject();
 			
-			
 			UserDetails userDetails = us.loadUserByUsername(username); 
-			
 			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 			
 			authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request)); 
