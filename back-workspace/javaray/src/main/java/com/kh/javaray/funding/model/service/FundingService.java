@@ -1,11 +1,11 @@
 package com.kh.javaray.funding.model.service;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.javaray.funding.model.dto.BusinessNoDTO;
 import com.kh.javaray.funding.model.dto.FundingBusinessNoAPIDTO;
-
-import jakarta.validation.Valid;
 
 public interface FundingService {
 
@@ -15,8 +15,8 @@ public interface FundingService {
 
 	void insertBoard(BusinessNoDTO businessNoData, MultipartFile file);
 
-	String selectFundingListHasToken();
+	String selectFundingListHasToken(int page);
 
-	String selectFundingListHasNoneToken();
+	List<BusinessNoDTO> selectFundingListHasNoneToken(int page);
 
 }

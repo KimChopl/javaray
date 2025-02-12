@@ -1,5 +1,8 @@
 package com.kh.javaray.funding.model.service;
 
+import java.util.List;
+
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,8 +34,7 @@ public class FundingServiceImpl implements FundingService {
 	public void save(FundingBusinessNoAPIDTO BusinessNoAPIData) {
 		
 		CustomUserDetails user = authService.checkedUser();
-		log.info("{}, {}", BusinessNoAPIData.getBoardWriter(), user.getUsername());
-		authService.validWriter(BusinessNoAPIData.getBoardWriter(), user.getUsername());
+		authService.validWriter(BusinessNoAPIData.getBoardWriter(), user.getNickname());
 		
 		BusinessNoAPIData.setBoardWriter(String.valueOf(user.getUserNo()));
 		fundingMapper.save(BusinessNoAPIData);
@@ -81,21 +83,23 @@ public class FundingServiceImpl implements FundingService {
 	}
 
 	@Override
-	public String selectFundingListHasToken() {
+	public String selectFundingListHasToken(int page) {
 		
 		CustomUserDetails user = authService.checkedUser();
 		
 		String role = user.getAuthorities().iterator().next().getAuthority();
 
-		log.info("나는 값 받아? : {}",role);
-		
-		
-		return null;
+		return role;
 	}
 
+	// 토큰없을 때 메인 페이지 전체조회
 	@Override
-	public String selectFundingListHasNoneToken() {
-		return null;
+	public List<BusinessNoDTO> selectFundingListHasNoneToken(int page) {
+		
+		int size = 6;
+		RowBounds rowBounds = new RowBounds(page * size, size);
+		
+		return(fundingMapper.selectFundingListHasNoneToken(rowBounds));
 	}
 
 }

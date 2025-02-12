@@ -23,6 +23,7 @@ const BusinessNoApply = () => {
   const [ceoName, setCeoName] = useState("");
   const [businessNoFile, setBusinessNoFile] = useState(null);
   const [content, setContent] = useState();
+  const [nickname, setNickname] = useState("");
   const { auth } = useContext(AuthContext);
   const navi = useNavigate();
 
@@ -61,11 +62,6 @@ const BusinessNoApply = () => {
   const handleInsertFundingCompany = (e) => {
     e.preventDefault();
 
-    console.log(companyName);
-    console.log(phoneNo);
-    console.log(openingDate);
-    console.log(ceoName);
-    console.log(businessNoFile);
     if (!companyName || !phoneNo || !openingDate || !ceoName) {
       alert("내용을 입력해주세요!!");
       return;
@@ -118,7 +114,7 @@ const BusinessNoApply = () => {
         <Form onSubmit={handleInsertFundingCompany}>
           <div>
             <Label>작성자 ID</Label>
-            <Input id="username" type="text" readOnly value={auth.username} />
+            <Input id="nickname" type="text" readOnly value={auth.nickname} />
           </div>
           <div>
             <Label htmlFor="companyNo">사업자등록번호</Label>

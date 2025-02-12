@@ -1,5 +1,7 @@
 package com.kh.javaray.funding.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -46,22 +48,19 @@ public class FundingController {
 	@PostMapping("/businessNoInsert")
 	public ResponseEntity<?> businessNoInsert(@ModelAttribute @Valid BusinessNoDTO BusinessNoData,
 											  @RequestParam(name="businessNoFile") MultipartFile file){
-		log.info("{}, {}", BusinessNoData, file.getOriginalFilename());
 		fundingService.insertBoard(BusinessNoData, file);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body("사업자 신청 성공했습니다.");
 	}
 	
 	@GetMapping("/selectList/hasToken")
-	public ResponseEntity<String> selectFundingListHasToken(){
-		log.info("나는 토큰 있는거");
-		return ResponseEntity.ok(fundingService.selectFundingListHasToken());
+	public ResponseEntity<String> selectFundingListHasToken(@RequestParam(name="page", defaultValue="0") int page){
+		return ResponseEntity.ok(fundingService.selectFundingListHasToken(page));
 	}
 	
 	@GetMapping("/selectList/hasNonToken")
-	public ResponseEntity<String> selectFundingListHasNoneToken(){
-		log.info("나는 토큰 없는거");
-		return ResponseEntity.ok(fundingService.selectFundingListHasNoneToken());
+	public ResponseEntity<List<BusinessNoDTO>> selectFundingListHasNoneToken(@RequestParam(name="page", defaultValue="0") int page){
+		return ResponseEntity.ok(fundingService.selectFundingListHasNoneToken(page));
 	}
 	
 

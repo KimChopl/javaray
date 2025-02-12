@@ -11,10 +11,6 @@ export const FundingTitle = styled.h1`
   margin-left: 20px;
   margin-top: 20px;
   color: #33bfe8;
-
-  &:hover {
-    font-size: 399px;
-  }
 `;
 
 export const FundingCategory = styled.ul`
