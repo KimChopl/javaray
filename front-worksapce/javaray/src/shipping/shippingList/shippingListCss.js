@@ -45,7 +45,7 @@ export const StyledShipRatingCover = styled.div`
 `;
 
 export const StyledShipPersonDiv = styled.div`
-  width: 140px;
+  width: 132px;
   height: 15px;
   margin: 5px 0 5px 5px;
   display: inline-block;
@@ -53,9 +53,10 @@ export const StyledShipPersonDiv = styled.div`
 `;
 
 export const StyledShipRatingDiv = styled.div`
-  width: 42px;
+  width: 50px;
   height: 15px;
   margin: 5px 0 5px 5px;
+  text-align: center;
   display: inline-block;
 `;
 

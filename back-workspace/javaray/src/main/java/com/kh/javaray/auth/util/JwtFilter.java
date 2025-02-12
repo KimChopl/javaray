@@ -37,6 +37,7 @@ public class JwtFilter extends OncePerRequestFilter{
 		
 		String header = request.getRequestURI();
 		String method = request.getMethod();
+		log.info(header);
 		if((header.equals("/members") || header.equals("/members/login")) && method.equals("POST")) {
 			filterChain.doFilter(request, response);
 			return;
@@ -45,6 +46,12 @@ public class JwtFilter extends OncePerRequestFilter{
 			filterChain.doFilter(request, response);
 			return;
 		}
+		
+		if((header.equals("/shippings") || header.equals("/shippings/detail")) && method.equals("GET")) {
+			filterChain.doFilter(request, response);
+			return;
+		}
+		/*---------------------------------------Authorization 이 필요없는 친구들이 getWriter() 메소드에 접근하지 않도록 설정------------------------------------------------------------------------*/
 		
 		String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
 		
@@ -55,7 +62,6 @@ public class JwtFilter extends OncePerRequestFilter{
 			return;
 		}
 		String token = authorization.split(" ")[1];
-		log.info("{}", token);
 		try {
 			Claims claims =  jwtUtil.parseJwt(token);
 			
@@ -69,7 +75,7 @@ public class JwtFilter extends OncePerRequestFilter{
 			authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request)); 
 			
 			SecurityContextHolder.getContext().setAuthentication(authentication);
-			
+			log.info("{}", userDetails.getUsername());
 		} catch(ExpiredJwtException e) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); 
 			response.getWriter().write("Expired Token");

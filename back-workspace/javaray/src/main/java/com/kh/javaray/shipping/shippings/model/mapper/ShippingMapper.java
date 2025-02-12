@@ -12,4 +12,6 @@ public interface ShippingMapper {
 
 	List<Shipping> selectShipping(RowBounds rb);
 
+	Shipping selectShippingDetail(String shippingNo);
+
 }

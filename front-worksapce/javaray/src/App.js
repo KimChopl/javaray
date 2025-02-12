@@ -1,4 +1,5 @@
 import Footer from "./Footer/Footer";
+import css from "./App.css";
 import Shipping from "./shipping/Shipping";
 import ShippingDetail from "./shipping/shippingDetail/ShippingDetail";
 import { BrowserRouter, Routes, Route } from "react-router-dom";

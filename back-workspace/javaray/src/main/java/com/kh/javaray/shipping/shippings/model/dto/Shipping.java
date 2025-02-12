@@ -1,5 +1,6 @@
 package com.kh.javaray.shipping.shippings.model.dto;
 
+import java.sql.Date;
 import java.util.List;
 
 import com.kh.javaray.member.model.dto.Member;
@@ -23,8 +24,8 @@ public class Shipping {
 	private String shippingTitle;
 	private String shippingContent;
 	private int allowPepleNo;
-	private String shippingCreateDate;
-	private String shippingModifyDate;
+	private Date shippingCreateDate;
+	private Date shippingModifyDate;
 	private double rating;
 	private int attention;
 	private int price;
@@ -33,4 +34,5 @@ public class Shipping {
 	private List<ShippingOption> options;
 	private List<Image> images;
 	private List<Review> reviews;
+	private List<Fishs> fishs;
 }

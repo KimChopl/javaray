@@ -2,6 +2,19 @@
   text-align: center;
 }
 
+#content,
+#businessNoFile,
+#openingDate,
+#phoneNo,
+#companyName,
+#companyNo,
+#username,
+#ceoName {
+  &:focus {
+    outline: 10px inset orangered;
+  }
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

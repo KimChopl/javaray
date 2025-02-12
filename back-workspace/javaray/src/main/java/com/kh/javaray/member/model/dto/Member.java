@@ -1,5 +1,7 @@
 package com.kh.javaray.member.model.dto;
 
+import java.sql.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +23,6 @@ public class Member {
 	private String email;
 	private String phone;
 	private String role;
-	private String createAt;
+	private Date createAt;
 	
 }

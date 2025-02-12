@@ -7,7 +7,7 @@ import {
   Title,
 } from "./BusinessNoAPI.styles";
 
-import { useState, useRef, useContext, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../UseContext/Auth/AuthContext";
@@ -55,7 +55,7 @@ const BusninessNoAPI = () => {
   const handleInsertBusinessNo = async (response) => {
     await axios
       .post(
-        "http://localhost/businessNo",
+        "http://localhost/funding/businessNo",
         {
           companyBusinessNo: companyNo,
           resultContent: response.data.data[0].tax_type,

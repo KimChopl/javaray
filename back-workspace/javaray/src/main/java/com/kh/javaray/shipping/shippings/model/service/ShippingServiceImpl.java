@@ -28,4 +28,13 @@ public class ShippingServiceImpl implements ShippingService{
 				
 	}
 
+	@Override
+	public Shipping selectShippingDetail(String shippingNo) {
+		Shipping shipping = sm.selectShippingDetail(shippingNo);
+		if(shipping == null) {
+			
+		}
+		return null;
+	}
+
 }
