@@ -46,11 +46,22 @@ public class FundingController {
 	@PostMapping("/businessNoInsert")
 	public ResponseEntity<?> businessNoInsert(@ModelAttribute @Valid BusinessNoDTO BusinessNoData,
 											  @RequestParam(name="businessNoFile") MultipartFile file){
-		log.info("나 값 못받니?");
 		log.info("{}, {}", BusinessNoData, file.getOriginalFilename());
 		fundingService.insertBoard(BusinessNoData, file);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body("사업자 신청 성공했습니다.");
+	}
+	
+	@GetMapping("/selectList/hasToken")
+	public ResponseEntity<String> selectFundingListHasToken(){
+		log.info("나는 토큰 있는거");
+		return ResponseEntity.ok(fundingService.selectFundingListHasToken());
+	}
+	
+	@GetMapping("/selectList/hasNonToken")
+	public ResponseEntity<String> selectFundingListHasNoneToken(){
+		log.info("나는 토큰 없는거");
+		return ResponseEntity.ok(fundingService.selectFundingListHasNoneToken());
 	}
 	
 
