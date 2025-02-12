@@ -48,10 +48,7 @@ const SignIn = (props) => {
       .then((response) => {
         const data = response.data;
         signin(
-          data.userNo,
-          data.username,
           data.nickname,
-          data.role,
           data.tokens.accessToken,
           data.tokens.refreshToken
         );

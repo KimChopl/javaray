@@ -11,6 +11,10 @@ export const FundingTitle = styled.h1`
   margin-left: 20px;
   margin-top: 20px;
   color: #33bfe8;
+
+  &:hover {
+    font-size: 399px;
+  }
 `;
 
 export const FundingCategory = styled.ul`
@@ -137,4 +141,8 @@ export const GoodsContent2 = styled.span`
 export const GoodsContent3 = styled.span`
   font-weight: 700;
   color: lightcoral;
+
+  &:hover {
+    color: red;
+  }
 `;

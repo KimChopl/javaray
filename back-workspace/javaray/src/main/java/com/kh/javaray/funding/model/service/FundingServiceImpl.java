@@ -80,4 +80,22 @@ public class FundingServiceImpl implements FundingService {
 		
 	}
 
+	@Override
+	public String selectFundingListHasToken() {
+		
+		CustomUserDetails user = authService.checkedUser();
+		
+		String role = user.getAuthorities().iterator().next().getAuthority();
+
+		log.info("나는 값 받아? : {}",role);
+		
+		
+		return null;
+	}
+
+	@Override
+	public String selectFundingListHasNoneToken() {
+		return null;
+	}
+
 }

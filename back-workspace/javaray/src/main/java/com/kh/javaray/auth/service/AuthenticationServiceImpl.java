@@ -37,7 +37,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 	public CustomUserDetails checkedUser() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		log.info("{}", auth);
-		return (CustomUserDetails) auth.getPrincipal(); // 어이없네 왜 그냥 코드짬?? 어이없이
+		return (CustomUserDetails) auth.getPrincipal();
 	}
 
 	@Override
@@ -52,5 +52,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
 
 }

@@ -15,4 +15,8 @@ public interface FundingService {
 
 	void insertBoard(BusinessNoDTO businessNoData, MultipartFile file);
 
+	String selectFundingListHasToken();
+
+	String selectFundingListHasNoneToken();
+
 }

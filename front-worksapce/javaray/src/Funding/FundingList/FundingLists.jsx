@@ -25,14 +25,64 @@ import icon3 from "../FundingImg/FishingTool3.png";
 import icon4 from "../FundingImg/FishingTool4.png";
 import icon5 from "../FundingImg/FishingTool5.png";
 
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../UseContext/Auth/AuthContext";
+import axios from "axios";
 
 const FundingLists = () => {
   const navigate = useNavigate();
-  const { auth } = useContext(AuthContext);
-  const { role } = auth;
+  const { auth, validation } = useContext(AuthContext);
+  const [role, setRole] = useState("");
+  const [category, setCategory] = useState("");
+  const [flag, isFlag] = useState(false);
+
+  const handleLogin = () => {
+    axios
+      .get("http://localhost/funding/selectList/hasToken", {
+        headers: {
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
+      })
+      .then((response) => {
+        //setRole(response);
+
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleNoLogin = () => {
+    axios
+      .get("http://localhost/funding/hasNonToken")
+      .then((response) => {
+        //setRole(response);
+
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    /*
+      1. 여기와서 auth봐야됨
+      2. 로그인돼있으면 handleLogin불러야됨
+      3. 안돼있으면 noHandleLogin불러야됨
+    */
+    console.log(auth.isAuthenticated);
+    if (auth.isAuthenticated == undefined) return;
+    if (auth.isAuthenticated) {
+      console.log("나 로그인버전이 들어왔어요~");
+      handleLogin();
+    } else {
+      console.log("나 로그아웃버전이 들어왔어요~");
+      handleNoLogin();
+    }
+  }, [auth.isAuthenticated]);
 
   return (
     <>
@@ -60,6 +110,7 @@ const FundingLists = () => {
             <FundingIconContent>낚시의류</FundingIconContent>
           </CategoryItem>
         </FundingCategory>
+
         <Insert>
           {role === "USER" ? (
             <GoodsInsert onClick={() => navigate("/BusinessNoApi")}>
