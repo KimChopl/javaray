@@ -11,13 +11,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @Builder
 @ToString
-public class FundingOptionDTO {
+public class FundingFileDTO {
 
-	private Long optionNo;
-	private Long refBnos;
-	private Long optionType;
-	private String optionTitle;
-	private String optionExplain;
-	private Long optionPrice;
-	private Long optionCount;
+	private Long refBno;
+	private Long fileLevel;
+	private String fileUrl;
+
 }

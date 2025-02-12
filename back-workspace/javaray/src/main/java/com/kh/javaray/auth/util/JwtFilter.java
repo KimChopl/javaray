@@ -47,7 +47,7 @@ public class JwtFilter extends OncePerRequestFilter{
 			return;
 		}
 		
-		if((header.equals("/shippings") || header.equals("/shippings/detail")) && method.equals("GET")) {
+		if((header.equals("/shippings") || header.equals("/shippings/detail") || header.equals("/funding/selectList/hasNonToken")) && method.equals("GET")) {
 			filterChain.doFilter(request, response);
 			return;
 		}
