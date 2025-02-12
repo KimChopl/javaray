@@ -15,6 +15,7 @@ public class AmenitiesDTO {
 	
 	private Long amenitiesNo;
 	private String amenitiesName;
+	private Long fishingNo;
 	
 
 }

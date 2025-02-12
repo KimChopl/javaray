@@ -15,5 +15,6 @@ public class FishDTO {
 	
 	private Long fishNo;
 	private String fishName;
+	private Long fishingNo;
 
 }

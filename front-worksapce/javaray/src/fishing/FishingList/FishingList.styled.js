@@ -1,12 +1,18 @@
 import styled from "styled-components";
 
+export const FullContainer = styled.div`
+  width: 100%;
+  height: auto;
+  border: 6px dotted purple;
+`;
 // 전체를 감싸는 요소 / 낚시터 하나당 블럭 / 사진/ 낚시터 이름 / 낚시터 주소 / 어종 / 가격 / 지역 필터
 export const Container = styled.div`
   width: 1200px;
-  height: 1500px; /* 나중에 auto로 바꾸기 */
+  min-height: 1800px;
+  max-height: auto; /* 나중에 auto로 바꾸기 */
   margin: auto;
   background-color: rgb(246, 245, 245);
-  border: 1px solid rgb(85, 83, 83); // 스타일 확인하고 지우기
+  border: 6px solid rgb(43, 183, 122); // 스타일 확인하고 지우기
 `;
 
 export const TitleLine = styled.div`
@@ -27,10 +33,9 @@ export const TitleText = styled.p`
 
 export const Block1 = styled.div`
   width: 60%;
-  height: 1500px;
-  margin: auto;
+  min-height: 1700px;
   border: 1px solid blue;
-  float: left;
+  display: inline-block;
 `;
 
 export const Block2 = styled.div`
@@ -38,7 +43,7 @@ export const Block2 = styled.div`
   height: 1500px;
   margin: auto;
   border: 1px solid red;
-  float: left;
+  float: right;
 `;
 
 export const FishingListBox = styled.div`
@@ -141,10 +146,11 @@ export const InnerTextDiv = styled.div`
 
 export const FishP = styled.p`
   color: blue;
-  font-size: 16px;
-  margin-top: 1px;
+  font-size: 12px;
+  margin-top: 5px;
   margin-left: 1px;
   font-weight: bold;
+  float: left;
 `;
 
 export const PriceDiv = styled.div`
@@ -163,4 +169,26 @@ export const FilterP = styled.p`
   margin-left: 15px;
   font-size: 25px;
   font-weight: bold;
+`;
+
+export const moreButton = styled.button`
+  padding: 5px 8px;
+  color: #33bfe8;
+  border: 2px solid #33bfe8;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  align-self: flex-end;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  align-items: center;
+  font-weight: bold;
+  margin: auto;
+  background-color: whiten;
+
+  margin-left: auto; /* 버튼을 오른쪽 끝으로 정렬 */
+
+  &:hover {
+    background-color: #33bfe8;
+    color: white;
+  }
 `;
