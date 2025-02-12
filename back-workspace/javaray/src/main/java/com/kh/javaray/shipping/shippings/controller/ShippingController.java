@@ -1,6 +1,7 @@
 package com.kh.javaray.shipping.shippings.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,11 +33,9 @@ public class ShippingController {
 	}
 	
 	@GetMapping("detail")
-	public ResponseEntity<Shipping> selectShippingDetail(@RequestParam(name = "shippingNo") String shippingNo){
-		log.info(shippingNo);
-		Shipping shipping = ss.selectShippingDetail(shippingNo);
-		log.info("{}", shipping);
-		return ResponseEntity.ok().body(shipping);
+	public ResponseEntity<Map<String, Object>> selectShippingDetail(@RequestParam(name = "shippingNo") String shippingNo){
+		Map<String, Object> response = ss.selectShippingDetail(shippingNo);
+		return ResponseEntity.ok().body(response);
 	}
 	
 }
