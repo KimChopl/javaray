@@ -41,4 +41,8 @@
 				DEFAULT
 			   )
 	</insert>
+	
+	<select id="selectFundingListHasNoneToken" resultType="com.kh.javaray.funding.model.dto.FundingB">
+	
+	</select>
 </mapper>

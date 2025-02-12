@@ -36,18 +36,27 @@ const FundingLists = () => {
   const [role, setRole] = useState("");
   const [category, setCategory] = useState("");
   const [flag, isFlag] = useState(false);
+  const [hasMore, setHasMore] = useState();
+  const [page, setPage] = useState();
 
   const handleLogin = () => {
     axios
-      .get("http://localhost/funding/selectList/hasToken", {
-        headers: {
-          Authorization: `Bearer ${auth.accessToken}`,
+      .get(
+        "http://localhost/funding/selectList/hasToken",
+        {
+          params: {
+            page: page,
+          },
         },
-      })
+        {
+          headers: {
+            Authorization: `Bearer ${auth.accessToken}`,
+          },
+        }
+      )
       .then((response) => {
-        //setRole(response);
-
-        console.log(response);
+        console.log(response.data);
+        setRole(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -56,14 +65,18 @@ const FundingLists = () => {
 
   const handleNoLogin = () => {
     axios
-      .get("http://localhost/funding/hasNonToken")
+      .get("http://localhost/funding/selectList/hasNonToken", {
+        params: {
+          page: page,
+        },
+      })
       .then((response) => {
-        //setRole(response);
-
         console.log(response);
+        setRole("");
       })
       .catch((error) => {
         console.log(error);
+        setRole("");
       });
   };
 
@@ -74,15 +87,17 @@ const FundingLists = () => {
       3. 안돼있으면 noHandleLogin불러야됨
     */
     console.log(auth.isAuthenticated);
-    if (auth.isAuthenticated == undefined) return;
+    if (auth.isAuthenticated === undefined) return;
     if (auth.isAuthenticated) {
-      console.log("나 로그인버전이 들어왔어요~");
       handleLogin();
     } else {
-      console.log("나 로그아웃버전이 들어왔어요~");
       handleNoLogin();
     }
-  }, [auth.isAuthenticated]);
+  }, [auth.isAuthenticated, page]);
+
+  const handleMore = () => {
+    setPage((page) => page + 1);
+  };
 
   return (
     <>
@@ -112,15 +127,15 @@ const FundingLists = () => {
         </FundingCategory>
 
         <Insert>
-          {role === "USER" ? (
+          {role === "ROLE_USER" ? (
             <GoodsInsert onClick={() => navigate("/BusinessNoApi")}>
               사업자등록 인증
             </GoodsInsert>
-          ) : role === "BUSINESSNOAPI" ? (
+          ) : role === "ROLE_BUSINESSNOAPI" ? (
             <GoodsInsert onClick={() => navigate("/BuninessApply")}>
               사업자등록 신청
             </GoodsInsert>
-          ) : role === "FUNDINGCOMPANY" ? (
+          ) : role === "ROLE_FUNDINGCOMPANY" ? (
             <GoodsInsert onClick={() => navigate("/FundingGoodsForm")}>
               상품등록
             </GoodsInsert>
@@ -200,6 +215,7 @@ const FundingLists = () => {
         <br />
         <br />
         <br />
+        {hasMore && <button onClick={handleMore}>더 보기</button>}
       </Container>
     </>
   );

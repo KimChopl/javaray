@@ -30,5 +30,9 @@ public class BusinessNoDTO {
 	private String companyIntroduce;
 	
 	private String businessNoFileUrl;
+	
+	private LocalDate applicationDate;
+	
+	private String adminStatus;
 
 }
