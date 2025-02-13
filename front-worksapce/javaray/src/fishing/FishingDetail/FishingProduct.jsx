@@ -10,37 +10,96 @@ import {
   MessageText,
 } from "./FishingProduct.styled";
 import { useNavigate } from "react-router-dom";
+import {
+  AmenitiesImgDiv,
+  AmenitiesImg,
+  AmenitiesText,
+  AmenitiesDiv,
+} from "../FishingInsert/FishingInsert.styled";
+import airconditioner from "../FishingImg/airconditioner.png";
+import bathroom from "../FishingImg/bathroom.png";
+import beachumbrella from "../FishingImg/beachumbrella.png";
+import bedding from "../FishingImg/bedding.png";
+import burner from "../FishingImg/burner.png";
+import carpark from "../FishingImg/carpark.png";
+import fan from "../FishingImg/fan.png";
+import sofa from "../FishingImg/sofa.png";
+import tv from "../FishingImg/tv.png";
+import vest from "../FishingImg/vest.png";
 
-const FishingProduct = () => {
+const amenitiesImages = {
+  에어컨: airconditioner,
+  화장실: bathroom,
+  그늘막: "../FishingImg/beachumbrella.png",
+  침구: "../FishingImg/bedding.png",
+  버너: "../FishingImg/burner.png",
+  주차장: "../FishingImg/carpark.png",
+  선풍기: "../FishingImg/fan.png",
+  소파: "../FishingImg/sofa.png",
+  텔레비전: "../FishingImg/tv.png",
+  구명조끼: "../FishingImg/vest.png",
+};
+
+const FishingProduct = ({ fishingsDetail }) => {
   return (
     <>
       <DownWrap>
         <AddressDiv>
-          <DownAddressH2>서울 노원구 동일로 190길 47</DownAddressH2>
+          <DownAddressH2>{fishingsDetail.address}</DownAddressH2>
         </AddressDiv>
         <MessageDiv>
           <MessageDiv1>
             <MessageTitle>사장님 한마디</MessageTitle>
           </MessageDiv1>
           <MessageDiv2>
-            <MessageText>
-              최고의 낚시를 위해 노력하는 자바레이낚시터 입니다. <br />{" "}
-              고객님들께 최고의 낚시를 제공하기 위해 노력하는 자바레이낚시터!{" "}
-              <br /> 많은 방문 부탁드립니다.
-            </MessageText>
+            <MessageText>{fishingsDetail.introduce}</MessageText>
           </MessageDiv2>
         </MessageDiv>
         <MessageDiv>
           <MessageDiv1>
             <MessageTitle>운영 시간</MessageTitle>
           </MessageDiv1>
-          <MessageDiv2></MessageDiv2>
+          <MessageDiv2>
+            <MessageText>
+              영업 시작 시간 : {fishingsDetail.startTime}
+            </MessageText>
+            <MessageText>영업 종료 시간 : {fishingsDetail.endTime}</MessageText>
+          </MessageDiv2>
+        </MessageDiv>
+        <MessageDiv>
+          <MessageDiv1>
+            <MessageTitle>주요 어종</MessageTitle>
+          </MessageDiv1>
+          <MessageDiv2>
+            {fishingsDetail.fishList?.map((fish, index) => (
+              <MessageText key={index}>{fish.fishName}</MessageText>
+            ))}
+          </MessageDiv2>
         </MessageDiv>
         <MessageDiv>
           <MessageDiv1>
             <MessageTitle>편의시설</MessageTitle>
           </MessageDiv1>
-          <MessageDiv2></MessageDiv2>
+          <MessageDiv2>
+            {fishingsDetail.amenitiesList?.map((amenities, index) => {
+              const amenitiesImage = amenitiesImages[amenities.amenitiesName];
+
+              return (
+                <AmenitiesDiv key={amenities.amenitiesNo ?? index}>
+                  <AmenitiesText>{amenities.amenitiesName}</AmenitiesText>
+                  <AmenitiesImgDiv>
+                    {amenitiesImage && (
+                      <AmenitiesImg
+                        src={amenitiesImage}
+                        alt={amenities.amenitiesName}
+                        style={{ width: "50px", height: "50px" }}
+                      />
+                    )}
+                  </AmenitiesImgDiv>
+                </AmenitiesDiv>
+              );
+            })}
+          </MessageDiv2>
         </MessageDiv>
       </DownWrap>
     </>

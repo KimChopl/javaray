@@ -95,7 +95,7 @@ export const DetailTitle = styled.h2`
 `;
 
 export const DetailAddressBlock = styled.div`
-  width: 250px;
+  width: 100%;
   height: 40px;
   margin-left: 20px;
   margin-top: 3px;
@@ -109,12 +109,17 @@ export const DetailAddress = styled.p`
 `;
 
 export const PhoneBlock = styled.div`
-  border-radius: 50px;
-  background-color: skyblue;
   border: 1px solid skyblue;
-  width: 80px;
-  height: 80px;
+  width: 170px;
+  height: 35px;
 
-  margin-left: 300px;
-  margin-top: 75px;
+  margin-left: 220px;
+  margin-top: 115px;
+`;
+
+export const DetailPhone = styled.p`
+  font-size: 19px;
+  color: rgb(89, 86, 86);
+  font-weight: 400px;
+  font-weight: bold;
 `;

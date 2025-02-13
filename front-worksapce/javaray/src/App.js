@@ -35,7 +35,10 @@ function App() {
           <Route path="/fishing/insert" element={<FishingInsert />} />
           <Route path="fishing" element={<FishingList />} />
           <Route path="cal" element={<Calendar />} />
-          <Route path="/fishing/detail" element={<FishingDetail />} />
+          <Route
+            path="/fishing/detail/:fishingNo"
+            element={<FishingDetail />}
+          />
           <Route path="BusinessNoApi" element={<BusninessNoAPI />} />
           <Route path="BuninessApply" element={<BusinessNoApply />} />
           <Route path="FundingGoodsForm" element={<FundingGoodsForm />} />

@@ -14,17 +14,42 @@ import {
   DetailAddressBlock,
   DetailAddress,
   PhoneBlock,
+  DetailPhone,
 } from "./FishingDetail.styled";
 import FishingProduct from "./FishingProduct";
 import { TitleLine, TitleText } from "../FishingList/FishingList.styled";
-import { Navigate, useNavigate } from "react-router-dom";
+import {
+  Navigate,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { useEffect, useState } from "react";
 import FishingGoods from "./FishingGoods";
 import FishingReview from "./FishingReview";
+import axios from "axios";
 
 const FishingDetail = () => {
+  const { fishingNo } = useParams();
   const navigate = useNavigate();
   const [menuName, setMenuName] = useState("product");
+
+  const [error, setError] = useState(false);
+
+  const [fishingsDetail, setFishingsDetail] = useState({});
+
+  useEffect(() => {
+    console.log(fishingNo);
+    axios
+      .get(`http://localhost/fishing/detail?fishingNo=${fishingNo}`)
+      .then((response) => {
+        console.log("응답:", response.data);
+        setFishingsDetail(response.data);
+      })
+      .catch((error) => {
+        setError(true);
+      });
+  }, [fishingNo]);
 
   return (
     <>
@@ -37,12 +62,14 @@ const FishingDetail = () => {
             <TopImageBlock></TopImageBlock>
             <TopTextBlock>
               <DetailTitleBlock>
-                <DetailTitle>자바레이낚시터</DetailTitle>
+                <DetailTitle>{fishingsDetail.fishingName}</DetailTitle>
               </DetailTitleBlock>
               <DetailAddressBlock>
-                <DetailAddress>서울 노원구 동일로 190길 47</DetailAddress>
+                <DetailAddress>{fishingsDetail.address}</DetailAddress>
               </DetailAddressBlock>
-              <PhoneBlock></PhoneBlock>
+              <PhoneBlock>
+                <DetailPhone>☎️{fishingsDetail.phone}</DetailPhone>
+              </PhoneBlock>
             </TopTextBlock>
           </TopBlock>
           <TopMenuBlock>
@@ -58,7 +85,7 @@ const FishingDetail = () => {
           </TopMenuBlock>
         </TopWrap>
         {menuName === "product" ? (
-          <FishingProduct />
+          <FishingProduct fishingsDetail={fishingsDetail} />
         ) : menuName === "goods" ? (
           <FishingGoods />
         ) : menuName === "review" ? (
