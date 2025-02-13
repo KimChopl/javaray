@@ -46,6 +46,7 @@ public class FishingController {
 	}
 	
 	
+	
 	@GetMapping("detail")
 	public ResponseEntity<FishingDTO> findById(@RequestParam(name="fishingNo") Long fishingNo){
 		  FishingDTO fishingDetail = service.findById(fishingNo);

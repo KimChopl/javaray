@@ -16,10 +16,20 @@ import {
   AmenitiesText,
   AmenitiesDiv,
 } from "../FishingInsert/FishingInsert.styled";
+import airconditioner from "../FishingImg/airconditioner.png";
+import bathroom from "../FishingImg/bathroom.png";
+import beachumbrella from "../FishingImg/beachumbrella.png";
+import bedding from "../FishingImg/bedding.png";
+import burner from "../FishingImg/burner.png";
+import carpark from "../FishingImg/carpark.png";
+import fan from "../FishingImg/fan.png";
+import sofa from "../FishingImg/sofa.png";
+import tv from "../FishingImg/tv.png";
+import vest from "../FishingImg/vest.png";
 
 const amenitiesImages = {
-  에어컨: "../FishingImg/airconditioner.png",
-  화장실: "../FishingImg/bathroom.png",
+  에어컨: airconditioner,
+  화장실: bathroom,
   그늘막: "../FishingImg/beachumbrella.png",
   침구: "../FishingImg/bedding.png",
   버너: "../FishingImg/burner.png",
