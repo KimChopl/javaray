@@ -13,8 +13,32 @@ import { useNavigate } from "react-router-dom";
 import {
   AmenitiesImgDiv,
   AmenitiesImg,
+  AmenitiesText,
+  AmenitiesDiv,
 } from "../FishingInsert/FishingInsert.styled";
+import airconditioner from "../FishingImg/airconditioner.png";
 import bathroom from "../FishingImg/bathroom.png";
+import beachumbrella from "../FishingImg/beachumbrella.png";
+import bedding from "../FishingImg/bedding.png";
+import burner from "../FishingImg/burner.png";
+import carpark from "../FishingImg/carpark.png";
+import fan from "../FishingImg/fan.png";
+import sofa from "../FishingImg/sofa.png";
+import tv from "../FishingImg/tv.png";
+import vest from "../FishingImg/vest.png";
+
+const amenitiesImages = {
+  에어컨: airconditioner,
+  화장실: bathroom,
+  그늘막: "../FishingImg/beachumbrella.png",
+  침구: "../FishingImg/bedding.png",
+  버너: "../FishingImg/burner.png",
+  주차장: "../FishingImg/carpark.png",
+  선풍기: "../FishingImg/fan.png",
+  소파: "../FishingImg/sofa.png",
+  텔레비전: "../FishingImg/tv.png",
+  구명조끼: "../FishingImg/vest.png",
+};
 
 const FishingProduct = ({ fishingsDetail }) => {
   return (
@@ -47,7 +71,9 @@ const FishingProduct = ({ fishingsDetail }) => {
             <MessageTitle>주요 어종</MessageTitle>
           </MessageDiv1>
           <MessageDiv2>
-            <MessageText>{fishingsDetail.fishList[0].fishName}</MessageText>
+            {fishingsDetail.fishList?.map((fish, index) => (
+              <MessageText key={index}>{fish.fishName}</MessageText>
+            ))}
           </MessageDiv2>
         </MessageDiv>
         <MessageDiv>
@@ -55,7 +81,24 @@ const FishingProduct = ({ fishingsDetail }) => {
             <MessageTitle>편의시설</MessageTitle>
           </MessageDiv1>
           <MessageDiv2>
-            <MessageText></MessageText>
+            {fishingsDetail.amenitiesList?.map((amenities, index) => {
+              const amenitiesImage = amenitiesImages[amenities.amenitiesName];
+
+              return (
+                <AmenitiesDiv key={amenities.amenitiesNo ?? index}>
+                  <AmenitiesText>{amenities.amenitiesName}</AmenitiesText>
+                  <AmenitiesImgDiv>
+                    {amenitiesImage && (
+                      <AmenitiesImg
+                        src={amenitiesImage}
+                        alt={amenities.amenitiesName}
+                        style={{ width: "50px", height: "50px" }}
+                      />
+                    )}
+                  </AmenitiesImgDiv>
+                </AmenitiesDiv>
+              );
+            })}
           </MessageDiv2>
         </MessageDiv>
       </DownWrap>

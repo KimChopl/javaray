@@ -49,7 +49,7 @@ public class SecurityConfiguration {
 		return httpSecurity.formLogin(AbstractHttpConfigurer::disable).httpBasic(AbstractHttpConfigurer::disable)
 				.csrf(AbstractHttpConfigurer::disable).cors(Customizer.withDefaults())
 				.authorizeHttpRequests(requests -> {
-					requests.requestMatchers("/members", "/members/login", "/uploads/**", "/funding/businessNo").permitAll();
+				 	requests.requestMatchers("/members", "/members/login", "/uploads/**", "/funding/businessNo").permitAll();
 					requests.requestMatchers(HttpMethod.PUT, "/members/update/**").authenticated();
 					requests.requestMatchers(HttpMethod.DELETE, "/members", "/shippings/attention").authenticated();
 					requests.requestMatchers(HttpMethod.POST, "/members/refresh", "/funding/businessNo/**", "/funding/businessNoInsert/**", "/shippings/attention").authenticated();
