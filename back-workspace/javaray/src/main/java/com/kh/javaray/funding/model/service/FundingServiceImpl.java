@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.javaray.auth.service.AuthenticationService;
 import com.kh.javaray.exception.exceptions.FailUpdateUserInfoException;
 import com.kh.javaray.funding.model.dto.BusinessNoDTO;
+import com.kh.javaray.funding.model.dto.FundingBoardDTO;
 import com.kh.javaray.funding.model.dto.FundingBusinessNoAPIDTO;
 import com.kh.javaray.funding.model.mapper.FundingMapper;
 import com.kh.javaray.manager.model.dto.ManagingDTO;
@@ -94,12 +95,14 @@ public class FundingServiceImpl implements FundingService {
 
 	// 토큰없을 때 메인 페이지 전체조회
 	@Override
-	public List<BusinessNoDTO> selectFundingListHasNoneToken(int page) {
+	public List<FundingBoardDTO> selectFundingListHasNoneToken(int page) {
 		
 		int size = 6;
 		RowBounds rowBounds = new RowBounds(page * size, size);
 		
-		return(fundingMapper.selectFundingListHasNoneToken(rowBounds));
+		List<FundingBoardDTO> list = fundingMapper.selectBoardList(rowBounds);
+		log.info("{}", list);
+		return list;
 	}
 
 }

@@ -17,7 +17,7 @@ import lombok.ToString;
 public class FundingBoardDTO {
 
 	private Long boardNo;
-	private String categoryName;
+	private FundingCategoryDTO fundingCategory;
 	private String boardTitle;
 	private String boardContent;
 	private LocalDate startDate;
@@ -25,4 +25,5 @@ public class FundingBoardDTO {
 	private String status;
 	private Long purposeAmount;
 	private List<FundingOptionDTO> fundingOptionList;
+	private List<FundingFileDTO> fundingFileList;
 }

@@ -11,13 +11,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @Builder
 @ToString
-public class FundingOptionDTO {
+public class FundingCategoryDTO {
+	
+	private Long categoryNo;
+	private String categoryName;
 
-	private Long optionNo;
-	private Long refBnos;
-	private Long optionType;
-	private String optionTitle;
-	private String optionExplain;
-	private Long optionPrice;
-	private Long optionCount;
 }
