@@ -20,6 +20,12 @@ public interface FishingMapper {
 	List<FishDTO> findFishByFishingNos(@Param("fishingNos") List<Long> fishingNos);
 
 	List<AmenitiesDTO> findAmenitiesByFishingNos(@Param("fishingNos") List<Long> fishingNos);
+
+	FishingDTO findByFishingNo(@Param("fishingNo") Long fishingNo);
+
+	List<FishDTO> findFishByFishingNo(@Param("fishingNo") Long fishingNo);
+
+	List<AmenitiesDTO> findAmenitiesByFishingNo(@Param("fishingNo") Long fishingNo);
 	
 	
 

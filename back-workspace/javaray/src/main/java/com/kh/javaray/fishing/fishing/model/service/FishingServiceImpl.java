@@ -117,10 +117,26 @@ public class FishingServiceImpl implements FishingService {
 	@Override
 	public FishingDTO findById(Long fishingNo) {
 		
+		//낚시터
+		FishingDTO fishingDetail = fishingMapper.findByFishingNo(fishingNo);
 		
+		 if (fishingDetail == null) {
+		        throw new RuntimeException("해당 낚시터 정보를 찾을 수 없습니다. fishingNo: " + fishingNo);
+		    }
 		
+		//물고기
+		List<FishDTO> fishesList = fishingMapper.findFishByFishingNo(fishingNo);
 		
-		return null;
+		//편의시설
+		List<AmenitiesDTO> amenitiesList = fishingMapper.findAmenitiesByFishingNo(fishingNo);
+		
+		fishingDetail.setFishList(fishesList);
+		fishingDetail.setAmenitiesList(amenitiesList);
+		
+		log.info("fishingDetail : {}", fishingDetail);
+	
+		
+		return fishingDetail;
 	}
 
 }

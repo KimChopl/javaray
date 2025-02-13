@@ -60,7 +60,9 @@ const FishingList = () => {
             {fishings.map((fishing) => (
               <FishingListBox
                 key={fishing.fishingNo}
-                onClick={() => navigate(`/detail/${fishing.fishingNo}`)}
+                onClick={() =>
+                  navigate(`detail?fishingNo=${fishing.fishingNo}`)
+                }
               >
                 <ImageDiv></ImageDiv>
                 <TextDiv>

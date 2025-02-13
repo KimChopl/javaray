@@ -42,7 +42,7 @@ public class JwtFilter extends OncePerRequestFilter{
 			filterChain.doFilter(request, response);
 			return;
 		}
-		if((header.equals("/fishing")) && method.equals("GET")){
+		if((header.equals("/fishing") || header.equals("/fishing/detail")) && method.equals("GET")){
 			filterChain.doFilter(request, response);
 			return;
 		}

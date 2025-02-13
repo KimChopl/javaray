@@ -55,7 +55,7 @@ public class SecurityConfiguration {
 					requests.requestMatchers(HttpMethod.POST, "/members/refresh", "/funding/businessNo/**", "/funding/businessNoInsert/**").authenticated();
 					requests.requestMatchers(HttpMethod.GET, "/shippings", "/shippings/detail/**").permitAll();
 					requests.requestMatchers("/manager/**").hasRole("ADMIN");
-					requests.requestMatchers(HttpMethod.GET, "/fishing").permitAll();
+					requests.requestMatchers(HttpMethod.GET, "/fishing", "/fishing/detail/**").permitAll();
 				})
 				.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).build();

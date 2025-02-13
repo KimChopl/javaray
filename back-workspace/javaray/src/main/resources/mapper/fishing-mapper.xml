@@ -15,9 +15,12 @@
 					ADDRESS address,
 					START_TIME startTime,
 					END_TIME endTime,
-					INTRODUCE introduce
+					INTRODUCE introduce,
+					STATUS status
 			FROM 
 					TB_FISHING 
+			WHERE
+					STATUS = 'Y'
 			ORDER 
 			BY 
 					FISHING_NO DESC
@@ -51,6 +54,56 @@
 		WHERE 
 				tra.FISHING_NO IN <foreach item="fishingNo" collection="fishingNos" open="(" close=")" separator=",">#{fishingNo}</foreach>
 	</select>
+	
+	<select id="findByFishingNo" resultType="com.kh.javaray.fishing.fishing.model.dto.FishingDTO">
+	 SELECT 
+		        FISHING_NO fishingNo,
+		        USER_NO fishingWriter,
+		        FISHING_NAME fishingName,
+		        PHONE phone,
+		        ADDRESS address,
+		        START_TIME startTime,
+		        END_TIME endTime,
+		        INTRODUCE introduce,
+		        LATITUDE lat,
+		        LONGITUDE lng,
+		        STATUS status
+  	  FROM 
+      		    TB_FISHING 
+      WHERE 
+      			STATUS = 'Y'
+      		    
+        AND 
+       		    FISHING_NO = #{fishingNo}
+	</select>
+	
+	<select id="findFishByFishingNo" resultType="com.kh.javaray.fishing.fish.model.dto.FishDTO">
+		SELECT 
+		        rf.FISHING_NO fishingNo, 
+		        tfwf.FISH_NAME fishName,
+		        tfwf.FISH_NO fishNo
+		FROM 
+        		TB_REGISTERED_FISH rf
+		JOIN 
+       			TB_FRESH_WATHER_FISH tfwf ON rf.FISH_NO = tfwf.FISH_NO
+		WHERE 
+       			 rf.FISHING_NO = #{fishingNo}
+	</select>
+	
+	<select id="findAmenitiesByFishingNo" resultType="com.kh.javaray.fishing.amenities.model.dto.AmenitiesDTO">
+		SELECT 
+		        tra.FISHING_NO fishingNo,
+		        ta.AMENITIES_NO amenitiesNo,
+		        ta.AMENITIES_NAME amenitiesName
+  	  	FROM
+       			TB_REGISTERED_AMENITIES tra 
+  	    JOIN
+       			TB_AMENITIES ta ON ta.AMENITIES_NO = tra.AMENITIES_NO 
+    	WHERE 
+      			 tra.FISHING_NO = #{fishingNo} 
+	</select>
+	
+	
 
 
 
