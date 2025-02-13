@@ -26,7 +26,10 @@ function App() {
         <Routes>
           <Route path="/" element={<CarouselWithIndicatorsExample />} />
           <Route path="shipping" element={<Shipping />} />
-          <Route path="/shipping/detail" element={<ShippingDetail />} />
+          <Route
+            path="/shipping/detail/:shippingNo"
+            element={<ShippingDetail />}
+          />
           <Route path="funding" element={<FundingLists />} />
           <Route path="/fishing/insert" element={<FishingInsert />} />
           <Route path="fishing" element={<FishingList />} />

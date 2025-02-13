@@ -50,7 +50,7 @@
 		<result property="shippingTitle" column="shippingTitle"/>
 		<result property="allowPepleNo" column="allowPepleNo"/>
 		<result property="shippingCreateDate" column="shippingCreateDate"/>
-		<result property="rating" column="avgRating" />
+		<result property="avgRating" column="avgRating" />
 		<result property="price" column="price" />
 			<association property="member" javaType="Member">
 				<id property="userNo" column="userNo"/>
@@ -204,4 +204,33 @@
 		 WHERE
 		       TS.SHIPPING_NO = #{shippingNo}
 	</select>
+	
+	<select id="selectFish" parameterType="string" resultType="Fishs">
+		SELECT
+		       TF.FISH_NO fishNo,
+		       FISH_NAME fishName,
+		       EXPLAINATION,
+		       START_OUT_OF_SEASON startOutOfSeason,
+		       END_OUT_OF_SEASON endOutOfSeason,
+		       NOTE note,
+		       DEFAULT_SIZE defaultSize
+		  FROM
+		       TB_FISH_CONTENT TFC
+		  JOIN
+		       TB_FISH TF ON (TFC.FISH_NO = TF.FISH_NO)
+		 WHERE
+		       TF.FISH_NO = #{fishNo}
+	</select>
+	
+	<insert id="insertAttention" parameterType="Attention" >
+		INSERT
+		  INTO
+		       TB_SHIPPING_ATTENTION
+		VALUES
+		       (
+				#{shippingNo},
+				#{userNo}
+			   )
+	</insert>
+	
 </mapper>

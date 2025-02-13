@@ -9,8 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.javaray.api.OpenDataApi;
+import com.kh.javaray.auth.service.AuthenticationService;
 import com.kh.javaray.exception.exceptions.NotMatchBoardInfoException;
+import com.kh.javaray.member.model.dto.CustomUserDetails;
+import com.kh.javaray.shipping.dto.MiddleWeather;
 import com.kh.javaray.shipping.dto.Weather;
+import com.kh.javaray.shipping.shippings.model.dto.Attention;
+import com.kh.javaray.shipping.shippings.model.dto.Fishs;
 import com.kh.javaray.shipping.shippings.model.dto.Shipping;
 import com.kh.javaray.shipping.shippings.model.mapper.ShippingMapper;
 
@@ -24,6 +29,7 @@ public class ShippingServiceImpl implements ShippingService{
 	
 	private final ShippingMapper sm;
 	private final OpenDataApi oda;
+	private final AuthenticationService as;
 
 	@Override
 	public List<Shipping> selectShipping(int page) {
@@ -42,11 +48,38 @@ public class ShippingServiceImpl implements ShippingService{
 		if(shipping == null) {
 			throw new NotMatchBoardInfoException("조회된 항목이 없습니다.");
 		}
-		List<Weather> weather = oda.weatherApi(shipping.getPort().getSpotCode());
+		String spotCode = shipping.getPort().getSpotCode();
+		List<Weather> weather = oda.weatherApi(spotCode);
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("shipping", shipping);
 		response.put("weather", weather);
 		return response;
+	}
+
+	@Override
+	public Fishs selectFish(String fishNo) {
+		Fishs fish = sm.selectFish(fishNo);
+		if(fish == null) {
+			throw new NotMatchBoardInfoException("조회된 항목이 없습니다.");
+		}
+		return fish;
+	}
+
+	@Override
+	public void insertAttention(String shippingNo) {
+		CustomUserDetails user = as.checkedUser();
+		Attention attention = Attention.builder().shippingNo(shippingNo).userNo(user.getUserNo()).build();
+		int result = sm.insertAttention(attention);
+		log.info("{}",result);
+		
+	}
+
+	@Override
+	public void deleteAttention(String shippingNo) {
+		CustomUserDetails user = as.checkedUser();
+		Attention attention = Attention.builder().shippingNo(shippingNo).userNo(user.getUserNo()).build();
+		int result = sm.deleteAttention(attention);
+		log.info("{}",result);
 	}
 
 }

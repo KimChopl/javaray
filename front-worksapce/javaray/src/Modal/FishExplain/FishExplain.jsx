@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   ExplainBody,
   ExplainContentCover,
@@ -8,8 +9,24 @@ import {
   FishTrBorder,
   ImageCover,
 } from "./FishExplainCss";
+import axios from "axios";
 
-const FishExplain = () => {
+const FishExplain = (props) => {
+  const fishNo = props.fishNo;
+  const [fish, setFish] = useState(null);
+  const [isLoad, setIsLoad] = useState(true);
+  useEffect(() => {
+    axios
+      .get(`http://localhost/shippings/fish?fishNo=${fishNo}`)
+      .then((response) => {
+        console.log(response);
+        setFish(response.data);
+        setIsLoad(false);
+      });
+  }, []);
+  if (isLoad) {
+    return <></>;
+  }
   return (
     <>
       <ExplainBody>
@@ -22,7 +39,7 @@ const FishExplain = () => {
         <FishTable>
           <thead>
             <tr>
-              <th>이름</th>
+              <th>어종 이름</th>
               <FishThBorder>금어기 시작일</FishThBorder>
               <FishThBorder>종료일</FishThBorder>
               <FishThBorder>금지체장</FishThBorder>
@@ -30,26 +47,24 @@ const FishExplain = () => {
           </thead>
           <tbody>
             <tr>
-              <td>조피볼락(우럭)</td>
-              <FishTdBorder>1월 1일</FishTdBorder>
-              <FishTdBorder>12월 31일</FishTdBorder>
-              <FishTdBorder>두흉갑장 9cm 이하</FishTdBorder>
+              <td>{fish.fishName}</td>
+              <FishTdBorder>
+                {fish.startOutOfSeason ? fish.startOutOfSeason : "-"}
+              </FishTdBorder>
+              <FishTdBorder>
+                {fish.startOutOfSeason ? fish.endOutOfSeason : "-"}
+              </FishTdBorder>
+              <FishTdBorder>
+                {fish.defaultSize ? fish.defaultSize : "-"}
+              </FishTdBorder>
             </tr>
           </tbody>
         </FishTable>
         <ExplainContentCover>
-          <p>
-            동경131도30분 이동수역은 6월 1일부터 10월 31일까지로 하고,
-            북위38도34분09.68초와 강원특별자치도 고성군 현내면 지경리 해안선의
-            교점, 북위38도34분09.69초와 동경128도30분06.89초의 교점,
-            북위38도33분09.69초와 동경128도30분06.89초의 교점,
-            북위38도33분09.69초와 강원특별자치도 고성군 현내면 저진리 해안선의
-            교점을 차례대로 연결한 선 안의 해역에서는 4월 1일부터 7월 20일까지,
-            10월 1일부터 11월 30일까지
-          </p>
+          <p>{fish.explaination}</p>
         </ExplainContentCover>
         <ExplainContentCover>
-          <p></p>
+          <p>{fish.note}</p>
         </ExplainContentCover>
       </ExplainBody>
     </>
