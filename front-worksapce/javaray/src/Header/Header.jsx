@@ -3,6 +3,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import "bootstrap/dist/css/bootstrap.min.css";
+import aaa from "./Header.styles.css";
 
 import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
@@ -30,7 +31,12 @@ function CollapsibleExample() {
 
   return (
     <>
-      <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
+      <Navbar
+        collapseOnSelect
+        expand="lg"
+        className="bg-body-tertiary"
+        id="fire"
+      >
         <Container>
           <Navbar.Brand onClick={() => goTo("/")}>Javaray</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -62,7 +68,9 @@ function CollapsibleExample() {
                   낚시 제한 구역
                 </NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link onClick={() => goTo("/funding")}>펀딩사이트</Nav.Link>
+              <Nav.Link onClick={() => goTo("/funding")} id="hohoho">
+                펀딩사이트
+              </Nav.Link>
             </Nav>
             {auth.isAuthenticated ? (
               <Nav>

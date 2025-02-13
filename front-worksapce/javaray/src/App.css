@@ -49,3 +49,317 @@
     transform: rotate(360deg);
   }
 }
+
+#kekeke {
+  -webkit-animation: slit-in-diagonal-2 0.45s ease-out both;
+  animation: slit-in-diagonal-2 0.45s ease-out both;
+}
+
+@-webkit-keyframes slit-in-diagonal-2 {
+  0% {
+    -webkit-transform: translateZ(-800px) rotate3d(-1, 1, 0, -90deg);
+    transform: translateZ(-800px) rotate3d(-1, 1, 0, -90deg);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+    opacity: 0;
+  }
+  54% {
+    -webkit-transform: translateZ(-160px) rotate3d(-1, 1, 0, -87deg);
+    transform: translateZ(-160px) rotate3d(-1, 1, 0, -87deg);
+    -webkit-animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out;
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateZ(0) rotate3d(-1, 1, 0, 0);
+    transform: translateZ(0) rotate3d(-1, 1, 0, 0);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+}
+@keyframes slit-in-diagonal-2 {
+  0% {
+    -webkit-transform: translateZ(-800px) rotate3d(-1, 1, 0, -90deg);
+    transform: translateZ(-800px) rotate3d(-1, 1, 0, -90deg);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+    opacity: 0;
+  }
+  54% {
+    -webkit-transform: translateZ(-160px) rotate3d(-1, 1, 0, -87deg);
+    transform: translateZ(-160px) rotate3d(-1, 1, 0, -87deg);
+    -webkit-animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out;
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateZ(0) rotate3d(-1, 1, 0, 0);
+    transform: translateZ(0) rotate3d(-1, 1, 0, 0);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+}
+
+#kikiki {
+  font-size: 60px;
+  font-family: "Raleway", Sans-serif;
+  font-weight: 300;
+
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  overflow-x: hidden;
+  overflow-y: hidden;
+
+  white-space: nowrap;
+  will-change: transform;
+  animation: marquee 60s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+#hohoho,
+#kikiki {
+  &:hover {
+    -webkit-animation: text-focus-in 1s cubic-bezier(0.55, 0.085, 0.68, 0.53)
+      both;
+    animation: text-focus-in 1s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+  }
+}
+
+@-webkit-keyframes text-focus-in {
+  0% {
+    -webkit-filter: blur(12px);
+    filter: blur(12px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-filter: blur(0px);
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
+@keyframes text-focus-in {
+  0% {
+    -webkit-filter: blur(12px);
+    filter: blur(12px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-filter: blur(0px);
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
+
+.hi {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.wrap {
+  width: 500px;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle {
+  width: 400px;
+  height: 400px;
+  position: relative;
+  overflow: hidden;
+  border: 7px solid #464343;
+  border-radius: 100%;
+  background: linear-gradient(#3c5aff, #52f2fd);
+  transform: translate3d(0, 0, 0);
+  &:hover {
+    cursor: url("https://mblogthumb-phinf.pstatic.net/20110919_190/minarigirl_1316419836624mhgQK_PNG/Nemo_%282%29.png?type=w420"),
+      auto;
+  }
+}
+
+.wave-one {
+  width: 600px;
+  height: 600px;
+  position: absolute;
+  top: -65%;
+  left: -30%;
+  border-radius: 45%;
+  background: rgba(3, 169, 244, 0.8);
+  animation: move 3s infinite linear;
+}
+
+.wave-two {
+  width: 650px;
+  height: 650px;
+  position: absolute;
+  top: -90%;
+  left: -30%;
+  border-radius: 45%;
+  background: rgba(34, 79, 242, 0.8);
+  animation: move 5s infinite linear;
+}
+
+.wave-three {
+  width: 650px;
+  height: 650px;
+  position: absolute;
+  top: -100%;
+  left: -30%;
+  border-radius: 45%;
+  background: #1d074b;
+  border: 6px solid rgba(131, 119, 152, 0.7);
+  animation: move 7s infinite linear;
+}
+
+.wave-four {
+  width: 650px;
+  height: 650px;
+  position: absolute;
+  top: -100%;
+  left: -30%;
+  border-radius: 46%;
+  background: linear-gradient(rgba(252, 251, 232, 0.1) 10%, transparent);
+  animation: move 7s infinite linear;
+}
+
+@keyframes move {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* moon css & animation */
+.fa-moon {
+  position: absolute;
+  top: 19%;
+  left: 33%;
+  font-size: 130px;
+  color: rgba(255, 255, 255, 0.8);
+  animation: moon-rotation 4s infinite linear;
+}
+
+.blur {
+  filter: blur(10px);
+  -webkit-filter: blur(10px);
+}
+
+@keyframes moon-rotation {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-20deg);
+  }
+}
+
+/* star css & animation */
+.fa-asterisk {
+  position: absolute;
+  font-size: 13px;
+}
+
+.star1 {
+  top: 70px;
+  left: 90px;
+  animation: star-one 1.2s infinite;
+}
+
+.star2 {
+  top: 50px;
+  right: 110px;
+  animation: star-two 1.7s infinite;
+}
+
+.star3 {
+  top: 180px;
+  left: 45px;
+  animation: star-three 1.5s infinite;
+}
+
+.star4 {
+  top: 120px;
+  right: 40px;
+  font-size: 5px;
+  animation: star-five 1.9s infinite;
+}
+
+.star5 {
+  top: 200px;
+  right: 90px;
+  font-size: 5px;
+  animation: star-five 2s infinite;
+}
+
+@keyframes star-one {
+  0%,
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes star-two {
+  0%,
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes star-three {
+  0%,
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes star-four {
+  0%,
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes star-five {
+  0%,
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

@@ -24,6 +24,7 @@ public class FundingBoardDTO  {
 	private LocalDate endDate;
 	private String status;
 	private Long purposeAmount;
+	private Long currentSalePercent;
 	private List<FundingOptionDTO> fundingOptionList;
 	private List<FundingFileDTO> fundingFileList;
 //	

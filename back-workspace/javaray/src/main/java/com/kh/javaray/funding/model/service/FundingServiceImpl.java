@@ -102,6 +102,15 @@ public class FundingServiceImpl implements FundingService {
 		
 		List<FundingBoardDTO> list = fundingMapper.selectBoardList(rowBounds);
 		log.info("{}", list);
+		
+		/*
+		 * list에 판매글번호가지고 가서 상품옵션번호를 다 가지고 가서 
+		 * 상품옵션번호당 옵션금액 x (상품옵션번호를 조회해서 구매수량을 다 더한)
+		 */
+		for(int i=0; i < list.size(); i++) {
+			
+		}
+		
 		return list;
 	}
 
