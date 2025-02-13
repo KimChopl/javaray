@@ -25,14 +25,79 @@ import icon3 from "../FundingImg/FishingTool3.png";
 import icon4 from "../FundingImg/FishingTool4.png";
 import icon5 from "../FundingImg/FishingTool5.png";
 
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../UseContext/Auth/AuthContext";
+import axios from "axios";
 
 const FundingLists = () => {
   const navigate = useNavigate();
-  const { auth } = useContext(AuthContext);
-  const { role } = auth;
+  const { auth, validation } = useContext(AuthContext);
+  const [role, setRole] = useState("");
+  const [category, setCategory] = useState("");
+  const [flag, isFlag] = useState(false);
+  const [hasMore, setHasMore] = useState();
+  const [page, setPage] = useState();
+
+  const handleLogin = () => {
+    axios
+      .get(
+        "http://localhost/funding/selectList/hasToken",
+        {
+          params: {
+            page: page,
+          },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${auth.accessToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        setRole(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleNoLogin = () => {
+    axios
+      .get("http://localhost/funding/selectList/hasNonToken", {
+        params: {
+          page: page,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        setRole("");
+      })
+      .catch((error) => {
+        console.log(error);
+        setRole("");
+      });
+  };
+
+  useEffect(() => {
+    /*
+      1. 여기와서 auth봐야됨
+      2. 로그인돼있으면 handleLogin불러야됨
+      3. 안돼있으면 noHandleLogin불러야됨
+    */
+    console.log(auth.isAuthenticated);
+    if (auth.isAuthenticated === undefined) return;
+    if (auth.isAuthenticated) {
+      handleLogin();
+    } else {
+      handleNoLogin();
+    }
+  }, [auth.isAuthenticated, page]);
+
+  const handleMore = () => {
+    setPage((page) => page + 1);
+  };
 
   return (
     <>
@@ -60,16 +125,17 @@ const FundingLists = () => {
             <FundingIconContent>낚시의류</FundingIconContent>
           </CategoryItem>
         </FundingCategory>
+
         <Insert>
-          {role === "USER" ? (
+          {role === "ROLE_USER" ? (
             <GoodsInsert onClick={() => navigate("/BusinessNoApi")}>
               사업자등록 인증
             </GoodsInsert>
-          ) : role === "BUSINESSNOAPI" ? (
+          ) : role === "ROLE_BUSINESSNOAPI" ? (
             <GoodsInsert onClick={() => navigate("/BuninessApply")}>
               사업자등록 신청
             </GoodsInsert>
-          ) : role === "FUNDINGCOMPANY" ? (
+          ) : role === "ROLE_FUNDINGCOMPANY" ? (
             <GoodsInsert onClick={() => navigate("/FundingGoodsForm")}>
               상품등록
             </GoodsInsert>
@@ -149,6 +215,7 @@ const FundingLists = () => {
         <br />
         <br />
         <br />
+        {hasMore && <button onClick={handleMore}>더 보기</button>}
       </Container>
     </>
   );

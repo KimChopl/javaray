@@ -1,5 +1,8 @@
 package com.kh.javaray.funding.model.service;
 
+import java.util.List;
+
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -7,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.javaray.auth.service.AuthenticationService;
 import com.kh.javaray.exception.exceptions.FailUpdateUserInfoException;
 import com.kh.javaray.funding.model.dto.BusinessNoDTO;
+import com.kh.javaray.funding.model.dto.FundingBoardDTO;
 import com.kh.javaray.funding.model.dto.FundingBusinessNoAPIDTO;
 import com.kh.javaray.funding.model.mapper.FundingMapper;
 import com.kh.javaray.manager.model.dto.ManagingDTO;
@@ -31,8 +35,7 @@ public class FundingServiceImpl implements FundingService {
 	public void save(FundingBusinessNoAPIDTO BusinessNoAPIData) {
 		
 		CustomUserDetails user = authService.checkedUser();
-		log.info("{}, {}", BusinessNoAPIData.getBoardWriter(), user.getUsername());
-		authService.validWriter(BusinessNoAPIData.getBoardWriter(), user.getUsername());
+		authService.validWriter(BusinessNoAPIData.getBoardWriter(), user.getNickname());
 		
 		BusinessNoAPIData.setBoardWriter(String.valueOf(user.getUserNo()));
 		fundingMapper.save(BusinessNoAPIData);
@@ -78,6 +81,28 @@ public class FundingServiceImpl implements FundingService {
 			throw new FailUpdateUserInfoException("업데이트에 실패했습니다. 다시 시도해주세요");
 		}
 		
+	}
+
+	@Override
+	public String selectFundingListHasToken(int page) {
+		
+		CustomUserDetails user = authService.checkedUser();
+		
+		String role = user.getAuthorities().iterator().next().getAuthority();
+
+		return role;
+	}
+
+	// 토큰없을 때 메인 페이지 전체조회
+	@Override
+	public List<FundingBoardDTO> selectFundingListHasNoneToken(int page) {
+		
+		int size = 6;
+		RowBounds rowBounds = new RowBounds(page * size, size);
+		
+		List<FundingBoardDTO> list = fundingMapper.selectBoardList(rowBounds);
+		log.info("{}", list);
+		return list;
 	}
 
 }

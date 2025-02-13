@@ -4,10 +4,10 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
-    nickanme: null,
+    nickname: null,
     accessToken: null,
     refreshToken: null,
-    isAuthenticated: false,
+    isAuthenticated: undefined,
   });
 
   useEffect(() => {
@@ -21,6 +21,13 @@ export const AuthProvider = ({ children }) => {
         accessToken: accessToken,
         refreshToken: refreshToken,
         isAuthenticated: true,
+      });
+    } else {
+      setAuth({
+        nickname: null,
+        accessToken: null,
+        refreshToken: null,
+        isAuthenticated: false,
       });
     }
   }, []);
@@ -46,6 +53,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
   };
+
   return (
     <AuthContext.Provider value={{ auth, signin, signout }}>
       {children}

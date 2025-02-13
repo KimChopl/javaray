@@ -64,3 +64,12 @@ export const StyledShipPersonSpan = styled.span`
   font-size: 12px;
   display: block;
 `;
+
+export const More = styled.button`
+  width: 200px;
+  height: 60px;
+  background-color: aqua;
+  border: none;
+  display: block;
+  margin-top: 35px;
+`;

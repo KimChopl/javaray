@@ -1,13 +1,17 @@
 package com.kh.javaray.shipping.shippings.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kh.javaray.shipping.shippings.model.dto.Fishs;
 import com.kh.javaray.shipping.shippings.model.dto.Shipping;
 import com.kh.javaray.shipping.shippings.model.service.ShippingService;
 
@@ -32,11 +36,28 @@ public class ShippingController {
 	}
 	
 	@GetMapping("detail")
-	public ResponseEntity<Shipping> selectShippingDetail(@RequestParam(name = "shippingNo") String shippingNo){
+	public ResponseEntity<Map<String, Object>> selectShippingDetail(@RequestParam(name = "shippingNo") String shippingNo){
+		Map<String, Object> response = ss.selectShippingDetail(shippingNo);
+		return ResponseEntity.ok().body(response);
+	}
+	
+	@GetMapping("fish")
+	public ResponseEntity<Fishs> selectFish(@RequestParam(name="fishNo") String fishNo){
+		Fishs fish = ss.selectFish(fishNo);
+		return ResponseEntity.ok().body(fish);
+	}
+	
+	@PostMapping("attention")
+	public ResponseEntity<String> insertAttention(@RequestParam(name="shippingNo") String shippingNo){
 		log.info(shippingNo);
-		Shipping shipping = ss.selectShippingDetail(shippingNo);
-		log.info("{}", shipping);
-		return ResponseEntity.ok().body(shipping);
+		ss.insertAttention(shippingNo);
+		return ResponseEntity.ok().body("등록 완료");
+	}
+	
+	@DeleteMapping("attention")
+	public ResponseEntity<String> deleteAttention(@RequestParam(name="shippingNo") String shippingNo){
+		ss.deleteAttention(shippingNo);
+		return ResponseEntity.ok().body("삭제 완료");
 	}
 	
 }

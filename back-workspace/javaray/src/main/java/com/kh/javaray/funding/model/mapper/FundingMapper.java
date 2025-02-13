@@ -1,8 +1,12 @@
 package com.kh.javaray.funding.model.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.session.RowBounds;
 
 import com.kh.javaray.funding.model.dto.BusinessNoDTO;
+import com.kh.javaray.funding.model.dto.FundingBoardDTO;
 import com.kh.javaray.funding.model.dto.FundingBusinessNoAPIDTO;
 
 @Mapper
@@ -13,5 +17,7 @@ public interface FundingMapper {
 	FundingBusinessNoAPIDTO selectBusinessNo(String userNo);
 
 	void insertBoard(BusinessNoDTO businessNoData);
+
+	List<FundingBoardDTO> selectBoardList(RowBounds rowBounds);
 
 }

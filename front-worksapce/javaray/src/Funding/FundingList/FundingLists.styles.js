@@ -137,4 +137,8 @@ export const GoodsContent2 = styled.span`
 export const GoodsContent3 = styled.span`
   font-weight: 700;
   color: lightcoral;
+
+  &:hover {
+    color: red;
+  }
 `;
