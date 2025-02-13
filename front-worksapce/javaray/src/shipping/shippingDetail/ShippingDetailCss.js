@@ -5,6 +5,7 @@ export const DetailWarp = styled.div`
   height: auto;
   margin: auto;
   min-height: 800px;
+  text-align: center;
 `;
 
 export const DetailHeader = styled.div`
@@ -31,6 +32,7 @@ export const ImageCover = styled.div`
   padding: 25px;
   display: inline-block;
   position: relative;
+  text-align: left;
 `;
 
 export const BaseCover = styled.div`
@@ -80,6 +82,7 @@ export const LocationDiv = styled.div`
   height: 40px;
   padding: 5px 10px 5px 10px;
   position: absolute;
+  text-align: left;
 `;
 
 export const PriceDiv = styled.div`
@@ -88,6 +91,8 @@ export const PriceDiv = styled.div`
   display: inline-block;
   position: absolute;
   padding: 5px 5px 5px 10px;
+  text-align: left;
+  margin-left: -150px;
 `;
 
 export const AllowNumberDiv = styled.div`
@@ -110,6 +115,7 @@ export const Td = styled.td`
   padding: 3px 5px 3px 5px;
   border-right: 1px solid #a4a4a4;
   border-left: 1px solid #a4a4a4;
+  font-size: 15px;
   &:hover {
     cursor: pointer;
   }

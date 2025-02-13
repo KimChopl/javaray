@@ -49,13 +49,13 @@ public class SecurityConfiguration {
 		return httpSecurity.formLogin(AbstractHttpConfigurer::disable).httpBasic(AbstractHttpConfigurer::disable)
 				.csrf(AbstractHttpConfigurer::disable).cors(Customizer.withDefaults())
 				.authorizeHttpRequests(requests -> {
-					requests.requestMatchers("/members", "/members/login", "/uploads/**", "/funding/businessNo").permitAll();
+				 	requests.requestMatchers("/members", "/members/login", "/uploads/**", "/funding/businessNo").permitAll();
 					requests.requestMatchers(HttpMethod.PUT, "/members/update/**").authenticated();
 					requests.requestMatchers(HttpMethod.DELETE, "/members", "/shippings/attention").authenticated();
 					requests.requestMatchers(HttpMethod.POST, "/members/refresh", "/funding/businessNo/**", "/funding/businessNoInsert/**", "/shippings/attention").authenticated();
 					requests.requestMatchers(HttpMethod.GET, "/shippings/**", "/shippings/detail/**", "/funding/selectList/**").permitAll();
 					requests.requestMatchers("/manager/**").hasRole("ADMIN");
-					requests.requestMatchers(HttpMethod.GET, "/fishing").permitAll();
+					requests.requestMatchers(HttpMethod.GET, "/fishing", "/fishing/detail/**").permitAll();
 				})
 				.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).build();

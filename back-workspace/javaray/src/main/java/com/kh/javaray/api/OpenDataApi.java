@@ -44,11 +44,17 @@ public class OpenDataApi {
 			String result = rt.getForObject(uri, String.class);
 			List<Weather> list = new ArrayList<Weather>();
 			String[] split = result.split(",=\n");	
-			for(int i = 1; i < 9; i ++) {
-				String[] infos = split[i].split(",");
-				Weather weather = Weather.builder().regName(infos[0]).tmef(infos[2]).s1(infos[12]).s2(infos[13]).wh1(infos[14]).wh2(infos[15]).prep(infos[17]).wf(infos[18]).sky(infos[16]).build();
-				list.add(weather);
-				log.info("{}", list);
+			for(int i = 0; i < 8; i ++) {
+				if(i == 0) {
+					String[] info = split[i].split("\n");
+					String[] infos = info[2].split(",");
+					Weather weather = Weather.builder().regName(infos[0]).tmef(infos[2]).s1(infos[12]).s2(infos[13]).wh1(infos[14]).wh2(infos[15]).prep(infos[17]).wf(infos[18]).sky(infos[16]).build();
+					list.add(weather);
+				} else {
+					String[] infos = split[i].split(",");
+					Weather weather = Weather.builder().regName(infos[0]).tmef(infos[2]).s1(infos[12]).s2(infos[13]).wh1(infos[14]).wh2(infos[15]).prep(infos[17]).wf(infos[18]).sky(infos[16]).build();
+					list.add(weather);
+				}
 			}
 			return list;
 		} catch (UnsupportedEncodingException e) {

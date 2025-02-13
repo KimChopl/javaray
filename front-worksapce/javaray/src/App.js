@@ -17,6 +17,7 @@ import FishingGoods from "./fishing/FishingDetail/FishingGoods";
 import FishingReview from "./fishing/FishingDetail/FishingReview";
 import FishingReviewInsert from "./fishing/FishingDetail/FishingReviewInsert";
 import { AuthProvider } from "./UseContext/Auth/AuthContext";
+import ShippingUpdate from "./shipping/Update/ShippingUpdate";
 
 function App() {
   return (
@@ -34,7 +35,10 @@ function App() {
           <Route path="/fishing/insert" element={<FishingInsert />} />
           <Route path="fishing" element={<FishingList />} />
           <Route path="cal" element={<Calendar />} />
-          <Route path="/fishing/detail" element={<FishingDetail />} />
+          <Route
+            path="/fishing/detail/:fishingNo"
+            element={<FishingDetail />}
+          />
           <Route path="BusinessNoApi" element={<BusninessNoAPI />} />
           <Route path="BuninessApply" element={<BusinessNoApply />} />
           <Route path="FundingGoodsForm" element={<FundingGoodsForm />} />
@@ -43,6 +47,10 @@ function App() {
           <Route
             path="/fishing/review/insert"
             element={<FishingReviewInsert />}
+          />
+          <Route
+            path="/shipping/update/:shippingNo"
+            element={<ShippingUpdate />}
           />
         </Routes>
         <Footer />
