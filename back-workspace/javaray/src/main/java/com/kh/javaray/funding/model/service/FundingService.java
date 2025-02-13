@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.javaray.funding.model.dto.BusinessNoDTO;
+import com.kh.javaray.funding.model.dto.FundingBoardDTO;
 import com.kh.javaray.funding.model.dto.FundingBusinessNoAPIDTO;
 
 public interface FundingService {
@@ -17,6 +18,6 @@ public interface FundingService {
 
 	String selectFundingListHasToken(int page);
 
-	List<BusinessNoDTO> selectFundingListHasNoneToken(int page);
+	List<FundingBoardDTO> selectFundingListHasNoneToken(int page);
 
 }

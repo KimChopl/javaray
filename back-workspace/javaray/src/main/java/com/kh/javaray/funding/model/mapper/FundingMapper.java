@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
 import com.kh.javaray.funding.model.dto.BusinessNoDTO;
+import com.kh.javaray.funding.model.dto.FundingBoardDTO;
 import com.kh.javaray.funding.model.dto.FundingBusinessNoAPIDTO;
 
 @Mapper
@@ -17,6 +18,6 @@ public interface FundingMapper {
 
 	void insertBoard(BusinessNoDTO businessNoData);
 
-	List<BusinessNoDTO> selectFundingListHasNoneToken(RowBounds rowBounds);
+	List<FundingBoardDTO> selectBoardList(RowBounds rowBounds);
 
 }

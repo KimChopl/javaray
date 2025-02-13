@@ -16,7 +16,7 @@
 			   )
 	</insert>
 	
-	<select id="selectBusinessNo" parameterType="String" resultType="com.kh.javaray.funding.model.dto.FundingBusinessNoAPIDTO">
+	<select id="selectBusinessNo" parameterType="String" resultType="FundingBusinessNoAPIDTO">
 		SELECT
 			   BUSINESS_NUMBER companyBusinessNo
 		  FROM
@@ -42,7 +42,91 @@
 			   )
 	</insert>
 	
-	<select id="selectFundingListHasNoneToken" resultType="com.kh.javaray.funding.model.dto.FundingB">
+	
+	<resultMap id="fundingBoard" type="FundingBoardDTO">
+		<id property="boardNo" column="TB_FUNDING_BOARD.BOARD_NO" />
+		<result property="boardTitle" column="TITLE" />
+		<result property="boardContent" column="CONTENT" />
+		<result property="startDate" column="START_DATE" />
+		<result property="endDate" column="END_DATE" />
+		<result property="status" column="STATUS" />
+		<result property="purposeAmount" column="PURPOSE_AMOUNT" />
+		<association property="fundingCategory" javaType="FundingCategoryDTO" >
+			<id property="categoryNo" column="CATEGORY_NO"/>
+			<result property="categoryName" column="CATEGORY_NAME" />
+		</association>
+		<collection property="fundingOptionList" javaType="java.util.ArrayList" ofType="FundingOptionDTO">
+			<id property="optionNo" column="OPTION_NO" />
+			<result property="refBnos" column="TB_PRODUCT_OPTION.BOARD_NO" />
+			<result property="optionType" column="OPTION_TYPE" />
+			<result property="optionTitle" column="OPTION_TITLE" />
+			<result property="optionExplain" column="OPTION_EXPLAIN" />
+			<result property="optionPrice" column="OPTION_PRICE" />
+			<result property="optionCount" column="TOTAL_COUNT" />
+		</collection>
+		<collection property="fundingFileList" javaType="java.util.ArrayList" ofType="FundingFileDTO">
+			<id property="refBno" column="REF_BNO" />
+			<result property="fileLevel" column="FILE_LEVEL" />
+			<result property="fileUrl" column="FILE_URL" />
+		</collection>
+	</resultMap>
+	
+	<select id="selectBoardList" resultMap="fundingBoard">
+		SELECT
+			   TB_FUNDING_BOARD.BOARD_NO,
+			   USER_NO,
+			   CATEGORY_NAME,
+			   TITLE,
+			   CONTENT,
+			   START_DATE,
+			   END_DATE,
+			   STATUS,
+			   PUPOSE_AMOUNT,
+			   OPTION_NO,
+			   OPTION_TYPE,
+			   OPTION_TITLE,
+			   OPTION_EXPLAIN,
+			   OPTION_PRICE,
+			   TOTAL_COUNT,
+			   FILE_LEVEL,
+			   FILE_URL
+		  FROM
+		  	   TB_PRODUCT_OPTION
+		  JOIN
+		  	   TB_FUNDING_FILE ON (TB_PRODUCT_OPTION.BOARD_NO = TB_FUNDING_FILE.REF_BNO)
+		  JOIN
+		  	   TB_FUNDING_BOARD ON (TB_FUNDING_BOARD.BOARD_NO = TB_FUNDING_FILE.REF_BNO)
+		  JOIN
+		  	   TB_FUNDING_CATEGORY USING (CATEGORY_NO)
+		 WHERE
+		 	   STATUS = 'N'
+		 ORDER
+		    BY
+		       START_DATE
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<select id="selectFundingListHasNoneToken" resultMap="fundingBoard">
 	
 	</select>
 </mapper>
