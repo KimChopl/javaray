@@ -15,6 +15,7 @@ import { AuthContext } from "../../UseContext/Auth/AuthContext";
 const BusninessNoAPI = () => {
   const [companyNo, setCompanyNo] = useState(0);
   const [username, setUsername] = useState("");
+  const [nickname, setNickname] = useState("");
   const [accessToken, setAccessToken] = useState("");
   const navi = useNavigate();
   const { auth, signout } = useContext(AuthContext);
@@ -23,7 +24,7 @@ const BusninessNoAPI = () => {
     if (!auth.isAuthenticated) {
       navi("/");
     } else {
-      setUsername(auth.username);
+      setNickname(auth.nickname);
       setAccessToken(auth.accessToken);
     }
   });
@@ -60,7 +61,7 @@ const BusninessNoAPI = () => {
           companyBusinessNo: companyNo,
           resultContent: response.data.data[0].tax_type,
           resultCode: response.data.data[0].tax_type_cd,
-          boardWriter: username,
+          boardWriter: nickname,
         },
         {
           headers: {
@@ -86,7 +87,7 @@ const BusninessNoAPI = () => {
         <Form onSubmit={handleInsertAPI}>
           <div>
             <Label htmlFor="username">작성자 ID</Label>
-            <Input id="username" type="text" readOnly value={username} />
+            <Input id="username" type="text" readOnly value={nickname} />
           </div>
           <div>
             <Label htmlFor="companyNo">사업자등록번호</Label>

@@ -3,6 +3,7 @@ import SearchBar from "./searchbar/Searchbar";
 import { StyledShipWarp } from "./ShippingCss";
 import ShippingList from "./shippingList/ShippingList";
 import axios from "axios";
+import { More } from "./shippingList/shippingListCss";
 
 const Shipping = () => {
   const [data, setData] = useState([]);
@@ -24,6 +25,9 @@ const Shipping = () => {
       {data.map((data) => (
         <ShippingList data={data} />
       ))}
+      {data.length === 20 && (
+        <More onClick={() => setPage((page) => page + 1)}>더보기</More>
+      )}
     </StyledShipWarp>
   );
 };

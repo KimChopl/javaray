@@ -4,6 +4,7 @@ export const DetailWarp = styled.div`
   width: 1200px;
   height: auto;
   margin: auto;
+  min-height: 800px;
 `;
 
 export const DetailHeader = styled.div`
@@ -15,7 +16,8 @@ export const DetailHeader = styled.div`
 
 export const DetailBody = styled.div`
   width: 100%;
-  height: 802px;
+  min-height: 802px;
+  height: auto;
 `;
 export const DetailBase = styled.div`
   width: 1100px;
@@ -55,7 +57,7 @@ export const BaseBar = styled.div`
 
 export const WeatherCover = styled.div`
   width: 1100px;
-  height: 50px;
+  height: 120px;
   padding: 10px 25px 10px 25px;
 `;
 
@@ -105,6 +107,9 @@ export const FishTable = styled.table`
 `;
 
 export const Td = styled.td`
+  padding: 3px 5px 3px 5px;
+  border-right: 1px solid #a4a4a4;
+  border-left: 1px solid #a4a4a4;
   &:hover {
     cursor: pointer;
   }
@@ -162,4 +167,10 @@ export const AttentionInfo = styled.div`
   &:hover {
     cursor: pointer;
   }
+`;
+
+export const Load = styled.div`
+  width: 100%;
+  height: 1200px;
+  background-color: white;
 `;

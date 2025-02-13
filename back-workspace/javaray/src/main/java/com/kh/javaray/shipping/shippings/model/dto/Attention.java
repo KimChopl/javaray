@@ -4,19 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Builder
-public class Fishs {
-	private String fishNo;
-	private String explaination;
-	private String note;
-	private String defaultSize;
-	private String startOutOfSeason;
-	private String endOutOfSeason;
-	private String fishName;
+@ToString
+public class Attention {
+	
+	private String shippingNo;
+	private Long userNo;
+
 }
