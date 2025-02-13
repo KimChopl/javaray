@@ -14,6 +14,7 @@ import {
   DetailAddressBlock,
   DetailAddress,
   PhoneBlock,
+  DetailPhone,
 } from "./FishingDetail.styled";
 import FishingProduct from "./FishingProduct";
 import { TitleLine, TitleText } from "../FishingList/FishingList.styled";
@@ -29,25 +30,18 @@ import FishingReview from "./FishingReview";
 import axios from "axios";
 
 const FishingDetail = () => {
+  const { fishingNo } = useParams();
   const navigate = useNavigate();
   const [menuName, setMenuName] = useState("product");
 
   const [error, setError] = useState(false);
 
-  const [fishingsDetail, setFishingsDetail] = useState(null);
-  // const { fishingNo } = useParams();
-
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search); //url에서 fishingNo뽑기
-  const fishingNo = queryParams.get("fishingNo");
+  const [fishingsDetail, setFishingsDetail] = useState({});
 
   useEffect(() => {
+    console.log(fishingNo);
     axios
-      .get("http://localhost/fishing/detail", {
-        params: {
-          fishingNo,
-        },
-      })
+      .get(`http://localhost/fishing/detail?fishingNo=${fishingNo}`)
       .then((response) => {
         console.log("응답:", response.data);
         setFishingsDetail(response.data);
@@ -68,12 +62,14 @@ const FishingDetail = () => {
             <TopImageBlock></TopImageBlock>
             <TopTextBlock>
               <DetailTitleBlock>
-                <DetailTitle>{fishingsDetail?.fishingName}</DetailTitle>
+                <DetailTitle>{fishingsDetail.fishingName}</DetailTitle>
               </DetailTitleBlock>
               <DetailAddressBlock>
-                <DetailAddress>{fishingsDetail?.address}</DetailAddress>
+                <DetailAddress>{fishingsDetail.address}</DetailAddress>
               </DetailAddressBlock>
-              <PhoneBlock></PhoneBlock>
+              <PhoneBlock>
+                <DetailPhone>☎️{fishingsDetail.phone}</DetailPhone>
+              </PhoneBlock>
             </TopTextBlock>
           </TopBlock>
           <TopMenuBlock>

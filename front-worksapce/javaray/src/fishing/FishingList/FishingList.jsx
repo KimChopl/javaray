@@ -33,7 +33,11 @@ const FishingList = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost/fishing?page=${page}`)
+      .get("http://localhost/fishing", {
+        params: {
+          page,
+        },
+      })
       .then((response) => {
         setFishings((fishings) => [...fishings, ...response.data]);
         if (response.data.length < 6) {
@@ -59,10 +63,7 @@ const FishingList = () => {
           <Block1>
             {fishings.map((fishing) => (
               <FishingListBox
-                key={fishing.fishingNo}
-                onClick={() =>
-                  navigate(`detail?fishingNo=${fishing.fishingNo}`)
-                }
+                onClick={() => navigate(`detail/${fishing.fishingNo}`)}
               >
                 <ImageDiv></ImageDiv>
                 <TextDiv>

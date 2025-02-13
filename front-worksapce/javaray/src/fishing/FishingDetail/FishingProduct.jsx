@@ -10,20 +10,25 @@ import {
   MessageText,
 } from "./FishingProduct.styled";
 import { useNavigate } from "react-router-dom";
+import {
+  AmenitiesImgDiv,
+  AmenitiesImg,
+} from "../FishingInsert/FishingInsert.styled";
+import bathroom from "../FishingImg/bathroom.png";
 
 const FishingProduct = ({ fishingsDetail }) => {
   return (
     <>
       <DownWrap>
         <AddressDiv>
-          <DownAddressH2>{fishingsDetail?.address}</DownAddressH2>
+          <DownAddressH2>{fishingsDetail.address}</DownAddressH2>
         </AddressDiv>
         <MessageDiv>
           <MessageDiv1>
             <MessageTitle>사장님 한마디</MessageTitle>
           </MessageDiv1>
           <MessageDiv2>
-            <MessageText>{fishingsDetail?.introduce}</MessageText>
+            <MessageText>{fishingsDetail.introduce}</MessageText>
           </MessageDiv2>
         </MessageDiv>
         <MessageDiv>
@@ -32,18 +37,26 @@ const FishingProduct = ({ fishingsDetail }) => {
           </MessageDiv1>
           <MessageDiv2>
             <MessageText>
-              영업 시작 시간 : {fishingsDetail?.startTime}
+              영업 시작 시간 : {fishingsDetail.startTime}
             </MessageText>
-            <MessageText>
-              영업 종료 시간 : {fishingsDetail?.endTime}
-            </MessageText>
+            <MessageText>영업 종료 시간 : {fishingsDetail.endTime}</MessageText>
+          </MessageDiv2>
+        </MessageDiv>
+        <MessageDiv>
+          <MessageDiv1>
+            <MessageTitle>주요 어종</MessageTitle>
+          </MessageDiv1>
+          <MessageDiv2>
+            <MessageText>{fishingsDetail.fishList[0].fishName}</MessageText>
           </MessageDiv2>
         </MessageDiv>
         <MessageDiv>
           <MessageDiv1>
             <MessageTitle>편의시설</MessageTitle>
           </MessageDiv1>
-          <MessageDiv2></MessageDiv2>
+          <MessageDiv2>
+            <MessageText></MessageText>
+          </MessageDiv2>
         </MessageDiv>
       </DownWrap>
     </>
