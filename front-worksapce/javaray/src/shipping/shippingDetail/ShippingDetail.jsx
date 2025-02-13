@@ -43,6 +43,7 @@ const ShippingDetail = () => {
     axios
       .get(`http://localhost/shippings/detail?shippingNo=${shippingNo}`)
       .then((response) => {
+        console.log(response);
         setShipping(response.data);
         setLoading(false);
       });
@@ -50,8 +51,8 @@ const ShippingDetail = () => {
     if (isAuth) {
       axios
         .get(`http://localhost/shippings/attention?shippingNo=${shippingNo}`, {
-          header: {
-            Authorization: `Beaere ${auth.accessToken}`,
+          headers: {
+            Authorization: `Bearer ${auth.accessToken}`,
           },
         })
         .then((response) => {
