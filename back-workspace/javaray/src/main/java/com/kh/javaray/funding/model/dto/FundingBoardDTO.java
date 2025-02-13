@@ -14,7 +14,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Builder
 @ToString
-public class FundingBoardDTO {
+public class FundingBoardDTO  {
 
 	private Long boardNo;
 	private FundingCategoryDTO fundingCategory;
@@ -26,4 +26,5 @@ public class FundingBoardDTO {
 	private Long purposeAmount;
 	private List<FundingOptionDTO> fundingOptionList;
 	private List<FundingFileDTO> fundingFileList;
+//	
 }
