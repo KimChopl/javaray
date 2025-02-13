@@ -3,6 +3,7 @@ package com.kh.javaray.shipping.shippings.model.service;
 import java.util.List;
 import java.util.Map;
 
+import com.kh.javaray.shipping.shippings.model.dto.Attention;
 import com.kh.javaray.shipping.shippings.model.dto.Fishs;
 import com.kh.javaray.shipping.shippings.model.dto.Shipping;
 
@@ -17,5 +18,9 @@ public interface ShippingService {
 	void insertAttention(String shippingNo);
 
 	void deleteAttention(String shippingNo);
+
+	int selectAttention(String shippingNo);
+
+	Shipping selectUpdateForm(String shippingNo);
 
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kh.javaray.shipping.shippings.model.dto.Attention;
 import com.kh.javaray.shipping.shippings.model.dto.Fishs;
 import com.kh.javaray.shipping.shippings.model.dto.Shipping;
 import com.kh.javaray.shipping.shippings.model.service.ShippingService;
@@ -58,6 +59,18 @@ public class ShippingController {
 	public ResponseEntity<String> deleteAttention(@RequestParam(name="shippingNo") String shippingNo){
 		ss.deleteAttention(shippingNo);
 		return ResponseEntity.ok().body("삭제 완료");
+	}
+	
+	@GetMapping("attention")
+	public ResponseEntity<?> selectAttention(@RequestParam(name="shippingNo") String shippingNo){
+		int att = ss.selectAttention(shippingNo);
+		return ResponseEntity.ok().body(att);
+	}
+	
+	@GetMapping("update")
+	public ResponseEntity<Shipping> selectUpdateForm(@RequestParam(name="shippingNo") String shippingNo){
+		Shipping shipping = ss.selectUpdateForm(shippingNo);
+		return ResponseEntity.ok().body(shipping);
 	}
 	
 }

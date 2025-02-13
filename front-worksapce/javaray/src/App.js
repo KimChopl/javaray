@@ -17,6 +17,7 @@ import FishingGoods from "./fishing/FishingDetail/FishingGoods";
 import FishingReview from "./fishing/FishingDetail/FishingReview";
 import FishingReviewInsert from "./fishing/FishingDetail/FishingReviewInsert";
 import { AuthProvider } from "./UseContext/Auth/AuthContext";
+import ShippingUpdate from "./shipping/Update/ShippingUpdate";
 
 function App() {
   return (
@@ -43,6 +44,10 @@ function App() {
           <Route
             path="/fishing/review/insert"
             element={<FishingReviewInsert />}
+          />
+          <Route
+            path="/shipping/update/:shippingNo"
+            element={<ShippingUpdate />}
           />
         </Routes>
         <Footer />

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 
 import com.kh.javaray.shipping.shippings.model.dto.Attention;
@@ -24,5 +25,8 @@ public interface ShippingMapper {
 	
 	@Delete("DELETE FROM TB_SHIPPING_ATTENTION WHERE SHIPPING_NO = #{shippingNo} AND USER_NO = #{userNo}")
 	int deleteAttention(Attention attention);
+
+	@Select("SELECT COUNT(USER_NO) FROM TB_SHIPPING_ATTENTION WHERE SHIPPING_NO = #{shippingNo} AND USER_NO = #{userNo}")
+	int selectAttention(Attention att);
 
 }
