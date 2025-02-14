@@ -18,6 +18,6 @@ public interface FundingMapper {
 
 	void insertBoard(BusinessNoDTO businessNoData);
 
-	List<FundingBoardDTO> selectBoardList(RowBounds rowBounds);
+	List<FundingBoardDTO> selectBoardList(RowBounds rowBounds, int categoryNo);
 
 }

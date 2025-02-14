@@ -114,6 +114,10 @@ SELECT
 		  	   TB_FUNDING_CATEGORY USING (CATEGORY_NO)
 		 WHERE
 		 	   STATUS = 'N'
+		   AND
+		   	   TB_PRODUCT_OPTION.OPTION_NO = 1
+		   AND
+		   	   (#{categoryNo} = 5 OR CATEGORY_NO = #{categoryNo})
 		 ORDER
 		    BY
 		       START_DATE

@@ -34,14 +34,11 @@ const FundingLists = () => {
   const navigate = useNavigate();
   const { auth, validation } = useContext(AuthContext);
   const [role, setRole] = useState("");
-  const [category, setCategory] = useState("");
   const [flag, isFlag] = useState(false);
-  const [hasMore, setHasMore] = useState();
+  const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState();
-  const [fileUrl, setFileUrl] = useState("");
-  const [boardTitle, setBoardTitle] = useState("");
-  const [endDate, setEndDate] = useState("");
   const [boards, setBoards] = useState([]);
+  const [categoryNo, setCategoryNo] = useState(5);
 
   const handleLogin = () => {
     axios
@@ -68,20 +65,21 @@ const FundingLists = () => {
   };
 
   const handleNoLogin = () => {
+    console.log(categoryNo);
     axios
       .get("http://localhost/funding/selectList/hasNonToken", {
         params: {
           page: page,
+          categoryNo: categoryNo,
         },
       })
       .then((response) => {
         console.log(response);
         setBoards([...boards, ...response.data]);
-        /*
-        달성률 / 회사이름
-        boardDate - localDate
-        */
         setRole("");
+        if (response.data.length < 6) {
+          setHasMore(false);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -102,7 +100,7 @@ const FundingLists = () => {
     } else {
       handleNoLogin();
     }
-  }, [auth.isAuthenticated, page]);
+  }, [auth.isAuthenticated, page, categoryNo]);
 
   const handleMore = () => {
     setPage((page) => page + 1);
@@ -118,6 +116,14 @@ const FundingLists = () => {
 
     return remainingDays > 0 ? `${remainingDays}일 남음` : "마감됨";
   };
+
+  const handleCategory = (e) => {
+    setCategoryNo(e);
+    setPage();
+    setBoards([]);
+    setHasMore(true);
+  };
+
   return (
     <>
       <Container id="kekeke">
@@ -144,23 +150,23 @@ const FundingLists = () => {
           </div>
         </div>
         <FundingCategory id="fire">
-          <CategoryItem>
+          <CategoryItem onClick={() => handleCategory(5)}>
             <FundingIcon src={icon5} alt="icon" />
             <FundingIconContent>전체</FundingIconContent>
           </CategoryItem>
-          <CategoryItem>
+          <CategoryItem onClick={() => handleCategory(1)}>
             <FundingIcon src={icon1} alt="icon" />
             <FundingIconContent>낚시대</FundingIconContent>
           </CategoryItem>
-          <CategoryItem>
+          <CategoryItem onClick={() => handleCategory(2)}>
             <FundingIcon src={icon2} alt="icon" />
             <FundingIconContent>릴</FundingIconContent>
           </CategoryItem>
-          <CategoryItem>
+          <CategoryItem onClick={() => handleCategory(3)}>
             <FundingIcon src={icon3} alt="icon" />
             <FundingIconContent>낚싯줄</FundingIconContent>
           </CategoryItem>
-          <CategoryItem>
+          <CategoryItem onClick={() => handleCategory(4)}>
             <FundingIcon src={icon4} alt="icon" />
             <FundingIconContent>낚시의류</FundingIconContent>
           </CategoryItem>
@@ -200,7 +206,7 @@ const FundingLists = () => {
               <PostItem>
                 <GoodsDiv>
                   <GoodsImg src={board.fundingFileList[0].fileUrl} />
-                  <GoodsContent>{board.currentSalePercent}%달성</GoodsContent>
+                  <GoodsContent>{board.currentSalePercent}% 달성</GoodsContent>
                   <GoodsContent1>{board.boardTitle}</GoodsContent1>
                   <GoodsContent1>
                     <GoodsContent2>Temu</GoodsContent2>

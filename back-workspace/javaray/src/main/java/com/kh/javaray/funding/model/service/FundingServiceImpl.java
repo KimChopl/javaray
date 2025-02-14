@@ -95,21 +95,12 @@ public class FundingServiceImpl implements FundingService {
 
 	// 토큰없을 때 메인 페이지 전체조회
 	@Override
-	public List<FundingBoardDTO> selectFundingListHasNoneToken(int page) {
+	public List<FundingBoardDTO> selectFundingListHasNoneToken(int page, int categoryNo) {
 		
 		int size = 6;
 		RowBounds rowBounds = new RowBounds(page * size, size);
 		
-		List<FundingBoardDTO> list = fundingMapper.selectBoardList(rowBounds);
-		log.info("{}", list);
-		
-		/*
-		 * list에 판매글번호가지고 가서 상품옵션번호를 다 가지고 가서 
-		 * 상품옵션번호당 옵션금액 x (상품옵션번호를 조회해서 구매수량을 다 더한)
-		 */
-		for(int i=0; i < list.size(); i++) {
-			
-		}
+		List<FundingBoardDTO> list = fundingMapper.selectBoardList(rowBounds, categoryNo);
 		
 		return list;
 	}
