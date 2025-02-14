@@ -34,24 +34,18 @@ const FundingLists = () => {
   const navigate = useNavigate();
   const { auth, validation } = useContext(AuthContext);
   const [role, setRole] = useState("");
-  const [category, setCategory] = useState("");
-  const [flag, isFlag] = useState(false);
-  const [hasMore, setHasMore] = useState();
-  const [page, setPage] = useState();
-  const [fileUrl, setFileUrl] = useState("");
-  const [boardTitle, setBoardTitle] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(0);
   const [boards, setBoards] = useState([]);
+  const [categoryNo, setCategoryNo] = useState(5);
 
   const handleLogin = () => {
+    console.log(auth.accessToken);
+    console.log(page);
+    console.log(categoryNo);
     axios
       .get(
-        "http://localhost/funding/selectList/hasToken",
-        {
-          params: {
-            page: page,
-          },
-        },
+        `http://localhost/funding/selectList/hasToken?page=${page}&categoryNo=${categoryNo}`,
         {
           headers: {
             Authorization: `Bearer ${auth.accessToken}`,
@@ -59,8 +53,11 @@ const FundingLists = () => {
         }
       )
       .then((response) => {
-        console.log(response.data);
-        setRole(response.data);
+        setRole(response.data[0].role);
+        setBoards([...boards, ...response.data]);
+        if (response.data.length < 6) {
+          setHasMore(false);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -72,16 +69,16 @@ const FundingLists = () => {
       .get("http://localhost/funding/selectList/hasNonToken", {
         params: {
           page: page,
+          categoryNo: categoryNo,
         },
       })
       .then((response) => {
         console.log(response);
         setBoards([...boards, ...response.data]);
-        /*
-        달성률 / 회사이름
-        boardDate - localDate
-        */
         setRole("");
+        if (response.data.length < 6) {
+          setHasMore(false);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -90,11 +87,6 @@ const FundingLists = () => {
   };
 
   useEffect(() => {
-    /*
-      1. 여기와서 auth봐야됨
-      2. 로그인돼있으면 handleLogin불러야됨
-      3. 안돼있으면 noHandleLogin불러야됨
-    */
     console.log(auth.isAuthenticated);
     if (auth.isAuthenticated === undefined) return;
     if (auth.isAuthenticated) {
@@ -102,7 +94,7 @@ const FundingLists = () => {
     } else {
       handleNoLogin();
     }
-  }, [auth.isAuthenticated, page]);
+  }, [auth.isAuthenticated, page, categoryNo]);
 
   const handleMore = () => {
     setPage((page) => page + 1);
@@ -118,6 +110,14 @@ const FundingLists = () => {
 
     return remainingDays > 0 ? `${remainingDays}일 남음` : "마감됨";
   };
+
+  const handleCategory = (e) => {
+    setCategoryNo(e);
+    setPage(0);
+    setBoards([]);
+    setHasMore(true);
+  };
+
   return (
     <>
       <Container id="kekeke">
@@ -144,23 +144,23 @@ const FundingLists = () => {
           </div>
         </div>
         <FundingCategory id="fire">
-          <CategoryItem>
+          <CategoryItem onClick={() => handleCategory(5)}>
             <FundingIcon src={icon5} alt="icon" />
             <FundingIconContent>전체</FundingIconContent>
           </CategoryItem>
-          <CategoryItem>
+          <CategoryItem onClick={() => handleCategory(1)}>
             <FundingIcon src={icon1} alt="icon" />
             <FundingIconContent>낚시대</FundingIconContent>
           </CategoryItem>
-          <CategoryItem>
+          <CategoryItem onClick={() => handleCategory(2)}>
             <FundingIcon src={icon2} alt="icon" />
             <FundingIconContent>릴</FundingIconContent>
           </CategoryItem>
-          <CategoryItem>
+          <CategoryItem onClick={() => handleCategory(3)}>
             <FundingIcon src={icon3} alt="icon" />
             <FundingIconContent>낚싯줄</FundingIconContent>
           </CategoryItem>
-          <CategoryItem>
+          <CategoryItem onClick={() => handleCategory(4)}>
             <FundingIcon src={icon4} alt="icon" />
             <FundingIconContent>낚시의류</FundingIconContent>
           </CategoryItem>
@@ -183,27 +183,14 @@ const FundingLists = () => {
         <FundingHr />
         <FundingGoods>
           <PostList>
-            <PostItem>
-              <GoodsDiv>
-                <GoodsImg src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQhTX6sKiW0o-HmWoOYNzM1IfxdNALBegUmoYA5uLKw4iL9SCichdBhYvvZckcJQo6-KnuNgvw-IGCa0RCXvo76brL4-1Xx8lpkFw3VpOlp0QIbxinzUqtj3YgXT7W2AV-32mvlgUOl_A&usqp=CAc" />
-                <GoodsContent>34%달성</GoodsContent>
-                <GoodsContent1>
-                  PLUSINNO Hunting V11 텔레스코픽 낚시대
-                </GoodsContent1>
-                <GoodsContent1>
-                  <GoodsContent2>Temu</GoodsContent2>
-                  <GoodsContent3>4일 남음</GoodsContent3>
-                </GoodsContent1>
-              </GoodsDiv>
-            </PostItem>
             {boards.map((board) => (
               <PostItem>
                 <GoodsDiv>
                   <GoodsImg src={board.fundingFileList[0].fileUrl} />
-                  <GoodsContent>{board.currentSalePercent}%달성</GoodsContent>
+                  <GoodsContent>{board.currentSalePercent}% 달성</GoodsContent>
                   <GoodsContent1>{board.boardTitle}</GoodsContent1>
                   <GoodsContent1>
-                    <GoodsContent2>Temu</GoodsContent2>
+                    <GoodsContent2>{board.companyName}</GoodsContent2>
                     <GoodsContent3>
                       {getRemailDate(board.endDate)}
                     </GoodsContent3>

@@ -27,6 +27,19 @@ import sofa from "../FishingImg/sofa.png";
 import tv from "../FishingImg/tv.png";
 import vest from "../FishingImg/vest.png";
 
+import fish1 from "../FishingImg/fish1.png";
+import fish2 from "../FishingImg/fish2.png";
+import fish3 from "../FishingImg/fish3.png";
+import fish4 from "../FishingImg/fish4.png";
+import fish5 from "../FishingImg/fish5.png";
+import fish6 from "../FishingImg/fish6.png";
+import fish7 from "../FishingImg/fish7.png";
+import fish8 from "../FishingImg/fish8.png";
+import fish9 from "../FishingImg/fish9.png";
+import fish10 from "../FishingImg/fish10.png";
+import fish11 from "../FishingImg/fish11.png";
+import fish12 from "../FishingImg/fish12.png";
+
 import { TitleLine, TitleText } from "../FishingList/FishingList.styled";
 
 const FishingInsert = () => {
@@ -163,18 +176,102 @@ const FishingInsert = () => {
             <Label>주요 어종</Label>
 
             <AmenitiesContainer>
-              <FishText>붕어</FishText>
-              <FishText>향어</FishText>
-              <FishText>잉어</FishText>
-              <FishText>메기</FishText>
-              <FishText>비단잉어</FishText>
-              <FishText>광어(민물)</FishText>
-              <FishText>가물치</FishText>
-              <FishText>민어</FishText>
-              <FishText>돌돔(민물)</FishText>
-              <FishText>빙어</FishText>
-              <FishText>송어</FishText>
-              <FishText>민물기타</FishText>
+              <AmenitiesDiv>
+                <AmenitiesImgDiv>
+                  <AmenitiesImg src={fish1} />
+                </AmenitiesImgDiv>
+                <AmenitiesTextDiv>
+                  <AmenitiesText>붕어</AmenitiesText>
+                </AmenitiesTextDiv>
+              </AmenitiesDiv>
+              <AmenitiesDiv>
+                <AmenitiesImgDiv>
+                  <AmenitiesImg src={fish2} />
+                </AmenitiesImgDiv>
+                <AmenitiesTextDiv>
+                  <AmenitiesText>향어어</AmenitiesText>
+                </AmenitiesTextDiv>
+              </AmenitiesDiv>
+              <AmenitiesDiv>
+                <AmenitiesImgDiv>
+                  <AmenitiesImg src={fish3} />
+                </AmenitiesImgDiv>
+                <AmenitiesTextDiv>
+                  <AmenitiesText>잉어</AmenitiesText>
+                </AmenitiesTextDiv>
+              </AmenitiesDiv>
+              <AmenitiesDiv>
+                <AmenitiesImgDiv>
+                  <AmenitiesImg src={fish4} />
+                </AmenitiesImgDiv>
+                <AmenitiesTextDiv>
+                  <AmenitiesText>메기</AmenitiesText>
+                </AmenitiesTextDiv>
+              </AmenitiesDiv>
+              <AmenitiesDiv>
+                <AmenitiesImgDiv>
+                  <AmenitiesImg src={fish5} />
+                </AmenitiesImgDiv>
+                <AmenitiesTextDiv>
+                  <AmenitiesText>비단잉어</AmenitiesText>
+                </AmenitiesTextDiv>
+              </AmenitiesDiv>
+              <AmenitiesDiv>
+                <AmenitiesImgDiv>
+                  <AmenitiesImg src={fish6} />
+                </AmenitiesImgDiv>
+                <AmenitiesTextDiv>
+                  <AmenitiesText>광어(민물)</AmenitiesText>
+                </AmenitiesTextDiv>
+              </AmenitiesDiv>
+              <AmenitiesDiv>
+                <AmenitiesImgDiv>
+                  <AmenitiesImg src={fish7} />
+                </AmenitiesImgDiv>
+                <AmenitiesTextDiv>
+                  <AmenitiesText>가물치</AmenitiesText>
+                </AmenitiesTextDiv>
+              </AmenitiesDiv>
+              <AmenitiesDiv>
+                <AmenitiesImgDiv>
+                  <AmenitiesImg src={fish8} />
+                </AmenitiesImgDiv>
+                <AmenitiesTextDiv>
+                  <AmenitiesText>민어</AmenitiesText>
+                </AmenitiesTextDiv>
+              </AmenitiesDiv>
+              <AmenitiesDiv>
+                <AmenitiesImgDiv>
+                  <AmenitiesImg src={fish9} />
+                </AmenitiesImgDiv>
+                <AmenitiesTextDiv>
+                  <AmenitiesText>돌돔(민물)</AmenitiesText>
+                </AmenitiesTextDiv>
+              </AmenitiesDiv>
+              <AmenitiesDiv>
+                <AmenitiesImgDiv>
+                  <AmenitiesImg src={fish10} />
+                </AmenitiesImgDiv>
+                <AmenitiesTextDiv>
+                  <AmenitiesText>빙어</AmenitiesText>
+                </AmenitiesTextDiv>
+              </AmenitiesDiv>
+              <AmenitiesDiv>
+                <AmenitiesImgDiv>
+                  <AmenitiesImg src={fish11} />
+                </AmenitiesImgDiv>
+                <AmenitiesTextDiv>
+                  <AmenitiesText>송어</AmenitiesText>
+                </AmenitiesTextDiv>
+              </AmenitiesDiv>
+              <AmenitiesDiv>
+                <AmenitiesImgDiv>
+                  <AmenitiesImg src={fish12} />
+                </AmenitiesImgDiv>
+                <AmenitiesTextDiv>
+                  <AmenitiesText>민물기타</AmenitiesText>
+                </AmenitiesTextDiv>
+              </AmenitiesDiv>
             </AmenitiesContainer>
           </FormGroup>
           <FormGroup>

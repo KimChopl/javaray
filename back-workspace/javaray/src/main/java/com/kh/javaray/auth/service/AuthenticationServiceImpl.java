@@ -35,6 +35,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 
 	@Override
 	public CustomUserDetails checkedUser() {
+		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		return (CustomUserDetails) auth.getPrincipal();
 	}

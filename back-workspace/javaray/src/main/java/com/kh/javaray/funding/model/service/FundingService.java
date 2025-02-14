@@ -16,8 +16,10 @@ public interface FundingService {
 
 	void insertBoard(BusinessNoDTO businessNoData, MultipartFile file);
 
-	String selectFundingListHasToken(int page);
+	List<FundingBoardDTO> selectFundingListHasToken(int page, int categoryNo);
 
-	List<FundingBoardDTO> selectFundingListHasNoneToken(int page);
+	List<FundingBoardDTO> selectFundingListHasNoneToken(int page, int categoryNo);
+
+	List<String> selectCategory();
 
 }
