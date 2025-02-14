@@ -38,7 +38,8 @@
 				#{ceoName},
 				#{companyIntroduce},
 				SYSDATE,
-				DEFAULT
+				DEFAULT,
+				#{businessNoFileUrl}
 			   )
 	</insert>
 	
@@ -134,7 +135,12 @@ SELECT
 		  	   TB_BUSINESS_NUMBER_INFO USING (BUSINESS_NUMBER)
 	</select>
 	
-	
+	<select id="selectCategory">
+		SELECT
+			   CATEGORY_NAME
+		  FROM
+		  	   TB_FUNDING_CATEGORY
+	</select>
 	
 	
 	

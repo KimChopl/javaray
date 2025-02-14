@@ -23,4 +23,6 @@ public interface ShippingService {
 
 	Shipping selectUpdateForm(String shippingNo);
 
+	List<Fishs> selectFish();
+
 }

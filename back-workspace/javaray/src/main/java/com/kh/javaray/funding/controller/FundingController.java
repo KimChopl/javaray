@@ -49,15 +49,17 @@ public class FundingController {
 	@PostMapping("/businessNoInsert")
 	public ResponseEntity<?> businessNoInsert(@ModelAttribute @Valid BusinessNoDTO BusinessNoData,
 											  @RequestParam(name="businessNoFile") MultipartFile file){
+		
 		fundingService.insertBoard(BusinessNoData, file);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body("사업자 신청 성공했습니다.");
 	}
 	
 	@GetMapping("/selectList/hasToken")
-	public ResponseEntity<FundingBoardDTO> selectFundingListHasToken(@RequestParam(name="page", defaultValue="0") int page,
-															@RequestParam(name="categoryNo") int categoryNo){
-		List<FundingBoardDTO> list = ResponseEntity.ok(fundingService.selectFundingListHasToken(page, categoryNo));
+	public ResponseEntity<List<FundingBoardDTO>> selectFundingListHasToken(@RequestParam(name="page", defaultValue="0") int page,
+																			@RequestParam(name="categoryNo") int categoryNo){
+		
+		List<FundingBoardDTO> list = fundingService.selectFundingListHasToken(page, categoryNo);
 		return ResponseEntity.ok().body(list);
 	}
 	
@@ -66,6 +68,13 @@ public class FundingController {
 																			   @RequestParam(name="categoryNo", defaultValue="5") int categoryNo){
 		List<FundingBoardDTO> list = fundingService.selectFundingListHasNoneToken(page, categoryNo);
 		return ResponseEntity.ok().body(list);
+	}
+	
+	@GetMapping("/selectCategory")
+	public ResponseEntity<List<String>> selectCategory(){
+		log.info("나야냐");
+		
+		return ResponseEntity.ok(fundingService.selectCategory());
 	}
 	
 

@@ -28,5 +28,8 @@ public interface ShippingMapper {
 
 	@Select("SELECT COUNT(USER_NO) FROM TB_SHIPPING_ATTENTION WHERE SHIPPING_NO = #{shippingNo} AND USER_NO = #{userNo}")
 	int selectAttention(Attention att);
+	
+	@Select("SELECT FISH_NO fishNo, FISH_NAME fishName FROM TB_FISH")
+	List<Fishs> selectFishs();
 
 }

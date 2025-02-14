@@ -23,4 +23,6 @@ public interface FundingMapper {
 	
 	List<FundingCompanyNameDTO> selectCompanyName();
 
+	List<String> selectCategory();
+
 }
