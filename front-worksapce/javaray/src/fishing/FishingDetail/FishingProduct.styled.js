@@ -76,6 +76,7 @@ export const MessageDiv1 = styled.div`
 export const MessageDiv2 = styled.div`
   width: 1000px;
   height: 65%;
+  display: flex;
 `;
 
 export const MessageTitle = styled.p`
@@ -89,4 +90,37 @@ export const MessageText = styled.p`
   font-size: 18px;
   margin-top: 10px;
   margin-left: 20px;
+`;
+
+export const AmenitiesImg = styled.img`
+  width: 60px;
+  height: 60px;
+  margin: auto;
+`;
+
+export const AmenitiesText = styled.label`
+  font-size: 15px;
+  font-weight: bold;
+`;
+
+export const AmenitiesDiv = styled.div`
+  width: 100px;
+  height: 90px;
+  margin: auto;
+  border: 1px solid rgb(225, 218, 203);
+  text-align: center;
+  float: left;
+  border-radius: 3px;
+`;
+
+export const AmenitiesImgDiv = styled.div`
+  width: 100%;
+  height: 75%;
+`;
+
+export const AmenitiesTextDiv = styled.div`
+  width: 100%;
+  height: 25%;
+
+  margin-bottom: 2px;
 `;
