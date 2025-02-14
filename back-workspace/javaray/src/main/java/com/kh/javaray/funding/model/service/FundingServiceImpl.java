@@ -89,6 +89,7 @@ public class FundingServiceImpl implements FundingService {
 	@Override
 	public  List<FundingBoardDTO> selectFundingListHasToken(int page, int categoryNo) {
 		
+		
 		CustomUserDetails user = authService.checkedUser();
 		String role = user.getAuthorities().iterator().next().getAuthority();
 		log.info("{}", role);
@@ -110,12 +111,12 @@ public class FundingServiceImpl implements FundingService {
 			            String companyName = companyNameMap.get(totalList.getUserNo());
 			            if (companyName != null) {
 			                totalList.setCompanyName(companyName);
+			                totalList.setRole(role);
 			            }
 			        }
 			    }
-				
+		
 		return list;
-
 	}
 
 	// 토큰없을 때 메인 페이지 전체조회
@@ -142,11 +143,13 @@ public class FundingServiceImpl implements FundingService {
 	            }
 	        }
 	    }
-
-
-		 
-		
 		return list;
+	}
+
+	@Override
+	public List<String> selectCategory() {
+		
+		return fundingMapper.selectCategory();
 	}
 
 }

@@ -34,22 +34,18 @@ const FundingLists = () => {
   const navigate = useNavigate();
   const { auth, validation } = useContext(AuthContext);
   const [role, setRole] = useState("");
-  const [flag, isFlag] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const [page, setPage] = useState();
+  const [page, setPage] = useState(0);
   const [boards, setBoards] = useState([]);
   const [categoryNo, setCategoryNo] = useState(5);
 
   const handleLogin = () => {
+    console.log(auth.accessToken);
+    console.log(page);
+    console.log(categoryNo);
     axios
       .get(
-        "http://localhost/funding/selectList/hasToken",
-        {
-          params: {
-            page: page,
-            categoryNo: categoryNo,
-          },
-        },
+        `http://localhost/funding/selectList/hasToken?page=${page}&categoryNo=${categoryNo}`,
         {
           headers: {
             Authorization: `Bearer ${auth.accessToken}`,
@@ -57,9 +53,8 @@ const FundingLists = () => {
         }
       )
       .then((response) => {
-        console.log(response.data);
+        setRole(response.data[0].role);
         setBoards([...boards, ...response.data]);
-        //setRole(response.data);
         if (response.data.length < 6) {
           setHasMore(false);
         }
@@ -70,7 +65,6 @@ const FundingLists = () => {
   };
 
   const handleNoLogin = () => {
-    console.log(categoryNo);
     axios
       .get("http://localhost/funding/selectList/hasNonToken", {
         params: {
@@ -93,11 +87,6 @@ const FundingLists = () => {
   };
 
   useEffect(() => {
-    /*
-      1. 여기와서 auth봐야됨
-      2. 로그인돼있으면 handleLogin불러야됨
-      3. 안돼있으면 noHandleLogin불러야됨
-    */
     console.log(auth.isAuthenticated);
     if (auth.isAuthenticated === undefined) return;
     if (auth.isAuthenticated) {
@@ -124,7 +113,7 @@ const FundingLists = () => {
 
   const handleCategory = (e) => {
     setCategoryNo(e);
-    setPage();
+    setPage(0);
     setBoards([]);
     setHasMore(true);
   };

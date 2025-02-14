@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 export const ContainerDiv = styled.div`
   width: 1200px;
-  height: auto;
-  margin: auto;
+  height: 100%;
+  margin: 0px 5px;
 `;
 
 export const Container = styled.div`

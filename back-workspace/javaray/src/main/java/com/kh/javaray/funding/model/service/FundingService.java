@@ -20,4 +20,6 @@ public interface FundingService {
 
 	List<FundingBoardDTO> selectFundingListHasNoneToken(int page, int categoryNo);
 
+	List<String> selectCategory();
+
 }
