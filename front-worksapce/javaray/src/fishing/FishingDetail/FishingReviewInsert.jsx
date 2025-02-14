@@ -38,8 +38,10 @@ const FishingReviewInsert = () => {
           <FormGroup>
             <Label>사진등록</Label>
             <Input type="file"></Input>
-            <Input type="file"></Input>
-            <Input type="file"></Input>
+          </FormGroup>
+          <FormGroup>
+            <Label>제목</Label>
+            <Input type="text"></Input>
           </FormGroup>
           <FormGroup>
             <Label>리뷰</Label>
