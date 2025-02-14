@@ -31,18 +31,17 @@ function CollapsibleExample() {
 
   return (
     <>
-      <Navbar
-        collapseOnSelect
-        expand="lg"
-        className="bg-body-tertiary"
-        id="fire"
-      >
+      <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
         <Container>
           <Navbar.Brand onClick={() => goTo("/")}>Javaray</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <NavDropdown title="바다" id="collapsible-nav-dropdown">
+              <NavDropdown
+                title="바다"
+                id="collapsible-nav-dropdown"
+                style={{ position: "relative", zIndex: "30" }}
+              >
                 <NavDropdown.Item onClick={() => goTo("/")}>
                   선박예약
                 </NavDropdown.Item>

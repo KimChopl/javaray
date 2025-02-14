@@ -103,7 +103,6 @@
       			 tra.FISHING_NO = #{fishingNo} 
 	</select>
 	
-	
 
 
 
