@@ -16,7 +16,7 @@
 		<result property="price" column="price" />
 		<association property="member" javaType="Member" >
 			<id property="userNo" column="userNo"/>
-			<result property="nickname" column="nicname"/>
+			<result property="nickname" column="nickname"/>
 			<result property="username" column="username"/>
 			<result property="phone" column="phone"/>
 			<result property="email" column="email"/>

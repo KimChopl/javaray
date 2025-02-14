@@ -25,7 +25,7 @@ import {
 } from "./ShippingDetailCss";
 import Modal from "../../Modal/Modal";
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Weather from "./Weather/Wrather";
 import { AuthContext } from "../../UseContext/Auth/AuthContext";
@@ -39,36 +39,46 @@ const ShippingDetail = () => {
   const [fishNo, setFishNo] = useState("");
   const [isAuth, setIsAuth] = useState(undefined);
   const { auth } = useContext(AuthContext);
+  const [attCount, setAttCount] = useState(null);
+  const navi = useNavigate();
+  const scrollUp = () => {
+    window.scroll({ top: 0 });
+  };
   useEffect(() => {
     axios
       .get(`http://localhost/shippings/detail?shippingNo=${shippingNo}`)
       .then((response) => {
         console.log(response);
         setShipping(response.data);
+        setAttCount(response.data.shipping.attention);
         setLoading(false);
       });
     setIsAuth(auth.isAuthenticated);
-    if (isAuth) {
-      axios
-        .get(`http://localhost/shippings/attention?shippingNo=${shippingNo}`, {
-          headers: {
-            Authorization: `Bearer ${auth.accessToken}`,
-          },
-        })
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
+    axios
+      .get(`http://localhost/shippings/attention?shippingNo=${shippingNo}`, {
+        headers: {
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
+      })
+      .then((response) => {
+        if (response.data === 1) {
+          console.log("??");
+          setAttention(true);
+        } else {
+          console.log("?");
+          setAttention(false);
+        }
+      })
+      .catch((error) => {
+        setAttention(false);
+      });
+    scrollUp();
   }, [auth]);
 
   const changeAttention = () => {
     setIsAuth(auth.isAuthenticated);
     if (isAuth) {
       if (attention) {
-        setAttention(false);
         axios
           .delete(
             `http://localhost/shippings/attention?shippingNo=${shippingNo}`,
@@ -78,25 +88,26 @@ const ShippingDetail = () => {
               },
             }
           )
-          .then((response) => console.log(response))
+          .then((response) => {
+            console.log(response);
+            setAttCount(attCount - 1);
+            setAttention(false);
+          })
           .catch((error) => {
             console.log(error);
-            setAttention(true);
           });
       } else {
-        setAttention(true);
         console.log(auth.accessToken);
         axios
           .post(
             `http://localhost/shippings/attention?shippingNo=${shippingNo}`,
-            {
-              headers: {
-                Authorization: `Bearer ${auth.accessToken}`,
-              },
-            }
+            null,
+            { headers: { Authorization: `Bearer ${auth.accessToken}` } }
           )
           .then((response) => {
             console.log(response);
+            setAttCount(attCount + 1);
+            setAttention(true);
           })
           .catch((error) => {
             console.log(error);
@@ -139,7 +150,7 @@ const ShippingDetail = () => {
             <BaseCover>
               <BaseBar>
                 <LocationDiv>
-                  <ContentLabel></ContentLabel>
+                  <ContentLabel>{shipping.shipping.port.address}</ContentLabel>
                 </LocationDiv>
               </BaseBar>
               <BaseBar>
@@ -182,11 +193,21 @@ const ShippingDetail = () => {
               </BaseBar>
               <BaseBar>
                 <BookBtnCover>
-                  <BookBtn>에약하기</BookBtn>
+                  {shipping.shipping.member.nickname === auth.nickname ? (
+                    <BookBtn
+                      onClick={() =>
+                        navi(`/shipping/update/${shipping.shipping.shippingNo}`)
+                      }
+                    >
+                      수정하기
+                    </BookBtn>
+                  ) : (
+                    <BookBtn>에약하기</BookBtn>
+                  )}
                 </BookBtnCover>
                 <AttentionInfo onClick={changeAttention}>
                   {attention ? "❤" : "🤍"}
-                  <label>+{shipping.shipping.attention}</label>
+                  <label>+{attCount}</label>
                 </AttentionInfo>
               </BaseBar>
               <BaseBar>
@@ -196,7 +217,7 @@ const ShippingDetail = () => {
                 <OtherInfo onClick={() => move("reviewSection")}>
                   리뷰
                 </OtherInfo>
-                <RatingInfo>⭐ 3.8</RatingInfo>
+                <RatingInfo>⭐ : {shipping.shipping.avgRating}</RatingInfo>
               </BaseBar>
             </BaseCover>
           </DetailBase>

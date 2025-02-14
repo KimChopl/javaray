@@ -45,12 +45,14 @@
 	
 	<resultMap id="fundingBoard" type="FundingBoardDTO">
 		<id property="boardNo" column="TB_FUNDING_BOARD.BOARD_NO" />
+		<result property="userNo" column="USER_NO" />
 		<result property="boardTitle" column="TITLE" />
 		<result property="boardContent" column="CONTENT" />
 		<result property="startDate" column="START_DATE" />
 		<result property="endDate" column="END_DATE" />
 		<result property="status" column="STATUS" />
 		<result property="purposeAmount" column="PURPOSE_AMOUNT" />
+		<result property="currentSalePercent" column="CURRENTSALEPERCENT"/>
 		<association property="fundingCategory" javaType="FundingCategoryDTO" >
 			<id property="categoryNo" column="CATEGORY_NO"/>
 			<result property="categoryName" column="CATEGORY_NAME" />
@@ -72,7 +74,7 @@
 	</resultMap>
 	
 	<select id="selectBoardList" resultMap="fundingBoard">
-		SELECT
+SELECT
 			   TB_FUNDING_BOARD.BOARD_NO,
 			   USER_NO,
 			   CATEGORY_NAME,
@@ -81,7 +83,7 @@
 			   START_DATE,
 			   END_DATE,
 			   STATUS,
-			   PUPOSE_AMOUNT,
+			   PURPOSE_AMOUNT,
 			   OPTION_NO,
 			   OPTION_TYPE,
 			   OPTION_TITLE,
@@ -89,7 +91,20 @@
 			   OPTION_PRICE,
 			   TOTAL_COUNT,
 			   FILE_LEVEL,
-			   FILE_URL
+			   FILE_URL,
+			   (SELECT 
+					   SUM(OPTION_COUNT * OPTION_PRICE)
+				  FROM 
+				  	   TB_PURCHASE_INFO
+				  JOIN
+				  	   TB_PRODUCT_OPTION USING (OPTION_NO)
+				 WHERE 
+				 	   OPTION_NO IN (SELECT
+										   OPTION_NO
+									  FROM
+									  	   TB_PRODUCT_OPTION
+									 WHERE
+									 	   BOARD_NO = TB_FUNDING_BOARD.BOARD_NO)) / PURPOSE_AMOUNT * 100 AS CURRENTSALEPERCENT
 		  FROM
 		  	   TB_PRODUCT_OPTION
 		  JOIN
@@ -100,9 +115,23 @@
 		  	   TB_FUNDING_CATEGORY USING (CATEGORY_NO)
 		 WHERE
 		 	   STATUS = 'N'
+		   AND
+		   	   TB_PRODUCT_OPTION.OPTION_NO = 1
+		   AND
+		   	   (#{categoryNo} = 5 OR CATEGORY_NO = #{categoryNo})
 		 ORDER
 		    BY
 		       START_DATE
+	</select>
+	
+	<select id="selectCompanyName">
+		SELECT
+			   USER_NO userNo,
+			   COMPANY_NAME companyName
+		  FROM
+		  	   TB_FUNDING_COMPANY
+		  JOIN
+		  	   TB_BUSINESS_NUMBER_INFO USING (BUSINESS_NUMBER)
 	</select>
 	
 	

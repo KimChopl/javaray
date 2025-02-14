@@ -55,15 +55,16 @@ public class FundingController {
 	}
 	
 	@GetMapping("/selectList/hasToken")
-	public ResponseEntity<String> selectFundingListHasToken(@RequestParam(name="page", defaultValue="0") int page){
-		return ResponseEntity.ok(fundingService.selectFundingListHasToken(page));
+	public ResponseEntity<FundingBoardDTO> selectFundingListHasToken(@RequestParam(name="page", defaultValue="0") int page,
+															@RequestParam(name="categoryNo") int categoryNo){
+		List<FundingBoardDTO> list = ResponseEntity.ok(fundingService.selectFundingListHasToken(page, categoryNo));
+		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping("/selectList/hasNonToken")
-	public ResponseEntity<List<FundingBoardDTO>> selectFundingListHasNoneToken(@RequestParam(name="page", defaultValue="0") int page){
-		List<FundingBoardDTO> list = fundingService.selectFundingListHasNoneToken(page);
-		
-		log.info("{}", list);
+	public ResponseEntity<List<FundingBoardDTO>> selectFundingListHasNoneToken(@RequestParam(name="page", defaultValue="0") int page,
+																			   @RequestParam(name="categoryNo", defaultValue="5") int categoryNo){
+		List<FundingBoardDTO> list = fundingService.selectFundingListHasNoneToken(page, categoryNo);
 		return ResponseEntity.ok().body(list);
 	}
 	

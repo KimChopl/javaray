@@ -34,10 +34,11 @@ const FundingLists = () => {
   const navigate = useNavigate();
   const { auth, validation } = useContext(AuthContext);
   const [role, setRole] = useState("");
-  const [category, setCategory] = useState("");
   const [flag, isFlag] = useState(false);
-  const [hasMore, setHasMore] = useState();
+  const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState();
+  const [boards, setBoards] = useState([]);
+  const [categoryNo, setCategoryNo] = useState(5);
 
   const handleLogin = () => {
     axios
@@ -46,6 +47,7 @@ const FundingLists = () => {
         {
           params: {
             page: page,
+            categoryNo: categoryNo,
           },
         },
         {
@@ -56,7 +58,11 @@ const FundingLists = () => {
       )
       .then((response) => {
         console.log(response.data);
-        setRole(response.data);
+        setBoards([...boards, ...response.data]);
+        //setRole(response.data);
+        if (response.data.length < 6) {
+          setHasMore(false);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -64,15 +70,21 @@ const FundingLists = () => {
   };
 
   const handleNoLogin = () => {
+    console.log(categoryNo);
     axios
       .get("http://localhost/funding/selectList/hasNonToken", {
         params: {
           page: page,
+          categoryNo: categoryNo,
         },
       })
       .then((response) => {
         console.log(response);
+        setBoards([...boards, ...response.data]);
         setRole("");
+        if (response.data.length < 6) {
+          setHasMore(false);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -93,39 +105,77 @@ const FundingLists = () => {
     } else {
       handleNoLogin();
     }
-  }, [auth.isAuthenticated, page]);
+  }, [auth.isAuthenticated, page, categoryNo]);
 
   const handleMore = () => {
     setPage((page) => page + 1);
   };
 
+  const getRemailDate = (endDate) => {
+    const today = new Date();
+    const end = new Date(endDate);
+
+    const diffTime = end.getTime() - today.getTime();
+
+    const remainingDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    return remainingDays > 0 ? `${remainingDays}일 남음` : "마감됨";
+  };
+
+  const handleCategory = (e) => {
+    setCategoryNo(e);
+    setPage();
+    setBoards([]);
+    setHasMore(true);
+  };
+
   return (
     <>
-      <Container>
-        <FundingTitle>펀딩사이트</FundingTitle>
-        <FundingCategory>
-          <CategoryItem>
+      <Container id="kekeke">
+        <FundingTitle id="kikiki">펀딩사이트</FundingTitle>
+        <div className="hi">
+          <div className="wrap">
+            <div className="circle">
+              <div className="wave-one"></div>
+              <div className="wave-two"></div>
+              <div className="wave-three"></div>
+              <div className="wave-four"></div>
+
+              <i className="fas fa-moon"></i>
+              <i className="fas fa-moon blur"></i>
+
+              <div className="star">
+                <i className="fas fa-asterisk star1"></i>
+                <i className="fas fa-asterisk star2"></i>
+                <i className="fas fa-asterisk star3"></i>
+                <i className="fas fa-asterisk star4"></i>
+                <i className="fas fa-asterisk star5"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <FundingCategory id="fire">
+          <CategoryItem onClick={() => handleCategory(5)}>
             <FundingIcon src={icon5} alt="icon" />
             <FundingIconContent>전체</FundingIconContent>
           </CategoryItem>
-          <CategoryItem>
+          <CategoryItem onClick={() => handleCategory(1)}>
             <FundingIcon src={icon1} alt="icon" />
             <FundingIconContent>낚시대</FundingIconContent>
           </CategoryItem>
-          <CategoryItem>
+          <CategoryItem onClick={() => handleCategory(2)}>
             <FundingIcon src={icon2} alt="icon" />
             <FundingIconContent>릴</FundingIconContent>
           </CategoryItem>
-          <CategoryItem>
+          <CategoryItem onClick={() => handleCategory(3)}>
             <FundingIcon src={icon3} alt="icon" />
             <FundingIconContent>낚싯줄</FundingIconContent>
           </CategoryItem>
-          <CategoryItem>
+          <CategoryItem onClick={() => handleCategory(4)}>
             <FundingIcon src={icon4} alt="icon" />
             <FundingIconContent>낚시의류</FundingIconContent>
           </CategoryItem>
         </FundingCategory>
-
         <Insert>
           {role === "ROLE_USER" ? (
             <GoodsInsert onClick={() => navigate("/BusinessNoApi")}>
@@ -141,75 +191,24 @@ const FundingLists = () => {
             </GoodsInsert>
           ) : null}
         </Insert>
-
         <FundingHr />
         <FundingGoods>
           <PostList>
-            <PostItem>
-              <GoodsDiv>
-                <GoodsImg src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQhTX6sKiW0o-HmWoOYNzM1IfxdNALBegUmoYA5uLKw4iL9SCichdBhYvvZckcJQo6-KnuNgvw-IGCa0RCXvo76brL4-1Xx8lpkFw3VpOlp0QIbxinzUqtj3YgXT7W2AV-32mvlgUOl_A&usqp=CAc" />
-                <GoodsContent>34%달성</GoodsContent>
-                <GoodsContent1>
-                  PLUSINNO Hunting V11 텔레스코픽 낚시대
-                </GoodsContent1>
-                <GoodsContent1>
-                  <GoodsContent2>Temu</GoodsContent2>
-                  <GoodsContent3>4일 남음</GoodsContent3>
-                </GoodsContent1>
-              </GoodsDiv>
-            </PostItem>
-            <PostItem>
-              <GoodsDiv>
-                <GoodsImg src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQhTX6sKiW0o-HmWoOYNzM1IfxdNALBegUmoYA5uLKw4iL9SCichdBhYvvZckcJQo6-KnuNgvw-IGCa0RCXvo76brL4-1Xx8lpkFw3VpOlp0QIbxinzUqtj3YgXT7W2AV-32mvlgUOl_A&usqp=CAc" />
-                <GoodsContent>38%달성</GoodsContent>
-                <GoodsContent1>
-                  PLUSINNO Hunting V11 텔레스코픽 낚시대
-                </GoodsContent1>
-                <GoodsContent1>
-                  <GoodsContent2>Temu</GoodsContent2>
-                  <GoodsContent3>2일 남음</GoodsContent3>
-                </GoodsContent1>
-              </GoodsDiv>
-            </PostItem>
-            <PostItem>
-              <GoodsDiv>
-                <GoodsImg src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQhTX6sKiW0o-HmWoOYNzM1IfxdNALBegUmoYA5uLKw4iL9SCichdBhYvvZckcJQo6-KnuNgvw-IGCa0RCXvo76brL4-1Xx8lpkFw3VpOlp0QIbxinzUqtj3YgXT7W2AV-32mvlgUOl_A&usqp=CAc" />
-                <GoodsContent>34%달성</GoodsContent>
-                <GoodsContent1>
-                  PLUSINNO Hunting V11 텔레스코픽 낚시대
-                </GoodsContent1>
-                <GoodsContent1>
-                  <GoodsContent2>Temu</GoodsContent2>
-                  <GoodsContent3>4일 남음</GoodsContent3>
-                </GoodsContent1>
-              </GoodsDiv>
-            </PostItem>
-            <PostItem>
-              <GoodsDiv>
-                <GoodsImg src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQhTX6sKiW0o-HmWoOYNzM1IfxdNALBegUmoYA5uLKw4iL9SCichdBhYvvZckcJQo6-KnuNgvw-IGCa0RCXvo76brL4-1Xx8lpkFw3VpOlp0QIbxinzUqtj3YgXT7W2AV-32mvlgUOl_A&usqp=CAc" />
-                <GoodsContent>34%달성</GoodsContent>
-                <GoodsContent1>
-                  PLUSINNO Hunting V11 텔레스코픽 낚시대
-                </GoodsContent1>
-                <GoodsContent1>
-                  <GoodsContent2>Temu</GoodsContent2>
-                  <GoodsContent3>4일 남음</GoodsContent3>
-                </GoodsContent1>
-              </GoodsDiv>
-            </PostItem>
-            <PostItem>
-              <GoodsDiv>
-                <GoodsImg src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQhTX6sKiW0o-HmWoOYNzM1IfxdNALBegUmoYA5uLKw4iL9SCichdBhYvvZckcJQo6-KnuNgvw-IGCa0RCXvo76brL4-1Xx8lpkFw3VpOlp0QIbxinzUqtj3YgXT7W2AV-32mvlgUOl_A&usqp=CAc" />
-                <GoodsContent>34%달성</GoodsContent>
-                <GoodsContent1>
-                  PLUSINNO Hunting V11 텔레스코픽 낚시대
-                </GoodsContent1>
-                <GoodsContent1>
-                  <GoodsContent2>Temu</GoodsContent2>
-                  <GoodsContent3>4일 남음</GoodsContent3>
-                </GoodsContent1>
-              </GoodsDiv>
-            </PostItem>
+            {boards.map((board) => (
+              <PostItem>
+                <GoodsDiv>
+                  <GoodsImg src={board.fundingFileList[0].fileUrl} />
+                  <GoodsContent>{board.currentSalePercent}% 달성</GoodsContent>
+                  <GoodsContent1>{board.boardTitle}</GoodsContent1>
+                  <GoodsContent1>
+                    <GoodsContent2>{board.companyName}</GoodsContent2>
+                    <GoodsContent3>
+                      {getRemailDate(board.endDate)}
+                    </GoodsContent3>
+                  </GoodsContent1>
+                </GoodsDiv>
+              </PostItem>
+            ))}
           </PostList>
         </FundingGoods>
         <br />

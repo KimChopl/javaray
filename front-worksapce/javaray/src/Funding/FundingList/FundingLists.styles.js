@@ -84,6 +84,12 @@ export const PostList = styled.ul`
   padding: 0;
   margin: auto;
   text-align: center;
+  &:hover {
+    background-image: url("hu.wiki/i/pNmqGhmQWMeYWsRW7hTEnMrArDksFnC_0b31GBjW5cuy0cWxrkHRj-CStWqt3PXN48g6fO4oC_kXqMlumaJEJw.gif");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: bottom;
+  }
 `;
 
 export const PostItem = styled.li`
@@ -94,9 +100,14 @@ export const PostItem = styled.li`
   width: 300px;
 
   &:hover {
-    box-shadow: 2px 2px 0px 0px black;
+    box-shadow: 2px 1px 1px 3px rgba(0, 179, 40, 0.2),
+      3px 2px 2px 2px rgba(0, 179, 80, 0.4),
+      4px 3px 3px 1px rgba(0, 179, 120, 0.6),
+      5px 4px 4px 0px rgba(0, 179, 160, 0.8),
+      6px 5px 5px 0px rgba(0, 179, 200, 1);
     border-radius: 5px;
-    cursor: pointer;
+    cursor: url("https://mblogthumb-phinf.pstatic.net/20110919_190/minarigirl_1316419836624mhgQK_PNG/Nemo_%282%29.png?type=w420"),
+      auto;
   }
 `;
 
