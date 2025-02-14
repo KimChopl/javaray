@@ -1,6 +1,8 @@
 package com.kh.javaray.funding.model.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import com.kh.javaray.exception.exceptions.FailUpdateUserInfoException;
 import com.kh.javaray.funding.model.dto.BusinessNoDTO;
 import com.kh.javaray.funding.model.dto.FundingBoardDTO;
 import com.kh.javaray.funding.model.dto.FundingBusinessNoAPIDTO;
+import com.kh.javaray.funding.model.dto.FundingCompanyNameDTO;
 import com.kh.javaray.funding.model.mapper.FundingMapper;
 import com.kh.javaray.manager.model.dto.ManagingDTO;
 import com.kh.javaray.manager.model.mapper.ManagerMapper;
@@ -84,13 +87,35 @@ public class FundingServiceImpl implements FundingService {
 	}
 
 	@Override
-	public String selectFundingListHasToken(int page) {
+	public  List<FundingBoardDTO> selectFundingListHasToken(int page, int categoryNo) {
 		
 		CustomUserDetails user = authService.checkedUser();
-		
 		String role = user.getAuthorities().iterator().next().getAuthority();
+		log.info("{}", role);
+		
+		int size = 6;
+		RowBounds rowBounds = new RowBounds(page * size, size);
+		
+		List<FundingBoardDTO> list = fundingMapper.selectBoardList(rowBounds, categoryNo);
+		List<FundingCompanyNameDTO> companyNameList = fundingMapper.selectCompanyName();
+		
+		Map<Long, String> companyNameMap = new HashMap();
+				
+				for(FundingCompanyNameDTO company : companyNameList) {
+					companyNameMap.put(company.getUserNo(), company.getCompanyName());
+				}
+				
+				for (FundingBoardDTO totalList : list) {
+			        if (totalList.getUserNo() != null) {
+			            String companyName = companyNameMap.get(totalList.getUserNo());
+			            if (companyName != null) {
+			                totalList.setCompanyName(companyName);
+			            }
+			        }
+			    }
+				
+		return list;
 
-		return role;
 	}
 
 	// 토큰없을 때 메인 페이지 전체조회
@@ -101,6 +126,25 @@ public class FundingServiceImpl implements FundingService {
 		RowBounds rowBounds = new RowBounds(page * size, size);
 		
 		List<FundingBoardDTO> list = fundingMapper.selectBoardList(rowBounds, categoryNo);
+		List<FundingCompanyNameDTO> companyNameList = fundingMapper.selectCompanyName();
+		
+		Map<Long, String> companyNameMap = new HashMap();
+		
+		for(FundingCompanyNameDTO company : companyNameList) {
+			companyNameMap.put(company.getUserNo(), company.getCompanyName());
+		}
+		
+		for (FundingBoardDTO totalList : list) {
+	        if (totalList.getUserNo() != null) {
+	            String companyName = companyNameMap.get(totalList.getUserNo());
+	            if (companyName != null) {
+	                totalList.setCompanyName(companyName);
+	            }
+	        }
+	    }
+
+
+		 
 		
 		return list;
 	}

@@ -47,6 +47,7 @@ const FundingLists = () => {
         {
           params: {
             page: page,
+            categoryNo: categoryNo,
           },
         },
         {
@@ -57,7 +58,11 @@ const FundingLists = () => {
       )
       .then((response) => {
         console.log(response.data);
-        setRole(response.data);
+        setBoards([...boards, ...response.data]);
+        //setRole(response.data);
+        if (response.data.length < 6) {
+          setHasMore(false);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -189,19 +194,6 @@ const FundingLists = () => {
         <FundingHr />
         <FundingGoods>
           <PostList>
-            <PostItem>
-              <GoodsDiv>
-                <GoodsImg src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQhTX6sKiW0o-HmWoOYNzM1IfxdNALBegUmoYA5uLKw4iL9SCichdBhYvvZckcJQo6-KnuNgvw-IGCa0RCXvo76brL4-1Xx8lpkFw3VpOlp0QIbxinzUqtj3YgXT7W2AV-32mvlgUOl_A&usqp=CAc" />
-                <GoodsContent>34%달성</GoodsContent>
-                <GoodsContent1>
-                  PLUSINNO Hunting V11 텔레스코픽 낚시대
-                </GoodsContent1>
-                <GoodsContent1>
-                  <GoodsContent2>Temu</GoodsContent2>
-                  <GoodsContent3>4일 남음</GoodsContent3>
-                </GoodsContent1>
-              </GoodsDiv>
-            </PostItem>
             {boards.map((board) => (
               <PostItem>
                 <GoodsDiv>
@@ -209,7 +201,7 @@ const FundingLists = () => {
                   <GoodsContent>{board.currentSalePercent}% 달성</GoodsContent>
                   <GoodsContent1>{board.boardTitle}</GoodsContent1>
                   <GoodsContent1>
-                    <GoodsContent2>Temu</GoodsContent2>
+                    <GoodsContent2>{board.companyName}</GoodsContent2>
                     <GoodsContent3>
                       {getRemailDate(board.endDate)}
                     </GoodsContent3>

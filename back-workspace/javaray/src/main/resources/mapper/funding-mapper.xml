@@ -45,6 +45,7 @@
 	
 	<resultMap id="fundingBoard" type="FundingBoardDTO">
 		<id property="boardNo" column="TB_FUNDING_BOARD.BOARD_NO" />
+		<result property="userNo" column="USER_NO" />
 		<result property="boardTitle" column="TITLE" />
 		<result property="boardContent" column="CONTENT" />
 		<result property="startDate" column="START_DATE" />
@@ -121,6 +122,16 @@ SELECT
 		 ORDER
 		    BY
 		       START_DATE
+	</select>
+	
+	<select id="selectCompanyName">
+		SELECT
+			   USER_NO userNo,
+			   COMPANY_NAME companyName
+		  FROM
+		  	   TB_FUNDING_COMPANY
+		  JOIN
+		  	   TB_BUSINESS_NUMBER_INFO USING (BUSINESS_NUMBER)
 	</select>
 	
 	
