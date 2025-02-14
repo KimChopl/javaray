@@ -86,7 +86,15 @@ export const DeleteFishs = styled.div`
   width: 10px;
   height: 10px;
   margin-left: 90px;
-  background-color: black;
+  position: relative;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+export const DeleteImage = styled.img`
+  width: 100%;
+  height: 100%;
+  position: absolute;
 `;
 
 export const FishP = styled.p`

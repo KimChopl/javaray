@@ -73,4 +73,10 @@ public class ShippingController {
 		return ResponseEntity.ok().body(shipping);
 	}
 	
+	@GetMapping("fishs")
+	public ResponseEntity<List<Fishs>> selectFishs(){
+		List<Fishs> list = ss.selectFish();
+		return ResponseEntity.ok().body(list);
+	}
+	
 }

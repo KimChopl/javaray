@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.kh.javaray.exception.exceptions.AlreadyUseingUsernameException;
 import com.kh.javaray.exception.exceptions.FailUpdateUserInfoException;
+import com.kh.javaray.exception.exceptions.NotFoundInfoException;
 import com.kh.javaray.exception.exceptions.NotFoundUserInfoException;
 import com.kh.javaray.exception.exceptions.NotMatchBoardInfoException;
 import com.kh.javaray.exception.exceptions.NotMatchUserInfoException;
@@ -44,6 +45,11 @@ public class GlobarExceptionHandler {
 	}
 	@ExceptionHandler(NotMatchBoardInfoException.class)
 	public ResponseEntity<?> handleBoardNotMatch(NotMatchBoardInfoException e){
+		return ResponseEntity.badRequest().body(e.getMessage());
+	}
+	
+	@ExceptionHandler(NotFoundInfoException.class)
+	public ResponseEntity<?> handleNotFound(NotFoundInfoException e){
 		return ResponseEntity.badRequest().body(e.getMessage());
 	}
 	

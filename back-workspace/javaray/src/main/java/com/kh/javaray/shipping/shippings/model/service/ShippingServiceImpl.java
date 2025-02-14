@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.javaray.api.OpenDataApi;
 import com.kh.javaray.auth.service.AuthenticationService;
+import com.kh.javaray.exception.exceptions.NotFoundUserInfoException;
 import com.kh.javaray.exception.exceptions.NotMatchBoardInfoException;
 import com.kh.javaray.exception.exceptions.NotMatchUserInfoException;
 import com.kh.javaray.member.model.dto.CustomUserDetails;
@@ -109,6 +110,16 @@ public class ShippingServiceImpl implements ShippingService {
 				.shippingContent(xs.changeSelectForm(shipping.getShippingContent())).shippingNo(shippingNo)
 				.shippingTitle(shipping.getShippingTitle()).build();
 		return update;
+	}
+
+	@Override
+	public List<Fishs> selectFish() {
+		List<Fishs> list = sm.selectFishs(); 
+		if(list == null || list.isEmpty()) {
+			throw new NotFoundInfoException("해당목록을 찾지 못했습니다.");
+		}
+		return list;
+				
 	}
 
 }

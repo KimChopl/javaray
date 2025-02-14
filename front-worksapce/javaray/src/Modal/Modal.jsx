@@ -2,6 +2,7 @@ import { ModalBackground } from "../shipping/ShippingCss";
 import FishExplain from "./FishExplain/FishExplain";
 import { CloseDiv, CloseImg, ModalWrap } from "./ModalCss";
 import ReportForm from "./reportForm/ReprotForm";
+import SearchFish from "./SearchFish/SearchFish";
 
 const Modal = (props) => {
   //console.log(props);
@@ -9,6 +10,10 @@ const Modal = (props) => {
   const fishNo = props.fishNo;
   const clickModal = () => {
     props.clickModal(false);
+  };
+  const fish = props.selectedFish;
+  const setFish = (e) => {
+    props.setFish(e);
   };
   return (
     <>
@@ -19,6 +24,7 @@ const Modal = (props) => {
           </CloseDiv>
           {id === "1" || id === "2" ? <ReportForm kind={id} /> : <></>}
           {id === "fishExplain" && <FishExplain fishNo={fishNo} />}
+          {id === "searchFish" && <SearchFish fishs={fish} setFish={setFish} />}
         </ModalWrap>
       </ModalBackground>
     </>
