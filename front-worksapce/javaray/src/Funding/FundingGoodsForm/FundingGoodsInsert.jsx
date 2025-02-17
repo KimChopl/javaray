@@ -49,6 +49,10 @@ const FundingGoodsForm = () => {
     console.log(options);
   };
 
+  const settingOption = (e) => {
+    setOptions(e);
+  };
+
   return (
     <>
       <ContainerDiv>
@@ -156,6 +160,7 @@ const FundingGoodsForm = () => {
                 key={index}
                 optionNo={index + 1}
                 options={options}
+                setOptions={settingOption}
               />
             ))}
           </div>
