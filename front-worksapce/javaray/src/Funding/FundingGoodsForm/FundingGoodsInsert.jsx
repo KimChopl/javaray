@@ -1,10 +1,11 @@
 import {
   Button,
-  Container,
   ContainerDiv,
   Form,
   Input,
   Label,
+  MainContainer,
+  OptionContainer,
   TextArea,
   Title,
 } from "./FundingGoodsInsert.styles";
@@ -12,6 +13,7 @@ import {
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../UseContext/Auth/AuthContext";
 import axios from "axios";
+import FundingGoodsOption from "./FundingGoodsOption";
 
 const FundingGoodsForm = () => {
   const [categoryName, setCategoryName] = useState();
@@ -20,7 +22,7 @@ const FundingGoodsForm = () => {
   const [saleStartDate, setSaleStartDate] = useState();
   const [saleFinishDate, setSaleFinshDate] = useState();
   const [amountOfMoney, setAmountOfMoney] = useState();
-  const [selectedValue, setSelectedValue] = useState();
+  const [optionNo, setOptionNo] = useState("전체");
   const { auth } = useContext(AuthContext);
 
   useEffect(() => {
@@ -36,38 +38,64 @@ const FundingGoodsForm = () => {
 
   const handleInsertFundingCompany = () => {};
 
-  const handleChange = (e) => {
-    setSelectedValue(e.target.value);
+  const handleCategory = (e) => {
+    setCategoryName(e.target.value);
   };
 
-  console.log(selectedValue);
+  const handleOption = (e) => {
+    setOptionNo(e.target.value);
+  };
+
   return (
     <>
       <ContainerDiv>
-        <Container>
-          <Title>상품등록</Title>
-          <Form onSubmit={handleInsertFundingCompany}>
+        <Form onSubmit={handleInsertFundingCompany}>
+          <MainContainer>
+            <Title>상품등록</Title>
+            <select
+              id="select-box"
+              value={optionNo}
+              onChange={handleOption}
+              style={{ textAlign: "center" }}
+            >
+              <option value="">-- 옵션 개수를 선택해주세요 --</option>
+              <option value="1">1개</option>
+              <option value="2">2개</option>
+              <option value="3">3개</option>
+              <option value="4">4개</option>
+            </select>
+            <br />
+            <br />
             <div>
               <Label>작성자 ID</Label>
               <Input id="username" type="text" readOnly value={auth.nickname} />
             </div>
             <div>
-              <Label htmlFor="categoryNo">상품카테고리</Label>
-              <Input id="categoryNo" value={categoryName} type="text" />
-            </div>
-            <div>
               <label htmlFor="select-box">상품 카테고리 선택: </label>
+              <br />
               <br />
               <select
                 id="select-box"
-                value={selectedValue}
-                onChange={handleChange}
+                value={categoryName}
+                onChange={handleCategory}
               >
-                <option value="선택해주세요">-- 선택하세요 --</option>
+                <option value="">선택해주세요</option>
+                <option value="전체">🈴전체</option>
                 <option value="낚시대">🎣낚시대</option>
-                <option value="미끼">🪱미끼</option>
+                <option value="릴">🦾릴</option>
+                <option value="낚시줄">🧵낚시줄</option>
+                <option value="낚시의류">🦺낚시의류</option>
               </select>
-              <p>선택한 값: {selectedValue}</p>
+            </div>
+            <br />
+            <div>
+              <Label htmlFor="categoryNo">상품카테고리</Label>
+              <Input
+                id="categoryNo"
+                value={categoryName}
+                type="text"
+                readOnly
+              />
             </div>
             <div>
               <Label htmlFor="goodsTitle">상품 제목</Label>
@@ -80,19 +108,13 @@ const FundingGoodsForm = () => {
               />
             </div>
             <div>
-              <Label
-                htmlFor="goodsContent"
-                required
-                placeholder="내용을 입력하세요"
-              >
-                상품 설명
-              </Label>
+              <Label htmlFor="goodsContent">상품 설명</Label>
               <TextArea
                 id="goodsContent"
                 value={goodsContent}
                 onChange={(e) => setGoodsContent(e.target.value)}
                 required
-                placeholder="상품 설명을 입력하세요"
+                placeholder="설명을 입력하세요"
               ></TextArea>
             </div>
             <div>
@@ -116,61 +138,23 @@ const FundingGoodsForm = () => {
               />
             </div>
             <div>
-              <Label
-                htmlFor="amountOfMoney"
-                required
-                placeholder="금액을 입력하세요"
-              >
-                목표 금액
-              </Label>
-              <Input id="amountOfMoney" value={amountOfMoney} type="number" />
-            </div>
-            <Button type="submit">작성</Button>
-          </Form>
-        </Container>
-        <Container>
-          <Title>옵션 등록</Title>
-          <Form onSubmit={handleInsertFundingCompany}>
-            <div>
-              <Label htmlFor="goodsTitle">옵션 제목</Label>
+              <Label htmlFor="amountOfMoney">목표 금액</Label>
               <Input
-                id="goodsTitle"
-                value={goodsTitle}
-                type="text"
-                required
-                placeholder="내용을 입력하세요"
+                id="amountOfMoney"
+                value={amountOfMoney}
+                type="number"
+                placeholder="금액을 입력하세요"
               />
             </div>
-            <div>
-              <Label
-                htmlFor="goodsContent"
-                required
-                placeholder="내용을 입력하세요"
-              >
-                옵션 설명
-              </Label>
-              <TextArea
-                id="goodsContent"
-                value={goodsContent}
-                onChange={(e) => setGoodsContent(e.target.value)}
-                required
-                placeholder="옵션 설명을 입력하세요"
-              ></TextArea>
-            </div>
-            <div></div>
-            <div>
-              <Label
-                htmlFor="amountOfMoney"
-                required
-                placeholder="금액을 입력하세요"
-              >
-                판매 금액
-              </Label>
-              <Input id="amountOfMoney" value={amountOfMoney} type="number" />
-            </div>
-            <Button type="submit">작성</Button>
-          </Form>
-        </Container>
+          </MainContainer>
+          <div>
+            {Array.from({ length: optionNo }, (_, index) => (
+              <FundingGoodsOption key={index} optionNo={index + 1} />
+            ))}
+          </div>
+
+          <Button type="submit">작성</Button>
+        </Form>
       </ContainerDiv>
     </>
   );
