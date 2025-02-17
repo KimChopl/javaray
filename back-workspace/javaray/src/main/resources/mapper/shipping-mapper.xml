@@ -27,6 +27,7 @@
 			<result property="lon" column="lon"/>
 			<result property="address" column="address"/>
 			<result property="spotCode" column="spotCode"/>
+			<result property="detailAddress" column="detailAddress"/>
 		</association>
 		<collection property="options" javaType="java.util.ArrayList" ofType="ShippingOption">
 			<result property="serviceNo" column="serviceNo"/>
@@ -137,6 +138,7 @@
 		       TSI1.IMAGE_LEVEL imageLevel,
 		       TP.PORT_NO portNo,
 		       TP.ADDRESS address,
+		       TP.DETAIL_ADDRESS detailAddress,
 		       TP.LAT lat,
 		       TP.LON lon,
 		       TP.SPOT_CODE spotCode,
@@ -232,5 +234,25 @@
 				#{userNo}
 			   )
 	</insert>
-	
+	<select id="selectSearchPort" parameterType="SearchPort" resultType="Port">
+		SELECT
+		       PORT_NO portNo,
+		       ADDRESS,
+		       DETAIL_ADDRESS detailAddress
+		  FROM
+		       TB_PORT
+		 <if test="option == 1">
+			 <if test="searchContent != ''">
+			 	WHERE
+			 	      ADDRESS LIKE '%' || #{searchContent} || '%'
+			 </if>
+		 </if>
+		 <if test="option == 2">
+			 <if test="searchContent != ''">
+			 	WHERE
+			 	      DETAIL_ADDRESS LIKE '%' || #{searchContent} || '%'
+			 </if>
+		 </if>
+		      
+	</select>
 </mapper>

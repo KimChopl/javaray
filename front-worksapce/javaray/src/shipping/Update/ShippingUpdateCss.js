@@ -21,15 +21,32 @@ export const TitleInput = styled.input`
 
 export const ImageBigDiv = styled.div`
   width: 100%;
-  min-height: 250px;
+  min-height: 450px;
   height: auto;
   margin-top: 35px;
+  vertical-align: top;
 `;
 
 export const ImageCover = styled.div`
-  width: 250px;
-  height: 250px;
+  width: 200px;
+  height: 200px;
+  margin: 10px;
   display: inline-block;
+`;
+
+export const UploadImg = styled.div`
+  width: 150px;
+  height: 150px;
+  margin: 10px;
+  display: inline-block;
+  border: 1px dashed #ccc;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+export const InputImg = styled.input`
+  display: none;
 `;
 
 export const NoImageDiv = styled.div`
@@ -71,6 +88,12 @@ export const SearchBtn = styled.button`
     background-color: rgb(46, 159, 194);
     cursor: pointer;
   }
+`;
+
+export const ComplateBtn = styled.div`
+  width: 150px;
+  height: 60px;
+  margin-left: 43%;
 `;
 
 export const FishsExDiv = styled.div`

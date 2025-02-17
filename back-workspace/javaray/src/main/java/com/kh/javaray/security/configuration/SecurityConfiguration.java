@@ -50,7 +50,7 @@ public class SecurityConfiguration {
 				.csrf(AbstractHttpConfigurer::disable).cors(Customizer.withDefaults())
 				.authorizeHttpRequests(requests -> {
 				 	requests.requestMatchers("/members", "/members/login", "/uploads/**", "/funding/businessNo").permitAll();
-					requests.requestMatchers(HttpMethod.PUT, "/members/update/**").authenticated();
+					requests.requestMatchers(HttpMethod.PUT, "/members/update/**", "/shippings/update").authenticated();
 					requests.requestMatchers(HttpMethod.DELETE, "/members", "/shippings/attention").authenticated();
 					requests.requestMatchers(HttpMethod.POST, "/members/refresh", "/funding/businessNo/**", "/funding/businessNoInsert/**", "/shippings/attention").authenticated();
 					requests.requestMatchers(HttpMethod.GET, "/shippings/**", "/shippings/detail/**", "/funding/selectList/**", "/funding/selectCategory").permitAll();

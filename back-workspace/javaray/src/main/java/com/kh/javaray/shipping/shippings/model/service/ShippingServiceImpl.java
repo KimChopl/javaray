@@ -1,15 +1,22 @@
 package com.kh.javaray.shipping.shippings.model.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.javaray.api.OpenDataApi;
 import com.kh.javaray.auth.service.AuthenticationService;
+import com.kh.javaray.exception.exceptions.NotFoundInfoException;
 import com.kh.javaray.exception.exceptions.NotFoundUserInfoException;
 import com.kh.javaray.exception.exceptions.NotMatchBoardInfoException;
 import com.kh.javaray.exception.exceptions.NotMatchUserInfoException;
@@ -18,7 +25,10 @@ import com.kh.javaray.shipping.dto.MiddleWeather;
 import com.kh.javaray.shipping.dto.Weather;
 import com.kh.javaray.shipping.shippings.model.dto.Attention;
 import com.kh.javaray.shipping.shippings.model.dto.Fishs;
+import com.kh.javaray.shipping.shippings.model.dto.Port;
+import com.kh.javaray.shipping.shippings.model.dto.SearchPort;
 import com.kh.javaray.shipping.shippings.model.dto.Shipping;
+import com.kh.javaray.shipping.shippings.model.dto.UpdateFormDTO;
 import com.kh.javaray.shipping.shippings.model.mapper.ShippingMapper;
 import com.kh.javaray.template.xss.XssService;
 
@@ -34,6 +44,7 @@ public class ShippingServiceImpl implements ShippingService {
 	private final OpenDataApi oda;
 	private final AuthenticationService as;
 	private final XssService xs;
+	private final ObjectMapper om;
 
 	@Override
 	public List<Shipping> selectShipping(int page) {
@@ -101,6 +112,7 @@ public class ShippingServiceImpl implements ShippingService {
 	public Shipping selectUpdateForm(String shippingNo) {
 		CustomUserDetails user = as.checkedUser();
 		Shipping shipping = sm.selectShippingDetail(shippingNo);
+		log.info("{}", shipping);
 		if (!shipping.getMember().getUserNo().equals(user.getUserNo())) {
 			throw new NotMatchUserInfoException("유저 정보가 일치하지 않습니다.");
 		}
@@ -120,6 +132,38 @@ public class ShippingServiceImpl implements ShippingService {
 		}
 		return list;
 				
+	}
+
+	@Override
+	public List<Port> selectSearchPort(String option, String searchContent) {
+		SearchPort search = SearchPort.builder().option(option).searchContent(searchContent).build();
+		log.info("{}", search);
+		return sm.selectSearchPort(search);
+	}
+
+	@Override
+	public void updateShipping(MultipartFile[] files, UpdateFormDTO shipping, String fishs, String option,
+			String port) {
+		 List<Fishs> fishList = new ArrayList<>();
+
+	        // 정규 표현식 패턴: fishNo와 fishName을 추출
+	        String pattern = "fishNo:(.*?), fishName:(.*?)(,|$)";  // fishNo와 fishName을 추출하는 패턴
+
+	        // 패턴에 맞는 값을 찾기 위한 Matcher 객체 생성
+	        Pattern r = Pattern.compile(pattern);
+	        Matcher m = r.matcher(fishs);
+	        Fishs fish = null;
+	        // 매칭되는 값들을 Fish 객체에 담아서 List에 추가
+	        while (m.find()) {
+	            String fishNo = m.group(1);  // fishNo 값
+	            String fishName = m.group(2);  // fishName 값
+
+	            // Fish 객체 생성 후 리스트에 추가
+	            fish = Fishs.builder().fishNo(fishNo).fishName(fishName).build();
+	            fishList.add(fish);
+	        }
+	        log.info("{}", fish);
+		
 	}
 
 }
