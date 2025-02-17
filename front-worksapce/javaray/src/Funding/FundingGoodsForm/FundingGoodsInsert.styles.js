@@ -1,18 +1,34 @@
 import styled from "styled-components";
 
 export const ContainerDiv = styled.div`
-  width: 1200px;
-  height: 100%;
-  margin: 0px 5px;
+  width: 1500px;
+  min-height: 2000px;
+  margin: auto;
 `;
 
-export const Container = styled.div`
-  width: 600px;
+export const MainContainer = styled.div`
+  width: 550px;
+  height: 1100px;
   padding: 30px;
   background-color: #ffffff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  display: inline-block;
+  display: block;
+  @media (max-width: 768px) {
+    margin: 20px;
+    padding: 20px;
+  }
+`;
+
+export const OptionContainer = styled.div`
+  width: 550px;
+  height: 600px;
+  padding: 30px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-left: 20px;
+
   @media (max-width: 768px) {
     margin: 20px;
     padding: 20px;
@@ -27,7 +43,9 @@ export const Title = styled.h2`
 
 export const Form = styled.form`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
 `;
 
 export const Label = styled.label`

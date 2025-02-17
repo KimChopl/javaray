@@ -53,8 +53,9 @@ const FundingLists = () => {
         }
       )
       .then((response) => {
+        console.log(response);
         setRole(response.data[0].role);
-        setBoards([...boards, ...response.data]);
+        setBoards([...response.data]);
         if (response.data.length < 6) {
           setHasMore(false);
         }
@@ -74,7 +75,7 @@ const FundingLists = () => {
       })
       .then((response) => {
         console.log(response);
-        setBoards([...boards, ...response.data]);
+        setBoards([...response.data]);
         setRole("");
         if (response.data.length < 6) {
           setHasMore(false);
@@ -184,7 +185,7 @@ const FundingLists = () => {
         <FundingGoods>
           <PostList>
             {boards.map((board) => (
-              <PostItem>
+              <PostItem key={board.boardNo}>
                 <GoodsDiv>
                   <GoodsImg src={board.fundingFileList[0].fileUrl} />
                   <GoodsContent>{board.currentSalePercent}% 달성</GoodsContent>

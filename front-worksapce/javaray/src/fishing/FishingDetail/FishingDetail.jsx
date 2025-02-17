@@ -89,7 +89,7 @@ const FishingDetail = () => {
         ) : menuName === "goods" ? (
           <FishingGoods />
         ) : menuName === "review" ? (
-          <FishingReview />
+          <FishingReview fishingsDetail={fishingsDetail} />
         ) : (
           <></> //예외상황을 위한 빈 div
         )}

@@ -99,6 +99,7 @@ public class FundingServiceImpl implements FundingService {
 		
 		List<FundingBoardDTO> list = fundingMapper.selectBoardList(rowBounds, categoryNo);
 		List<FundingCompanyNameDTO> companyNameList = fundingMapper.selectCompanyName();
+		log.info("{}", list);
 		
 		Map<Long, String> companyNameMap = new HashMap();
 				
@@ -115,6 +116,7 @@ public class FundingServiceImpl implements FundingService {
 			            }
 			        }
 			    }
+		log.info("{}", list);
 		
 		return list;
 	}

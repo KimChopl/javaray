@@ -45,7 +45,7 @@
 	
 	
 	<resultMap id="fundingBoard" type="FundingBoardDTO">
-		<id property="boardNo" column="TB_FUNDING_BOARD.BOARD_NO" />
+		<id property="boardNo" column="BOARD_NO" />
 		<result property="userNo" column="USER_NO" />
 		<result property="boardTitle" column="TITLE" />
 		<result property="boardContent" column="CONTENT" />
@@ -76,7 +76,7 @@
 	
 	<select id="selectBoardList" resultMap="fundingBoard">
 SELECT
-			   TB_FUNDING_BOARD.BOARD_NO,
+			   TB_FUNDING_BOARD.BOARD_NO AS BOARD_NO,
 			   USER_NO,
 			   CATEGORY_NAME,
 			   TITLE,

@@ -41,6 +41,7 @@ import fish11 from "../FishingImg/fish11.png";
 import fish12 from "../FishingImg/fish12.png";
 
 import { TitleLine, TitleText } from "../FishingList/FishingList.styled";
+import { useContext, useState } from "react";
 
 const FishingInsert = () => {
   return (
@@ -53,7 +54,7 @@ const FishingInsert = () => {
         <Form>
           <FormGroup>
             <Label>닉네임</Label>
-            <Input id="nickName" type="text" required></Input>
+            <Input id="nickName" type="text"></Input>
           </FormGroup>
           <FormGroup>
             <Label>낚시터명</Label>
