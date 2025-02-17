@@ -10,14 +10,21 @@ import { useState, useEffect } from "react";
 
 const FundingGoodsOption = (props) => {
   const [optionNo, setOptionNo] = useState(props.optionNo);
-  const [goodsTitle, setGoodsTitle] = useState();
-  const [goodsContent, setGoodsContent] = useState();
-  const [amountOfMoney, setAmountOfMoney] = useState();
+  const [options, setOptions] = useState(props.options);
+  const [optionTitle, setOptionTitle] = useState();
+  const [optionContent, setOptionContent] = useState();
+  const [optionPrice, setOptionPrice] = useState();
   const [optionCount, setOptionCount] = useState([]);
 
   useEffect(() => {
+    console.log(options);
+    console.log(optionTitle);
     setOptionNo(props.optionNo);
-  }, [props.optionNo]);
+    setOptions([
+      { optionNo, optionTitle, optionContent, optionPrice, optionCount },
+    ]);
+    console.log(options);
+  }, [optionTitle, optionContent, optionPrice, optionCount]);
 
   return (
     <>
@@ -25,50 +32,47 @@ const FundingGoodsOption = (props) => {
         <OptionContainer>
           <Title>{optionNo}옵션 등록</Title>
           <div>
-            <Label htmlFor="goodsTitle">옵션 제목</Label>
+            <Label htmlFor="optionTitle">옵션 제목</Label>
             <Input
-              id="goodsTitle"
-              value={goodsTitle}
+              id="optionTitle"
+              value={optionTitle}
+              onChange={(e) => setOptionTitle(e.target.value)}
               type="text"
               required
               placeholder="내용을 입력하세요"
             />
           </div>
           <div>
-            <Label
-              htmlFor="goodsContent"
-              required
-              placeholder="내용을 입력하세요"
-            >
-              옵션 설명
-            </Label>
+            <Label htmlFor="optionContent">옵션 설명</Label>
             <TextArea
-              id="goodsContent"
-              value={goodsContent}
-              onChange={(e) => setGoodsContent(e.target.value)}
+              id="optionContent"
+              value={optionContent}
+              onChange={(e) => setOptionContent(e.target.value)}
               required
               placeholder="옵션 설명을 입력하세요"
             ></TextArea>
           </div>
           <div>
-            <Label
-              htmlFor="amountOfMoney"
+            <Label htmlFor="optionPrice">판매 금액</Label>
+            <Input
+              id="optionPrice"
+              value={optionPrice}
+              onChange={(e) => setOptionPrice(e.target.value)}
+              type="number"
               required
               placeholder="금액을 입력하세요"
-            >
-              판매 금액
-            </Label>
-            <Input id="amountOfMoney" value={amountOfMoney} type="number" />
+            />
           </div>
           <div>
-            <Label
-              htmlFor="amountOfMoney"
+            <Label htmlFor="optionCount">옵션 수량</Label>
+            <Input
+              id="optionCount"
+              value={optionCount}
+              onChange={(e) => setOptionCount(e.target.value)}
+              type="number"
               required
-              placeholder="금액을 입력하세요"
-            >
-              옵션 수량
-            </Label>
-            <Input id="amountOfMoney" value={amountOfMoney} type="number" />
+              placeholder="수량을 입력하세요"
+            />
           </div>
         </OptionContainer>
       }

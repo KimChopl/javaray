@@ -27,6 +27,7 @@ export const OptionContainer = styled.div`
   background-color: #ffffff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
+  margin-left: 20px;
 
   @media (max-width: 768px) {
     margin: 20px;

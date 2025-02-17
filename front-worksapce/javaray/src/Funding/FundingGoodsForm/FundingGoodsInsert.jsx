@@ -22,6 +22,7 @@ const FundingGoodsForm = () => {
   const [saleStartDate, setSaleStartDate] = useState();
   const [saleFinishDate, setSaleFinshDate] = useState();
   const [amountOfMoney, setAmountOfMoney] = useState();
+  const [options, setOptions] = useState([]);
   const [optionNo, setOptionNo] = useState("전체");
   const { auth } = useContext(AuthContext);
 
@@ -36,14 +37,16 @@ const FundingGoodsForm = () => {
       });
   }, []);
 
-  const handleInsertFundingCompany = () => {};
-
   const handleCategory = (e) => {
     setCategoryName(e.target.value);
   };
 
   const handleOption = (e) => {
     setOptionNo(e.target.value);
+  };
+
+  const handleInsertFundingCompany = (e) => {
+    console.log(options);
   };
 
   return (
@@ -149,7 +152,11 @@ const FundingGoodsForm = () => {
           </MainContainer>
           <div>
             {Array.from({ length: optionNo }, (_, index) => (
-              <FundingGoodsOption key={index} optionNo={index + 1} />
+              <FundingGoodsOption
+                key={index}
+                optionNo={index + 1}
+                options={options}
+              />
             ))}
           </div>
 
