@@ -32,7 +32,7 @@
 			#{fishingDate}
 			#{title},
 			#{content},
-			#{reviewFileUrl}}
+			#{reviewFileUrl}
 			)
 	
 	</insert>
