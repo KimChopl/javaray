@@ -56,7 +56,7 @@ const BusninessNoAPI = () => {
   const handleInsertBusinessNo = async (response) => {
     await axios
       .post(
-        "http://localhost/funding/businessNo",
+        "http://localhost/businessNo",
         {
           companyBusinessNo: companyNo,
           resultContent: response.data.data[0].tax_type,

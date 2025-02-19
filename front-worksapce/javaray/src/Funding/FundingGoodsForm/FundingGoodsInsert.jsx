@@ -103,11 +103,11 @@ const FundingGoodsForm = () => {
   if (mainFile) {
     formData.append("mainFile", mainFile);
   }
-  /*
-  if(mainFile){
-    axios.post("http://localhost/")
+
+  if (mainFile) {
+    axios.post("http://localhost/goods/insert", {});
   }
-*/
+
   return (
     <>
       <ContainerDiv>

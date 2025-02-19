@@ -1,4 +1,4 @@
-package com.kh.javaray.funding.model.dto;
+package com.kh.javaray.funding.businessinfo.model.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -14,7 +14,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Builder
 @ToString
-public class FundingBusinessNoAPIDTO {
+public class BusinessNoAPIDTO {
 
 	@NotBlank(message = "사업자등록번호는 비어있을 수 없습니다.")
 	@Pattern(regexp = "^[0-9]*$", message = "사업자등록번호는 숫자만 입력하셔야 합니다." )
