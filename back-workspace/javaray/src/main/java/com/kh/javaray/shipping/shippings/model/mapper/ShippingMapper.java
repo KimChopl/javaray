@@ -13,6 +13,8 @@ import com.kh.javaray.shipping.shippings.model.dto.Fishs;
 import com.kh.javaray.shipping.shippings.model.dto.Port;
 import com.kh.javaray.shipping.shippings.model.dto.SearchPort;
 import com.kh.javaray.shipping.shippings.model.dto.Shipping;
+import com.kh.javaray.shipping.shippings.model.dto.ShippingOption;
+import com.kh.javaray.shipping.shippings.model.dto.UpdateFormDTO;
 
 @Mapper
 public interface ShippingMapper {
@@ -35,5 +37,28 @@ public interface ShippingMapper {
 	List<Fishs> selectFishs();
 
 	List<Port> selectSearchPort(SearchPort search);
+	
+	String findByShippingNo(String shippingNo);
+
+	void updateShipping(UpdateFormDTO shipping);
+	
+	@Insert("INSERT INTO TB_ENABLE_FISH VALUES(#{shippingNo}, #{fishNo})")
+	void updateFish(Fishs fish);
+
+	@Insert("INSERT INTO TB_SHIPPING_SERVICE VALUES(#{shippingNo}, #{serviceNo})")
+	int updateOption(ShippingOption option);
+	
+	@Delete("DELETE FROM TB_SHIPPING_SERVICE WHERE SHIPPING_NO = #{shippingNo}")
+	void deleteOption(String shippingNo);
+
+	@Select("SELECT SHIPPING_NO shippingNo, SHIPPING_SERVICE serviceNo FROM TB_SHIPPING_SERVICE WHERE SHIPPING_NO = #{shippingNo}")
+	List<ShippingOption> selectOption(String shippingNo);
+
+	@Select("SELECT SHIPPING_NO shippingNo, FISH_NO fishNo FROM TB_ENABLE_FISH WHERE SHIPPING_NO = #{shippingNo}")
+	List<Fishs> selectFishsByShippingNo(String shippingNo);
+	
+	@Delete("DELETE FROM TB_ENABLE_FISH WHERE SHIPPING_NO = #{shippingNo}")
+	void deleteFish(String shippingNo);
+
 
 }

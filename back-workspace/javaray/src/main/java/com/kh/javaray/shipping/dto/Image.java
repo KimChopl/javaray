@@ -1,16 +1,20 @@
 package com.kh.javaray.shipping.dto;
 
+import java.nio.file.Path;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Builder
+@Getter
+@Setter
 public class Image {
 	private Long imageNo;
 	private String imagePath;
@@ -18,5 +22,5 @@ public class Image {
 	private String imageChangeName;
 	private String boardNo;
 	private String status;
-	private int iangeLevel;
+	private int imageLevel;
 }

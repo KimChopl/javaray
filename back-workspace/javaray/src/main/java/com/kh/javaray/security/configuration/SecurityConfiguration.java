@@ -22,6 +22,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.kh.javaray.auth.util.JwtFilter;
 
+import jakarta.servlet.ServletContext;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -52,8 +53,8 @@ public class SecurityConfiguration {
 				 	requests.requestMatchers("/members", "/members/login", "/uploads/**", "/funding/businessNo").permitAll();
 					requests.requestMatchers(HttpMethod.PUT, "/members/update/**", "/shippings/update").authenticated();
 					requests.requestMatchers(HttpMethod.DELETE, "/members", "/shippings/attention").authenticated();
-					requests.requestMatchers(HttpMethod.POST, "/members/refresh", "/funding/businessNo/**", "/funding/businessNoInsert/**", "/shippings/attention").authenticated();
-					requests.requestMatchers(HttpMethod.GET, "/shippings/**", "/shippings/detail/**", "/funding/selectList/**", "/funding/selectCategory").permitAll();
+					requests.requestMatchers(HttpMethod.POST, "/members/refresh", "/funding/businessNo/**", "/funding/businessNoInsert/**", "/shippings/attention", "/shippings/update").authenticated();
+					requests.requestMatchers(HttpMethod.GET, "/shippings/**", "/shippings/detail/**", "/funding/selectList/**", "/funding/selectCategory", "uploads/**", "/uploads/shipping/**").permitAll();
 					requests.requestMatchers("/manager/**").hasRole("ADMIN");
 					requests.requestMatchers(HttpMethod.GET, "/fishing", "/fishing/detail/**").permitAll();
 				})
@@ -71,4 +72,6 @@ public class SecurityConfiguration {
 			throws Exception {
 		return authenticationConfiguration.getAuthenticationManager();
 	}
+	
+	
 }

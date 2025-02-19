@@ -64,7 +64,6 @@ const ShippingUpdate = () => {
     service: null,
     fishs: null,
     price: null,
-    deleteOriginImg: null,
   });
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
@@ -78,7 +77,6 @@ const ShippingUpdate = () => {
   const [searchAddress, setSearchAddress] = useState(false);
   const [imageUrl, setImageUrl] = useState([]);
   const [files, setFiles] = useState([]);
-  const [deleteOriginImg, setDeleteOriginImg] = useState([]);
   const navi = useNavigate();
   const inputFileRef = useRef(null);
   const [option, setOption] = useState([
@@ -223,17 +221,25 @@ const ShippingUpdate = () => {
   };
 
   const update = () => {
-    console.log(fish);
-    console.log(service);
-    console.log(address);
-
     const formData = new FormData();
     formData.append("shippingNo", shippingNo);
-    formData.append("shippingCotnent", content);
+    formData.append("shippingContent", content);
     formData.append("shippingTitle", title);
     formData.append("allowPepleNo", peple);
     formData.append("price", price);
     //formData.append("fishs", JSON.stringify(fish));
+    const imageArr = image.map((img) => {
+      return {
+        imageNo: img.imageNo,
+        imagePath: img.imagepath,
+        imageChangeName: img.imageChangeName,
+        imageLeval: img.imageLevel,
+        toString: function () {
+          return `imageNo:${img.imageNo}, imagePath:${img.imagePath}, imageChangeName:${img.imageChangeName}, imageLevel:${img.imageLevel}`;
+        },
+      };
+    });
+    formData.append("image", imageArr);
 
     const arr = fish.map((e) => {
       return {
@@ -244,7 +250,6 @@ const ShippingUpdate = () => {
         },
       };
     });
-    console.log(arr);
     formData.append("fish", arr);
 
     const serviceArr = service.map((e) => {
@@ -258,13 +263,14 @@ const ShippingUpdate = () => {
     });
     formData.append("option", serviceArr);
 
-    const portObj = `{portNo:${address.portNo}, address:${address.address}, detailAddress:${address.detailAddress}}`;
+    const portObj = `portNo:${address.portNo}, address:${address.address}, detailAddress:${address.detailAddress}`;
 
     formData.append("portObj", portObj);
 
-    if (files) {
-      formData.append("files", files);
+    if (files.length !== 0) {
+      for (let i = 0; i < files.length; i++) formData.append("files", files[i]);
     }
+    console.log(files);
     axios
       .put(`http://localhost/shippings/update`, formData, {
         headers: {
@@ -281,6 +287,7 @@ const ShippingUpdate = () => {
 
   const uploadImg = (e) => {
     const fileList = Array.from(e.target.files);
+    console.log(fileList);
     setFiles(fileList);
     const url = fileList.map((image) => URL.createObjectURL(image));
     setImageUrl([...imageUrl, ...url]);
@@ -291,7 +298,7 @@ const ShippingUpdate = () => {
   };
 
   const deleteImage = (e) => {
-    setDeleteOriginImg([...deleteOriginImg, e]);
+    setImage((image) => image.filter((img) => img.imageNo !== e));
   };
 
   const deleteNewImage = (e) => {
@@ -307,7 +314,6 @@ const ShippingUpdate = () => {
           headers: { Authorization: `Bearer ${accessToken}` },
         })
         .then((response) => {
-          console.log(response);
           const data = response.data;
           setContent(data.shippingContent);
           setTitle(data.shippingTitle);
@@ -343,7 +349,7 @@ const ShippingUpdate = () => {
                 onClick={() => deleteImage(img.imageNo)}
               >
                 <Images
-                  src={`http://localhost/${img.imagePath}/${img.imageChangeName}`}
+                  src={`http://${img.imagePath}${img.imageChangeName}`}
                   alt={img.imageOriginName}
                 />
               </ImageCover>
