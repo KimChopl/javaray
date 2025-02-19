@@ -10,6 +10,8 @@ import org.apache.ibatis.session.RowBounds;
 
 import com.kh.javaray.shipping.shippings.model.dto.Attention;
 import com.kh.javaray.shipping.shippings.model.dto.Fishs;
+import com.kh.javaray.shipping.shippings.model.dto.Port;
+import com.kh.javaray.shipping.shippings.model.dto.SearchPort;
 import com.kh.javaray.shipping.shippings.model.dto.Shipping;
 
 @Mapper
@@ -31,5 +33,7 @@ public interface ShippingMapper {
 	
 	@Select("SELECT FISH_NO fishNo, FISH_NAME fishName FROM TB_FISH")
 	List<Fishs> selectFishs();
+
+	List<Port> selectSearchPort(SearchPort search);
 
 }

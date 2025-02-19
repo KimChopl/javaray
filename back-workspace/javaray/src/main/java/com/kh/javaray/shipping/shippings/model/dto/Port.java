@@ -16,5 +16,6 @@ public class Port {
 	private double lat;
 	private double lon;
 	private String address;
+	private String detailAddress;
 	private String spotCode;
 }
