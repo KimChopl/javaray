@@ -17,8 +17,8 @@ import FundingGoodsOption from "./FundingGoodsOption";
 
 const FundingGoodsForm = () => {
   const [categoryName, setCategoryName] = useState("");
-  const [goodsTitle, setGoodsTitle] = useState();
-  const [goodsContent, setGoodsContent] = useState();
+  const [goodsTitle, setGoodsTitle] = useState("");
+  const [goodsContent, setGoodsContent] = useState("");
   const [saleStartDate, setSaleStartDate] = useState();
   const [saleFinishDate, setSaleFinishDate] = useState();
   const [amountOfMoney, setAmountOfMoney] = useState();
@@ -33,7 +33,7 @@ const FundingGoodsForm = () => {
       .then((response) => {
         console.log(response);
       })
-      .then((error) => {
+      .catch((error) => {
         console.log(error);
       });
   }, []);
@@ -66,12 +66,6 @@ const FundingGoodsForm = () => {
     setOptionNo(e.target.value);
   };
 
-  const handleInsertFundingGoods = (e) => {
-    e.preventDefault();
-    console.log(formData);
-    console.log(options);
-  };
-
   const handleMainFileChange = (e) => {
     const selectedFile = e.target.files[0];
     const allowedTypes = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
@@ -90,23 +84,45 @@ const FundingGoodsForm = () => {
     setMainFile(selectedFile);
   };
 
+  const handleInsertFundingGoods = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("boardWriter", auth.nickname);
+    formData.append("categoryName", categoryName);
+    formData.append("goodsTitle", goodsTitle);
+    formData.append("goodsContent", goodsContent);
+    formData.append("saleStartDate", saleStartDate);
+    formData.append("saleFinishDate", saleFinishDate);
+    formData.append("amountOfMoney", amountOfMoney);
+    console.log(mainFile);
+    if (mainFile) {
+      formData.append("mainFile", mainFile);
+    }
+
+    console.log(formData.get("boardWriter"));
+    console.log(formData.get("categoryName"));
+    console.log(formData.get("goodsTitle"));
+    console.log(formData.get("goodsContent"));
+    console.log(formData.get("saleStartDate"));
+    console.log(formData.get("saleFinishDate"));
+    console.log(formData.get("amountOfMoney"));
+    console.log(formData.get("mainFile"));
+    console.log(typeof saleStartDate);
+
+    if (mainFile) {
+      axios
+        .post("http://localhost/goods/insert", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${auth.accessToken}`,
+          },
+        })
+        .then((response) => console.log(response))
+        .catch((error) => console.log(error));
+    }
+  };
+
   const handleSubFileChange = (e) => {};
-
-  const formData = new FormData();
-  formData.append("nickname", auth.nickname);
-  formData.append("categoryName", categoryName);
-  formData.append("goodsTitle", goodsTitle);
-  formData.append("goodsContent", goodsContent);
-  formData.append("saleStartDate", saleStartDate);
-  formData.append("saleFinishDate", saleFinishDate);
-  formData.append("amountOfMoney", amountOfMoney);
-  if (mainFile) {
-    formData.append("mainFile", mainFile);
-  }
-
-  if (mainFile) {
-    axios.post("http://localhost/goods/insert", {});
-  }
 
   return (
     <>

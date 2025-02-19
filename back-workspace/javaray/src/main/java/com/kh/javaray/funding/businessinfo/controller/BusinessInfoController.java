@@ -46,7 +46,7 @@ public class BusinessInfoController {
 
 	@PostMapping("/businessNoInsert")
 	public ResponseEntity<?> businessNoInsert(@ModelAttribute @Valid BusinessNoDTO BusinessNoData,
-			@RequestParam(name = "businessNoFile") MultipartFile file) {
+											  @RequestParam(name = "businessNoFile") MultipartFile file) {
 
 		businessNoService.insertBoard(BusinessNoData, file);
 
