@@ -72,10 +72,10 @@ public class FundingController {
 	
 	@GetMapping("/selectCategory")
 	public ResponseEntity<List<String>> selectCategory(){
-		log.info("나야냐");
 		
 		return ResponseEntity.ok(fundingService.selectCategory());
 	}
+	
 	
 
 }
