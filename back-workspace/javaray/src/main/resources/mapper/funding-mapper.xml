@@ -97,7 +97,8 @@ SELECT
 	
 	<select id="selectCategory">
 		SELECT
-			   CATEGORY_NAME
+			   CATEGORY_NO categoryNo,
+			   CATEGORY_NAME categoryName
 		  FROM
 		  	   TB_FUNDING_CATEGORY
 	</select>

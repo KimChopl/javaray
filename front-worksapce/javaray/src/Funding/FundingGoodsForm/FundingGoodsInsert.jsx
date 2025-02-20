@@ -26,12 +26,15 @@ const FundingGoodsForm = () => {
   const [optionNo, setOptionNo] = useState(0);
   const { auth } = useContext(AuthContext);
   const [mainFile, setMainFile] = useState(null);
+  const [subFiles, setSubFiles] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [boardNo, setBoardNo] = useState();
 
   useEffect(() => {
     axios
       .get("http://localhost/funding/selectCategory")
       .then((response) => {
-        console.log(response);
+        setCategories(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -84,45 +87,105 @@ const FundingGoodsForm = () => {
     setMainFile(selectedFile);
   };
 
+  const handleSubFileChange = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+    const allowedTypes = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
+    const maxSize = 10 * 1024 * 1024;
+
+    for (const file of selectedFiles) {
+      if (!allowedTypes.includes(file.type)) {
+        alert("허용되지 않는 파일 형식입니다.");
+        return;
+      }
+
+      if (file.size > maxSize) {
+        alert("파일의 크기가 너무 큽니다. 10MB이하로 선택해주세요.");
+        return;
+      }
+    }
+
+    setSubFiles(selectedFiles);
+  };
+
   const handleInsertFundingGoods = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("boardWriter", auth.nickname);
+    formData.append("nickName", auth.nickname);
     formData.append("categoryName", categoryName);
-    formData.append("goodsTitle", goodsTitle);
-    formData.append("goodsContent", goodsContent);
-    formData.append("saleStartDate", saleStartDate);
-    formData.append("saleFinishDate", saleFinishDate);
-    formData.append("amountOfMoney", amountOfMoney);
+    formData.append("boardTitle", goodsTitle);
+    formData.append("boardContent", goodsContent);
+    formData.append("startDate", saleStartDate);
+    formData.append("endDate", saleFinishDate);
+    formData.append("purposeAmount", amountOfMoney);
     console.log(mainFile);
+    console.log(subFiles);
     if (mainFile) {
       formData.append("mainFile", mainFile);
     }
 
-    console.log(formData.get("boardWriter"));
+    subFiles.forEach((file) => {
+      formData.append("subFiles", file);
+    });
+
+    console.log(formData.get("nickName"));
     console.log(formData.get("categoryName"));
-    console.log(formData.get("goodsTitle"));
-    console.log(formData.get("goodsContent"));
-    console.log(formData.get("saleStartDate"));
-    console.log(formData.get("saleFinishDate"));
-    console.log(formData.get("amountOfMoney"));
+    console.log(formData.get("boardTitle"));
+    console.log(formData.get("boardContent"));
+    console.log(formData.get("startDate"));
+    console.log(formData.get("endDate"));
+    console.log(formData.get("purposeAmount"));
     console.log(formData.get("mainFile"));
     console.log(typeof saleStartDate);
+    console.log(formData.get("subFiles"));
 
     if (mainFile) {
-      axios
-        .post("http://localhost/goods/insert", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${auth.accessToken}`,
-          },
-        })
-        .then((response) => console.log(response))
-        .catch((error) => console.log(error));
+      const a = async () => {
+        const response = await axios
+          .post("http://localhost/goods/insert", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${auth.accessToken}`,
+            },
+          })
+          .then((response) => {
+            console.log(response);
+            console.log(response.data);
+            setBoardNo(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        return response;
+      };
+
+      const b = async (r) => {
+        const response = await axios
+          .post(
+            `http://localhost/goods/insert/options?boardNo=${boardNo}`,
+            options,
+            {
+              headers: {
+                Authorization: `Bearer ${auth.accessToken}`,
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        return response;
+      };
+
+      const c = async () => {
+        await a();
+        await b();
+      };
+
+      c();
     }
   };
-
-  const handleSubFileChange = (e) => {};
 
   return (
     <>
@@ -137,10 +200,11 @@ const FundingGoodsForm = () => {
               style={{ textAlign: "center" }}
             >
               <option value="">-- 옵션 개수를 선택해주세요 --</option>
-              <option value="1">1개</option>
-              <option value="2">2개</option>
-              <option value="3">3개</option>
-              <option value="4">4개</option>
+              {Array.from({ length: 4 }, (_, index) => (
+                <option key={index + 1} value={index + 1}>
+                  {index + 1}개
+                </option>
+              ))}
             </select>
             <br />
             <br />
@@ -157,12 +221,14 @@ const FundingGoodsForm = () => {
                 value={categoryName}
                 onChange={handleCategory}
               >
-                <option value="">선택해주세요</option>
-                <option value="1">🈴전체</option>
-                <option value="2">🎣낚시대</option>
-                <option value="3">🦾릴</option>
-                <option value="4">🧵낚시줄</option>
-                <option value="5">🦺낚시의류</option>
+                {categories.map((category) => (
+                  <option
+                    key={category.categoryNo}
+                    value={category.categoryName}
+                  >
+                    {category.categoryName}
+                  </option>
+                ))}
               </select>
             </div>
             <br />
@@ -245,6 +311,7 @@ const FundingGoodsForm = () => {
                 id="subFile"
                 type="file"
                 accept="image/*"
+                multiple
                 onChange={handleSubFileChange}
               />
             </div>

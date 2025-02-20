@@ -32,7 +32,7 @@ import axios from "axios";
 
 const FundingLists = () => {
   const navigate = useNavigate();
-  const { auth, validation } = useContext(AuthContext);
+  const { auth } = useContext(AuthContext);
   const [role, setRole] = useState("");
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);

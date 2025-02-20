@@ -12,8 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class FundingFileService {
 
-	// 이름바꾸고 그런건 세미때 했던거 다시 사용하면 됨
-	
 	private final Path fileLocation;
 	
 	public FundingFileService() {

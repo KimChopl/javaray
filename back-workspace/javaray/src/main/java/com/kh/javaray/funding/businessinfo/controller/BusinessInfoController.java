@@ -31,9 +31,9 @@ public class BusinessInfoController {
 	private final BusinessNoService businessNoService;
 
 	@PostMapping
-	public ResponseEntity<?> insertBusinessNumber(@RequestBody BusinessNoAPIDTO BusinessNoAPIData) {
+	public ResponseEntity<?> insertBusinessNumber(@RequestBody BusinessNoAPIDTO businessNoAPIData) {
 
-		businessNoService.save(BusinessNoAPIData);
+		businessNoService.save(businessNoAPIData);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body("사업자등록 인증을 성공했습니다.");
 	}
@@ -45,10 +45,10 @@ public class BusinessInfoController {
 	}
 
 	@PostMapping("/businessNoInsert")
-	public ResponseEntity<?> businessNoInsert(@ModelAttribute @Valid BusinessNoDTO BusinessNoData,
+	public ResponseEntity<?> businessNoInsert(@ModelAttribute @Valid BusinessNoDTO businessNoData,
 											  @RequestParam(name = "businessNoFile") MultipartFile file) {
 
-		businessNoService.insertBoard(BusinessNoData, file);
+		businessNoService.insertBoard(businessNoData, file);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body("사업자 신청 성공했습니다.");
 	}
