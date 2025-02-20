@@ -27,5 +27,6 @@ public class UpdateFormDTO {
 	private int allowPepleNo;
 	private int price;
 	private Port port;
+	private Long userNo;
 
 }

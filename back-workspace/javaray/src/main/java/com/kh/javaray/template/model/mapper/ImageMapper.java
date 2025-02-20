@@ -1,7 +1,5 @@
 package com.kh.javaray.template.model.mapper;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 

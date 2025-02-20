@@ -13,6 +13,7 @@ import hiter from "./images/hiter.jpg";
 import liferope from "./images/liferope.jpg";
 import mobile from "./images/mobile.jpg";
 import restroom from "./images/restroom.jpeg";
+import options from "./options.json";
 import {
   Checkbox,
   ComplateBtn,
@@ -41,30 +42,21 @@ import {
   OptionP,
   PepleDiv,
   PepleInput,
+  PriceDiv,
+  PriceInput,
+  PriceP,
   SearchBtn,
   SearchFishDiv,
   TitleDiv,
   TitleInput,
   UploadImg,
 } from "./ShippingUpdateCss";
-import { CloseImg } from "../../Modal/ModalCss";
-import { set } from "date-fns";
 import Modal from "../../Modal/Modal";
 
 const ShippingUpdate = () => {
   const [load, setLoad] = useState(true);
   const { shippingNo } = useParams();
   const { auth } = useContext(AuthContext);
-  const [shipping, setShipping] = useState({
-    shippingNo: null,
-    shippingContent: null,
-    shippingTitle: null,
-    allowPepleNo: null,
-    port: null,
-    service: null,
-    fishs: null,
-    price: null,
-  });
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
   const [peple, setPeple] = useState("");
@@ -77,6 +69,7 @@ const ShippingUpdate = () => {
   const [searchAddress, setSearchAddress] = useState(false);
   const [imageUrl, setImageUrl] = useState([]);
   const [files, setFiles] = useState([]);
+
   const navi = useNavigate();
   const inputFileRef = useRef(null);
   const [option, setOption] = useState([
@@ -165,7 +158,7 @@ const ShippingUpdate = () => {
   };
   const deleteFish = (e) => {
     const newFish = fish.filter((fish) => {
-      return fish != e;
+      return fish !== e;
     });
     setFish(newFish);
   };
@@ -272,7 +265,7 @@ const ShippingUpdate = () => {
     }
     console.log(files);
     axios
-      .put(`http://localhost/shippings/update`, formData, {
+      .put(`http://localhost/shippings`, formData, {
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
           "Content-Type": "multipart/form-data",
@@ -306,9 +299,13 @@ const ShippingUpdate = () => {
     setImageUrl((prevURLs) => prevURLs.filter((_, index) => index !== e));
   };
 
+  const priceChange = (e) => {
+    setPrice(e.target.value);
+  };
+
   useEffect(() => {
     const accessToken = auth.accessToken;
-    if (accessToken) {
+    if (false !== auth.isAhenticated || auth.nickname === shippingNo) {
       axios
         .get(`http://localhost/shippings/update?shippingNo=${shippingNo}`, {
           headers: { Authorization: `Bearer ${accessToken}` },
@@ -328,8 +325,11 @@ const ShippingUpdate = () => {
         .catch((error) => {
           console.log(error);
         });
+    } else {
+      alert("작성자만 이용할 수 있는 서비스 입니다.");
+      navi(-1);
     }
-  }, [auth]);
+  }, [auth.isAuthenticated]);
 
   if (load) {
     return <Load />;
@@ -343,17 +343,21 @@ const ShippingUpdate = () => {
         </TitleDiv>
         <ImageBigDiv>
           {image.length > 0 ? (
-            image.map((img) => (
-              <ImageCover
-                key={img.imageNo}
-                onClick={() => deleteImage(img.imageNo)}
-              >
-                <Images
-                  src={`http://${img.imagePath}${img.imageChangeName}`}
-                  alt={img.imageOriginName}
-                />
-              </ImageCover>
-            ))
+            image.map(
+              (
+                img // 얘도 빼야됨
+              ) => (
+                <ImageCover
+                  key={img.imageNo}
+                  onClick={() => deleteImage(img.imageNo)}
+                >
+                  <Images
+                    src={`http://${img.imagePath}${img.imageChangeName}`}
+                    alt={img.imageOriginName}
+                  />
+                </ImageCover>
+              )
+            )
           ) : (
             <></>
           )}
@@ -374,6 +378,10 @@ const ShippingUpdate = () => {
             ref={inputFileRef}
           />
         </ImageBigDiv>
+        <PriceDiv>
+          <PriceP>인당 탑승 인원</PriceP>
+          <PriceInput type="number" value={price} onChange={priceChange} />
+        </PriceDiv>
         <FishsDiv>
           {fish.map((fish) => (
             <FishsExDiv key={fish.fishNo}>

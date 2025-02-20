@@ -17,20 +17,13 @@ public interface ShippingService {
 
 	Map<String, Object> selectShippingDetail(String shippingNo);
 
-	Fishs selectFish(String fishNo);
-
-	void insertAttention(String shippingNo);
-
-	void deleteAttention(String shippingNo);
-
-	int selectAttention(String shippingNo);
-
 	Shipping selectUpdateForm(String shippingNo);
-
-	List<Fishs> selectFish();
 
 	List<Port> selectSearchPort(String option, String searchContent);
 
-	void updateShipping(MultipartFile[] files, UpdateFormDTO shipping, String fishs, String option, String port, String stringImage);
+	void updateShipping(MultipartFile[] files, UpdateFormDTO shipping, String fishs, String option, String port,
+			String stringImage);
+
+	void insertShipping(MultipartFile[] files, UpdateFormDTO shipping, String fishs, String option, String port);
 
 }

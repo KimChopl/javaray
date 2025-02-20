@@ -39,6 +39,7 @@
 			<result property="imageOriginName" column="imageOriginName"/>
 			<result property="imageChangeName" column="imageChangeName"/>
 			<result property="imageLevel" column="imageLevel"/>
+			<result property="boardNo" column="boardNo"/>
 		</collection>
 		<collection property="fishs" javaType="java.util.ArrayList" ofType="Fishs">
 			<result property="fishNo" column="fishNo"/>
@@ -159,11 +160,12 @@
 		       TM.EMAIL email, 
 		       TSV.SHIPPING_SERVICE_NO as serviceNo,
 		       TSV.SHIPPING_SERVICE_CONTENT as serviceName,
-		       TSI1.IMAGE_NO imageNo,
-		       TSI1.IMAGE_PATH imagePath,
-		       TSI1.IMAGE_ORIGIN_NAME imageOriginName,
-		       TSI1.IMAGE_CHANGE_NAME imageChangeName,
-		       TSI1.IMAGE_LEVEL imageLevel,
+		       imageNo,
+		       imagePath,
+		       imageChangeName,
+		       imageOriginName,
+		       imageLevel,
+		       boardNo,
 		       TP.PORT_NO portNo,
 		       TP.ADDRESS address,
 		       TP.DETAIL_ADDRESS detailAddress,
@@ -200,9 +202,21 @@
 		  LEFT
 		  JOIN
 		       TB_FISH TF ON (TF.FISH_NO = TEF.FISH_NO)
-		  LEFT
+		  LEFT 
 		  JOIN
-		       TB_SHIPPING_IMAGE TSI1 ON (TS.SHIPPING_NO = TSI1.REF_BOARD_NO)
+		       (
+		       SELECT
+		              TSI.IMAGE_NO imageNo,
+		              TSI.IMAGE_PATH imagePath,
+		              TSI.IMAGE_CHANGE_NAME imageChangeName,
+		              TSI.IMAGE_ORIGIN_NAME imageOriginName,
+		              TSI.REF_BOARD_NO boardNo,
+		              TSI.IMAGE_LEVEL imageLevel
+		         FROM
+		              TB_SHIPPING_IMAGE TSI
+		        WHERE
+		              TSI.STATUS = 'Y'
+                ) IMG ON (TS.SHIPPING_NO = boardNo )
 		  LEFT
 		  JOIN
 		       (SELECT
@@ -311,5 +325,48 @@
 		 WHERE
 		       SHIPPING_NO = #{shippingNo}
 	</update>
+	
+	<insert id="insertShipping" parameterType="UpdateFormDTO">
+		INSERT
+		  INTO
+		       TB_SHIPPING
+		       (
+				SHIPPING_NO,
+				PORT_NO,
+				USER_NO,
+				SHIPPING_TITLE,
+				SHIPPING_CONTENT,
+				ALLOW_PEPLE_NO,
+				PRICE
+			   )
+		VALUES
+		       (
+				'SP'||TO_CHAR(SEQ_SH_NO.NEXTVAL),
+				#{port.portNo},
+				#{userNo},
+				#{shippingTitle},
+				#{shippingContent},
+				#{allowPepleNo},
+				#{price}
+			   )
+		<selectKey keyProperty="shippingNo" resultType="string" order="AFTER">
+			SELECT
+			       'SP'||TO_CHAR(SEQ_SH_NO.CURRVAL)
+			  FROM
+			       DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="insertFish" parameterType="Fishs">
+		INSERT
+		  INTO
+		       TB_ENABLE_FISH
+		VALUES
+		       (
+				#{shippingNo},
+				#{fishNo}
+			   )
+	</insert>
+	
 	
 </mapper>

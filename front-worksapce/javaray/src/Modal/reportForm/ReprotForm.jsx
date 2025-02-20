@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   ReportBody,
   BtnCover,
@@ -12,12 +12,33 @@ import {
   CancelButton,
   Hr,
 } from "./ReprotFormCss";
+import axios from "axios";
+import { AuthContext } from "../../UseContext/Auth/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-const ReportForm = (props) => {
-  const kind = props.kind;
+const ReportForm = ({ kind, shippingNo }) => {
+  //const kind = props.kind;
+  //const shippingNo = props.shippingNo;
   const [content, setContent] = useState();
+  const { auth } = useContext(AuthContext);
+  //const navi = useNavigate();
   const putContent = (e) => {
     setContent(e.target.value);
+  };
+  const report = () => {
+    if (kind === "1") {
+      //1이뭐임??
+    } else {
+      axios
+        .delete(`http://localhost/manager/shippings`, {
+          headers: { Authorization: `Bearer ${auth.accessToken}` },
+          data: { shippingNo: shippingNo, deleteReason: content },
+        })
+        .then(() => {
+          alert("삭제가 완료 되었습니다.");
+          window.location.reload(); // 좋지 않음
+        });
+    }
   };
   return (
     <>
@@ -46,7 +67,7 @@ const ReportForm = (props) => {
             <CancelButton>취소하기</CancelButton>
           </ReportBtnCover>
           <ReportBtnCover>
-            <ReportButton>
+            <ReportButton onClick={report}>
               {kind === "1" ? "신고하기" : "삭제하기"}
             </ReportButton>
           </ReportBtnCover>

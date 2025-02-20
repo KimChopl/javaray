@@ -150,10 +150,14 @@ const ShippingDetail = () => {
         <DetailBody>
           <DetailBase>
             <ImageCover onClick={nextImage}>
-              <ImageBox
-                src={`http://${image[currentIndex].imagePath}${image[currentIndex].imageChangeName}`}
-                alt="여러장 넣어야하는디"
-              />
+              {image.length > 0 ? (
+                <ImageBox
+                  src={`http://${image[currentIndex].imagePath}${image[currentIndex].imageChangeName}`}
+                  alt="여러장 넣어야하는디"
+                />
+              ) : (
+                <></>
+              )}
             </ImageCover>
             <BaseCover>
               <BaseBar>

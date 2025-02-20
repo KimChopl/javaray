@@ -65,4 +65,15 @@
 		 WHERE
 		       USER_NO = #{userNo}
 	</update>
+	<select id="selectUserRole" parameterType="long" resultType="Member">
+		SELECT
+		       USER_NO userNo,
+		       USER_ID username,
+		       NICKNAME nickname,
+		       ROLE
+		 FROM
+		       TB_MEMBER
+		WHERE
+		      USER_NO = #{userNo}
+	</select>
 </mapper>

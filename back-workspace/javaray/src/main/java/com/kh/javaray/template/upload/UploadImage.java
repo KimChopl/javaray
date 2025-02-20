@@ -28,7 +28,7 @@ private final Path fileLocation;
 		this.fileLocation = Paths.get("uploads").toAbsolutePath().normalize(); // 빈등록 못함이렇게 하면
 	}
 	
-	public List<Image> store(MultipartFile[] file, String path, boolean main) {
+	public List<Image> store(MultipartFile[] file, boolean main) {
 		int imageLevel = 0;
 		List<Image> list = new ArrayList<Image>();
 		for(int i = 0; i < file.length; i++) {
@@ -65,10 +65,11 @@ private final Path fileLocation;
 
 	public void delete(List<Image> lists) {
 		log.info("{}", lists);
+		log.info("{}",Paths.get("/uploads/" + lists.get(0).getImageChangeName()));
 		if(!lists.isEmpty() || lists != null) {
 			for(Image image : lists) {
 				try {
-					Files.delete(Paths.get(image.getImageChangeName()));
+					Files.delete(Paths.get("uploads/"+image.getImageChangeName()));
 				} catch (IOException e) {
 					throw new FailDeleteObjectException("요청 처리 중 오류가 발생했습니다. 다시 시도해주세요");
 				}
@@ -79,7 +80,7 @@ private final Path fileLocation;
 	public void delete(Image image) {
 		if(image != null || !"".equals(image.getImageChangeName()) || image.getImageChangeName() != null) {
 			try {
-				Files.delete(Paths.get(image.getImageChangeName()));
+				Files.delete(Paths.get("/uploads/" + image.getImageChangeName()));
 			} catch (IOException e) {
 				throw new FailDeleteObjectException("요청 처리 중 오류가 발생했습니다. 다시 시도해주세요");
 			}
