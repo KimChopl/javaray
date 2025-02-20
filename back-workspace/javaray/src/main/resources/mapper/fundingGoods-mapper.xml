@@ -39,5 +39,21 @@
 			   )
 	</insert>
 	
+	<insert id="insertBoardOption">
+		INSERT
+		  INTO
+		  	   TB_PRODUCT_OPTION
+		VALUES
+			   (
+				SEQ_FONO.NEXTVAL,
+				#{refBno},
+				#{id},
+				#{title},
+				#{content},
+				#{price},
+				#{count}
+			   )
+	</insert>
+	
 	
 </mapper>

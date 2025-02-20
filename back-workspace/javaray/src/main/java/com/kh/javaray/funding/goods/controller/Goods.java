@@ -46,6 +46,8 @@ public class Goods {
 		log.info("{}", optionList.get(0));
 		log.info("{}", boardNo);
 		
+		goodsService.insertGoodsOptions(optionList, boardNo);
+		
 		return ResponseEntity.status(HttpStatus.CREATED).body("굿즈 옵션들을 신청 성공했습니다.");
 	}
 

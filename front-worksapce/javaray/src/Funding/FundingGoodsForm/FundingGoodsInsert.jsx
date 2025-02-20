@@ -159,6 +159,7 @@ const FundingGoodsForm = () => {
       };
 
       const b = async (r) => {
+        console.log(boardNo);
         const response = await axios
           .post(
             `http://localhost/goods/insert/options?boardNo=${boardNo}`,

@@ -13,6 +13,7 @@ import com.kh.javaray.funding.goods.model.mapper.GoodsMapper;
 import com.kh.javaray.funding.model.dto.FundingBoardDTO;
 import com.kh.javaray.funding.model.dto.FundingCategoryDTO;
 import com.kh.javaray.funding.model.dto.FundingFileDTO;
+import com.kh.javaray.funding.model.dto.FundingOptionDTO;
 import com.kh.javaray.funding.model.mapper.FundingMapper;
 import com.kh.javaray.funding.model.service.FundingFileService;
 import com.kh.javaray.member.model.dto.CustomUserDetails;
@@ -87,6 +88,16 @@ public class GoodsServiceImpl implements GoodsService {
 		
 		
 		return goodsFormData.getBoardNo();
+	}
+
+	@Override
+	public void insertGoodsOptions(List<FundingOptionDTO> optionList, Long boardNo) {
+		
+		for(int i = 0; i < optionList.size(); i++) {
+			optionList.get(i).setRefBno(boardNo);
+			goodsMapper.insertBoardOption(optionList.get(i));
+		}
+		
 	}
 
 }
