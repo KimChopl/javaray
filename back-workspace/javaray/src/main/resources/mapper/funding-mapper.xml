@@ -3,46 +3,6 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.javaray.funding.model.mapper.FundingMapper">
-	<insert id="save">
-		INSERT
-		  INTO
-		  	   TB_BUSINESS_NUMBER_INFO
-		VALUES
-			   (
-				#{companyBusinessNo},
-				#{boardWriter},
-				#{resultContent},
-				#{resultCode}
-			   )
-	</insert>
-	
-	<select id="selectBusinessNo" parameterType="String" resultType="FundingBusinessNoAPIDTO">
-		SELECT
-			   BUSINESS_NUMBER companyBusinessNo
-		  FROM
-		  	   TB_BUSINESS_NUMBER_INFO
-		 WHERE
-			   USER_NO = #{userNo}
-	</select>
-	
-	<insert id="insertBoard">
-		INSERT
-		  INTO
-		  	   TB_FUNDING_COMPANY
-		VALUES
-			   (
-				#{companyNo},
-				#{companyName},
-				#{phoneNo},
-				#{openingDate},
-				#{ceoName},
-				#{companyIntroduce},
-				SYSDATE,
-				DEFAULT,
-				#{businessNoFileUrl}
-			   )
-	</insert>
-	
 	
 	<resultMap id="fundingBoard" type="FundingBoardDTO">
 		<id property="boardNo" column="BOARD_NO" />
@@ -119,7 +79,7 @@ SELECT
 		   AND
 		   	   TB_PRODUCT_OPTION.OPTION_NO = 1
 		   AND
-		   	   (#{categoryNo} = 5 OR CATEGORY_NO = #{categoryNo})
+		   	   (#{categoryNo} = 1 OR CATEGORY_NO = #{categoryNo})
 		 ORDER
 		    BY
 		       START_DATE

@@ -49,10 +49,10 @@ public class SecurityConfiguration {
 		return httpSecurity.formLogin(AbstractHttpConfigurer::disable).httpBasic(AbstractHttpConfigurer::disable)
 				.csrf(AbstractHttpConfigurer::disable).cors(Customizer.withDefaults())
 				.authorizeHttpRequests(requests -> {
-				 	requests.requestMatchers("/members", "/members/login", "/uploads/**", "/funding/businessNo").permitAll();
+				 	requests.requestMatchers("/members", "/members/login", "/uploads/**", "/businessNo", "/funding").permitAll();
 					requests.requestMatchers(HttpMethod.PUT, "/members/update/**", "/shippings").authenticated();
 					requests.requestMatchers(HttpMethod.DELETE, "/members", "/shippings/attention").authenticated();
-					requests.requestMatchers(HttpMethod.POST, "/members/refresh", "/funding/businessNo/**", "/funding/businessNoInsert/**", "/shippings/attention", "/shippings").authenticated();
+					requests.requestMatchers(HttpMethod.POST, "/members/refresh",  "/businessNo/**", "/businessNoInsert/**", "/shippings/attention", "/goods/insert", "/shippings").authenticated();
 					requests.requestMatchers(HttpMethod.GET, "/shippings/**", "/shippings/detail/**", "/funding/selectList/**", "/funding/selectCategory", "uploads/**", "/uploads/shipping/**").permitAll();
 					requests.requestMatchers("/manager/**").hasRole("ADMIN");
 					requests.requestMatchers(HttpMethod.GET, "/fishing", "/fishing/detail/**").permitAll();

@@ -37,12 +37,9 @@ const FundingLists = () => {
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
   const [boards, setBoards] = useState([]);
-  const [categoryNo, setCategoryNo] = useState(5);
+  const [categoryNo, setCategoryNo] = useState(1);
 
   const handleLogin = () => {
-    console.log(auth.accessToken);
-    console.log(page);
-    console.log(categoryNo);
     axios
       .get(
         `http://localhost/funding/selectList/hasToken?page=${page}&categoryNo=${categoryNo}`,
@@ -53,11 +50,16 @@ const FundingLists = () => {
         }
       )
       .then((response) => {
-        console.log(response);
         setRole(response.data[0].role);
-        setBoards([...response.data]);
-        if (response.data.length < 6) {
-          setHasMore(false);
+        if (
+          response.data &&
+          response.data[0].boardNo !== null &&
+          response.data[0].role
+        ) {
+          setBoards([...response.data]);
+          if (response.data.length < 6) {
+            setHasMore(false);
+          }
         }
       })
       .catch((error) => {
@@ -74,11 +76,16 @@ const FundingLists = () => {
         },
       })
       .then((response) => {
-        console.log(response);
-        setBoards([...response.data]);
         setRole("");
-        if (response.data.length < 6) {
-          setHasMore(false);
+        if (
+          response.data &&
+          response.data[0].boardNo !== null &&
+          response.data[0].role
+        ) {
+          setBoards([...response.data]);
+          if (response.data.length < 6) {
+            setHasMore(false);
+          }
         }
       })
       .catch((error) => {
@@ -88,7 +95,6 @@ const FundingLists = () => {
   };
 
   useEffect(() => {
-    console.log(auth.isAuthenticated);
     if (auth.isAuthenticated === undefined) return;
     if (auth.isAuthenticated) {
       handleLogin();
@@ -145,23 +151,23 @@ const FundingLists = () => {
           </div>
         </div>
         <FundingCategory id="fire">
-          <CategoryItem onClick={() => handleCategory(5)}>
+          <CategoryItem onClick={() => handleCategory(1)}>
             <FundingIcon src={icon5} alt="icon" />
             <FundingIconContent>전체</FundingIconContent>
           </CategoryItem>
-          <CategoryItem onClick={() => handleCategory(1)}>
+          <CategoryItem onClick={() => handleCategory(2)}>
             <FundingIcon src={icon1} alt="icon" />
             <FundingIconContent>낚시대</FundingIconContent>
           </CategoryItem>
-          <CategoryItem onClick={() => handleCategory(2)}>
+          <CategoryItem onClick={() => handleCategory(3)}>
             <FundingIcon src={icon2} alt="icon" />
             <FundingIconContent>릴</FundingIconContent>
           </CategoryItem>
-          <CategoryItem onClick={() => handleCategory(3)}>
+          <CategoryItem onClick={() => handleCategory(4)}>
             <FundingIcon src={icon3} alt="icon" />
             <FundingIconContent>낚싯줄</FundingIconContent>
           </CategoryItem>
-          <CategoryItem onClick={() => handleCategory(4)}>
+          <CategoryItem onClick={() => handleCategory(5)}>
             <FundingIcon src={icon4} alt="icon" />
             <FundingIconContent>낚시의류</FundingIconContent>
           </CategoryItem>
@@ -184,21 +190,27 @@ const FundingLists = () => {
         <FundingHr />
         <FundingGoods>
           <PostList>
-            {boards.map((board) => (
-              <PostItem key={board.boardNo}>
-                <GoodsDiv>
-                  <GoodsImg src={board.fundingFileList[0].fileUrl} />
-                  <GoodsContent>{board.currentSalePercent}% 달성</GoodsContent>
-                  <GoodsContent1>{board.boardTitle}</GoodsContent1>
-                  <GoodsContent1>
-                    <GoodsContent2>{board.companyName}</GoodsContent2>
-                    <GoodsContent3>
-                      {getRemailDate(board.endDate)}
-                    </GoodsContent3>
-                  </GoodsContent1>
-                </GoodsDiv>
-              </PostItem>
-            ))}
+            {boards.length > 0 ? (
+              boards.map((board) => (
+                <PostItem key={board.boardNo}>
+                  <GoodsDiv>
+                    <GoodsImg src={board.fundingFileList[0].fileUrl} />
+                    <GoodsContent>
+                      {board.currentSalePercent}% 달성
+                    </GoodsContent>
+                    <GoodsContent1>{board.boardTitle}</GoodsContent1>
+                    <GoodsContent1>
+                      <GoodsContent2>{board.companyName}</GoodsContent2>
+                      <GoodsContent3>
+                        {getRemailDate(board.endDate)}
+                      </GoodsContent3>
+                    </GoodsContent1>
+                  </GoodsDiv>
+                </PostItem>
+              ))
+            ) : (
+              <p>펀딩 게시물이 존재하지 않습니다.</p>
+            )}
           </PostList>
         </FundingGoods>
         <br />

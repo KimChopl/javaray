@@ -1,4 +1,4 @@
-package com.kh.javaray.funding.model.dto;
+package com.kh.javaray.funding.businessinfo.model.dto;
 
 import java.time.LocalDate;
 
