@@ -73,10 +73,10 @@ public class ShippingServiceImpl implements ShippingService {
 	@Transactional
 	public Map<String, Object> selectShippingDetail(String shippingNo) {
 		Shipping shipping = checkedShipping(shippingNo);
-		List<Weather> weather = oda.weatherApi(shipping.getPort().getSpotCode());
+		//List<Weather> weather = oda.weatherApi(shipping.getPort().getSpotCode());
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("shipping", shipping);
-		response.put("weather", weather);
+		//response.put("weather", weather);
 		return response;
 	}
 
@@ -101,8 +101,9 @@ public class ShippingServiceImpl implements ShippingService {
 		return sm.selectSearchPort(search);
 	}
 
-	private void matchShippingInfo(String ShippingNo) {
-		Shipping shipping = sm.selectShippingDetail(ShippingNo);
+	private void matchShippingInfo(String shippingNo) {
+		log.info(shippingNo);
+		Shipping shipping = sm.selectShippingDetail(shippingNo);
 		if (shipping == null) {
 			throw new NotFoundInfoException("잘못된 접근입니다. 다시 시도해주세요.");
 		}
@@ -125,12 +126,13 @@ public class ShippingServiceImpl implements ShippingService {
 			String port, String stringImage) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		String shippingNo = shipping.getShippingNo();
-		matchShippingInfo(shippingNo);
+		if(shippingNo != null) {
+			matchShippingInfo(shippingNo);
+		}
 		List<Image> imageList = null;
 		List<Image> uploadImage = null;
 		if (stringImage != null) {
 			imageList = po.parseImage(stringImage);
-			uploadImage = is.checkedImageMain(imageList, files, shippingNo);
 		} else {
 			uploadImage = is.checkedImageMain(files, shippingNo);
 		}
@@ -141,6 +143,8 @@ public class ShippingServiceImpl implements ShippingService {
 		map.put("fish", fish);
 		map.put("options", options);
 		map.put("parsePort", parsePort);
+		map.put("imageList", imageList);
+		map.put("parseShippingNo", shippingNo);
 		return map;
 	}
 
@@ -151,13 +155,16 @@ public class ShippingServiceImpl implements ShippingService {
 		return shipping;
 	}
 
-	private void updateValues(Map<String, Object> map, String shippingNo) {
+	private void updateValues(Map<String, Object> map, String shippingNo, MultipartFile[] files) {
 		List<Image> uploadImage = (List<Image>) map.get("uploadImage");
 		List<ShippingOption> uploadUption = (List<ShippingOption>) map.get("options");
 		List<Fishs> uploadFish = (List<Fishs>) map.get("fish");
-		insertImage(settingImageShippingNo(uploadImage, shippingNo));
 		os.uploadOption(os.settingOptionsShippingNo(uploadUption, shippingNo));
 		fs.uploadFish(fs.settingFishsShippingNo(uploadFish, shippingNo));
+		if(uploadImage == null) {
+			uploadImage = is.checkedImageMain((List<Image>)map.get("imageList"), files, shippingNo);
+		}
+		insertImage(settingImageShippingNo(uploadImage, shippingNo));
 	}
 
 	private Map<String, Object> addShipping(MultipartFile[] files, UpdateFormDTO shipping, String fishs, String option,
@@ -177,9 +184,10 @@ public class ShippingServiceImpl implements ShippingService {
 	public void updateShipping(MultipartFile[] files, UpdateFormDTO shipping, String fishs, String option, String port,
 			String stringImage) {
 		Map<String, Object> map = addShipping(files, shipping, fishs, option, port, stringImage);
-		UpdateFormDTO uploadShipping = (UpdateFormDTO) map.get("uploadShipping");
+		UpdateFormDTO uploadShipping = (UpdateFormDTO) map.get("upload");
+		log.info("{}", uploadShipping);
 		sm.updateShipping(uploadShipping);
-		updateValues(map, String.valueOf(map.get("shippingNo")));
+		updateValues(map, String.valueOf(map.get("shippingNo")), files);
 		// 너무 많음
 	}
 
@@ -212,9 +220,11 @@ public class ShippingServiceImpl implements ShippingService {
 			String port) {
 		Map<String, Object> map = addUserNo(files, shipping, fishs, option, port);
 		UpdateFormDTO uploadShipping = (UpdateFormDTO) map.get("uploadShipping");
+		log.info("{}", uploadShipping.getShippingNo());
 		sm.insertShipping(uploadShipping);
+		log.info("{}", uploadShipping.getShippingNo());
 		String shippingNo = ((UpdateFormDTO) (map.get("uploadShipping"))).getShippingNo();
-		updateValues(map, shippingNo);
+		updateValues(map, shippingNo, null);
 	}
 
 }

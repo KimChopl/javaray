@@ -1,7 +1,8 @@
 package com.kh.javaray.template.model.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,34 +15,24 @@ import com.kh.javaray.template.model.mapper.ImageMapper;
 import com.kh.javaray.template.upload.UploadImage;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
 
-	private ImageMapper im;
-	private UploadImage ui;
-	private ShippingMapper sm;
+	private final ImageMapper im;
+	private final UploadImage ui;
+	private final ShippingMapper sm;
 
 	private void deleteBeforeImage(List<Image> list, List<Image> imageList) {
+		log.info("{}", list);
+		log.info("{}", imageList);
 		if (list.size() != imageList.size()) { // 기존 사진에서 삭제한 사진이 있는지
-			List<Image> deleteImage = new ArrayList<Image>();
-			for (Image image : list) {
-				boolean isFound = false;
-				for (Image delete : imageList) {
-					if (image.getImageNo().equals(delete.getImageNo())) {
-						isFound = true;
-					}
-				}
-				if (!isFound) {
-					deleteImage.add(image);
-				}
-			}
-			ui.delete(deleteImage);
-			for (int i = 0; i < deleteImage.size(); i++) {
-				deleteImage(deleteImage);
-				im.deleteImage(deleteImage.get(i));
-			}
+			Set<String> setImage = imageList.stream().map(Image::getImageChangeName).collect(Collectors.toSet());
+			List<Image> deleteImage = list.stream().filter(image -> !setImage.contains(image.getImageChangeName())).collect(Collectors.toList());
+			log.info("{}",deleteImage);
 		}
 
 	}
@@ -84,6 +75,12 @@ public class ImageServiceImpl implements ImageService {
 			result = result * im.deleteImage(image);
 		}
 		if (result == 0) {
+			throw new FailDeleteObjectException("업데이트 중 문제가 발생했습니다. 다시 시도해주세요.");
+		}
+	}
+
+	public void deleteImage(Image deleteImage) {
+		if (im.deleteImage(deleteImage) == 0) {
 			throw new FailDeleteObjectException("업데이트 중 문제가 발생했습니다. 다시 시도해주세요.");
 		}
 	}
