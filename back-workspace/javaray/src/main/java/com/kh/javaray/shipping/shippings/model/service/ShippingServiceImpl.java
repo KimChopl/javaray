@@ -10,11 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.javaray.api.OpenDataApi;
 import com.kh.javaray.auth.service.AuthenticationService;
-import com.kh.javaray.exception.exceptions.NotFoundUserInfoException;
+import com.kh.javaray.exception.exceptions.NotFoundInfoException;
 import com.kh.javaray.exception.exceptions.NotMatchBoardInfoException;
 import com.kh.javaray.exception.exceptions.NotMatchUserInfoException;
 import com.kh.javaray.member.model.dto.CustomUserDetails;
-import com.kh.javaray.shipping.dto.MiddleWeather;
 import com.kh.javaray.shipping.dto.Weather;
 import com.kh.javaray.shipping.shippings.model.dto.Attention;
 import com.kh.javaray.shipping.shippings.model.dto.Fishs;

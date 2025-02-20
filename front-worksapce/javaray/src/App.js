@@ -43,10 +43,7 @@ function App() {
           <Route path="BuninessApply" element={<BusinessNoApply />} />
           <Route path="FundingGoodsForm" element={<FundingGoodsForm />} />
           <Route path="FishingGoods" element={<FishingGoods />} />
-          <Route
-            path="/fishing/review/:fishingNo"
-            element={<FishingReview />}
-          />
+          <Route path="/fishing/review/" element={<FishingReview />} />
           <Route
             path="/fishing/review/insert"
             element={<FishingReviewInsert />}

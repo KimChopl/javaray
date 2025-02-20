@@ -5,12 +5,17 @@ import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.javaray.auth.service.AuthenticationService;
 import com.kh.javaray.fishing.amenities.model.dto.AmenitiesDTO;
+import com.kh.javaray.fishing.day.model.dto.DayDTO;
 import com.kh.javaray.fishing.fish.model.dto.FishDTO;
 import com.kh.javaray.fishing.fishing.model.dto.FishingDTO;
 import com.kh.javaray.fishing.fishing.model.mapper.FishingMapper;
+import com.kh.javaray.member.model.dto.CustomUserDetails;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,14 +24,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FishingServiceImpl implements FishingService {
 	
-	//private final FishingFileService fileService;
+	private final FishingFileService fileService;
 	private final FishingMapper fishingMapper;
-	//private final AuthenticationService authService;
+	private final AuthenticationService authService;
 	
-	/*
+	
 	//게시물 등록
 	@Override
-	public void fishingSave(@Valid FishingDTO fishing, AmenitiesDTO amenities, FishDTO fish, MultipartFile file) {
+	public void fishingSave(@Valid FishingDTO fishing,  MultipartFile file) {
 	
 		CustomUserDetails user = authService.checkedUser(); // 사용자확인
 		authService.validWriter(fishing.getFishingWriter(), user.getUsername());
@@ -41,8 +46,25 @@ public class FishingServiceImpl implements FishingService {
 		
 		fishing.setFishingWriter(String.valueOf(user.getUserNo()));
 		fishingMapper.fishingSave(fishing);
+		
+		// fish 리스트 처리
+		if (fishing.getFishList() != null && !fishing.getFishList().isEmpty()) {
+	        fishingMapper.saveFish(fishing);
+	    }
+		
+		//amenities 리스트 처리
+		if(fishing.getAmenitiesList() != null && !fishing.getAmenitiesList().isEmpty()) {
+			fishingMapper.saveAmenities(fishing);
+		}
+		
+		// 요일 리스트 처리
+		if(fishing.getDayList() != null && !fishing.getDayList().isEmpty()) {
+			fishingMapper.saveDay(fishing);
+		}
+
+	    
 	}
-	*/
+	
 
 	// 게시물 전체 조회
 	@Override
