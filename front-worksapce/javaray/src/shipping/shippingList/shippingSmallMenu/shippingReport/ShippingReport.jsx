@@ -1,11 +1,10 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Modal from "../../../../Modal/Modal";
 import { Report } from "./ShippingReportCss";
-import { AuthContext } from "../../../../UseContext/Auth/AuthContext";
-const ShippingReport = ({ i }) => {
+const ShippingReport = (props) => {
   const [flag, isFlag] = useState(false);
   const [kind, setKind] = useState("");
-  const { auth } = useContext(AuthContext);
+  const user = props.user;
 
   const clickModal = (boolean, kind) => {
     console.log(boolean);
@@ -16,13 +15,13 @@ const ShippingReport = ({ i }) => {
   };
   const closeModal = (e) => {
     isFlag(e);
-    i(false);
+    props.i(false);
   };
 
   return (
     <>
       <Report>
-        {auth.role === "ADMIN" ? (
+        {user.role === "ROLE_ADMIN" ? (
           <div>
             <label onClick={() => clickModal(true, "2")}>삭제하기</label>
           </div>
@@ -33,7 +32,13 @@ const ShippingReport = ({ i }) => {
         )}
       </Report>
 
-      {flag && <Modal kind={kind} clickModal={closeModal} />}
+      {flag && (
+        <Modal
+          kind={kind}
+          shippingNo={props.shippingNo}
+          clickModal={closeModal}
+        />
+      )}
     </>
   );
 };

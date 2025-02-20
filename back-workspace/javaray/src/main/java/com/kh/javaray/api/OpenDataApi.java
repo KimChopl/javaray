@@ -29,7 +29,7 @@ public class OpenDataApi {
 		return day;
 	}
 	
-	public List<Weather> weatherApi(String spotCode) {
+	private StringBuilder makingURL(String spotCode) {
 		StringBuilder requestUrl = new StringBuilder("https://apihub.kma.go.kr/api/typ01/url/fct_afs_do.php");
 		String key = "t3nuxM67Qvq57sTOu5L69w";
 		try {
@@ -39,6 +39,16 @@ public class OpenDataApi {
 			requestUrl.append("&tmfc2=" + URLEncoder.encode((today() + "18"), "UTF-8"));
 			requestUrl.append("&disp=1");
 			requestUrl.append("&help=0");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			throw new NotMatchUserInfoException("네트워크 오류.");
+		}
+		return requestUrl;
+	}
+	
+	public List<Weather> weatherApi(String spotCode) {
+		StringBuilder requestUrl = makingURL(spotCode);
+		try {
 			URI uri = new URI(requestUrl.toString());
 			RestTemplate rt = new RestTemplate();
 			String result = rt.getForObject(uri, String.class);
@@ -57,9 +67,6 @@ public class OpenDataApi {
 				}
 			}
 			return list;
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-			throw new NotMatchUserInfoException("네트워크 오류.");
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 			throw new NotMatchUserInfoException("네트워크 오류.");

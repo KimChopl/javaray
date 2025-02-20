@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const StyledShipDiv = styled.div`
   width: 208px;
-  height: 300px;
+  height: 350px;
   border: 1px solid #cccccc;
   box-shadow: 1px 3px 5px #bbbbbb;
   display: inline-block;
@@ -34,7 +34,7 @@ export const StyledShipImage = styled.img`
 
 export const StyledShipTitleDiv = styled.div`
   width: 100%;
-  height: 20px;
+  height: 70px;
   margin: 8px 3px 3px 3px;
 `;
 

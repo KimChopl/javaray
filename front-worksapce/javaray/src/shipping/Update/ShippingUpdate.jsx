@@ -13,8 +13,10 @@ import hiter from "./images/hiter.jpg";
 import liferope from "./images/liferope.jpg";
 import mobile from "./images/mobile.jpg";
 import restroom from "./images/restroom.jpeg";
+import options from "./options.json";
 import {
   Checkbox,
+  ComplateBtn,
   ContentDiv,
   ContentText,
   DeleteFishs,
@@ -25,6 +27,7 @@ import {
   ImageBigDiv,
   ImageCover,
   Images,
+  InputImg,
   Label,
   LocationAndPeple,
   LocationDiv,
@@ -39,20 +42,21 @@ import {
   OptionP,
   PepleDiv,
   PepleInput,
+  PriceDiv,
+  PriceInput,
+  PriceP,
   SearchBtn,
   SearchFishDiv,
   TitleDiv,
   TitleInput,
+  UploadImg,
 } from "./ShippingUpdateCss";
-import { CloseImg } from "../../Modal/ModalCss";
-import { set } from "date-fns";
 import Modal from "../../Modal/Modal";
 
 const ShippingUpdate = () => {
   const [load, setLoad] = useState(true);
   const { shippingNo } = useParams();
   const { auth } = useContext(AuthContext);
-  const [shipping, setShipping] = useState(null);
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
   const [peple, setPeple] = useState("");
@@ -63,6 +67,11 @@ const ShippingUpdate = () => {
   const [price, setPrice] = useState(0);
   const [searchFish, setSearchFish] = useState(false);
   const [searchAddress, setSearchAddress] = useState(false);
+  const [imageUrl, setImageUrl] = useState([]);
+  const [files, setFiles] = useState([]);
+
+  const navi = useNavigate();
+  const inputFileRef = useRef(null);
   const [option, setOption] = useState([
     {
       name: "구명조끼",
@@ -149,7 +158,7 @@ const ShippingUpdate = () => {
   };
   const deleteFish = (e) => {
     const newFish = fish.filter((fish) => {
-      return fish != e;
+      return fish !== e;
     });
     setFish(newFish);
   };
@@ -204,15 +213,104 @@ const ShippingUpdate = () => {
     setSearchFish(e);
   };
 
+  const update = () => {
+    const formData = new FormData();
+    formData.append("shippingNo", shippingNo);
+    formData.append("shippingContent", content);
+    formData.append("shippingTitle", title);
+    formData.append("allowPepleNo", peple);
+    formData.append("price", price);
+    //formData.append("fishs", JSON.stringify(fish));
+    const imageArr = image.map((img) => {
+      return {
+        imageNo: img.imageNo,
+        imagePath: img.imagepath,
+        imageChangeName: img.imageChangeName,
+        imageLeval: img.imageLevel,
+        toString: function () {
+          return `imageNo:${img.imageNo}, imagePath:${img.imagePath}, imageChangeName:${img.imageChangeName}, imageLevel:${img.imageLevel}`;
+        },
+      };
+    });
+    formData.append("image", imageArr);
+
+    const arr = fish.map((e) => {
+      return {
+        fishNo: e.fishNo,
+        fishName: e.fishName,
+        toString: function () {
+          return `fishNo:${e.fishNo}, fishName:${e.fishName}`;
+        },
+      };
+    });
+    formData.append("fish", arr);
+
+    const serviceArr = service.map((e) => {
+      return {
+        serviceNo: e.serviceName,
+        serviceName: e.serviceName,
+        toString: function () {
+          return `serviceNo:${e.serviceNo}, serviceName:${e.serviceName}`;
+        },
+      };
+    });
+    formData.append("option", serviceArr);
+
+    const portObj = `portNo:${address.portNo}, address:${address.address}, detailAddress:${address.detailAddress}`;
+
+    formData.append("portObj", portObj);
+
+    if (files.length !== 0) {
+      for (let i = 0; i < files.length; i++) formData.append("files", files[i]);
+    }
+    console.log(files);
+    axios
+      .put(`http://localhost/shippings`, formData, {
+        headers: {
+          Authorization: `Bearer ${auth.accessToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then(() => {
+        alert("수정 성공");
+        navi(-1);
+      })
+      .catch((e) => console.log(e));
+  };
+
+  const uploadImg = (e) => {
+    const fileList = Array.from(e.target.files);
+    console.log(fileList);
+    setFiles(fileList);
+    const url = fileList.map((image) => URL.createObjectURL(image));
+    setImageUrl([...imageUrl, ...url]);
+  };
+
+  const imgDivClick = () => {
+    inputFileRef.current.click();
+  };
+
+  const deleteImage = (e) => {
+    setImage((image) => image.filter((img) => img.imageNo !== e));
+  };
+
+  const deleteNewImage = (e) => {
+    setFiles((deleteImg) => deleteImg.filter((_, index) => index !== e));
+    setImageUrl((prevURLs) => prevURLs.filter((_, index) => index !== e));
+  };
+
+  const priceChange = (e) => {
+    setPrice(e.target.value);
+  };
+
   useEffect(() => {
     const accessToken = auth.accessToken;
-    if (accessToken) {
+    if (false !== auth.isAhenticated || auth.nickname === shippingNo) {
       axios
         .get(`http://localhost/shippings/update?shippingNo=${shippingNo}`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         })
         .then((response) => {
-          console.log(response);
           const data = response.data;
           setContent(data.shippingContent);
           setTitle(data.shippingTitle);
@@ -227,8 +325,11 @@ const ShippingUpdate = () => {
         .catch((error) => {
           console.log(error);
         });
+    } else {
+      alert("작성자만 이용할 수 있는 서비스 입니다.");
+      navi(-1);
     }
-  }, [auth]);
+  }, [auth.isAuthenticated]);
 
   if (load) {
     return <Load />;
@@ -241,10 +342,46 @@ const ShippingUpdate = () => {
           <TitleInput value={title} onChange={titleChange}></TitleInput>
         </TitleDiv>
         <ImageBigDiv>
-          <ImageCover>
-            <Images />
-          </ImageCover>
+          {image.length > 0 ? (
+            image.map(
+              (
+                img // 얘도 빼야됨
+              ) => (
+                <ImageCover
+                  key={img.imageNo}
+                  onClick={() => deleteImage(img.imageNo)}
+                >
+                  <Images
+                    src={`http://${img.imagePath}${img.imageChangeName}`}
+                    alt={img.imageOriginName}
+                  />
+                </ImageCover>
+              )
+            )
+          ) : (
+            <></>
+          )}
+          {imageUrl.length > 0 ? (
+            imageUrl.map((url, index) => (
+              <ImageCover key={index} onClick={() => deleteNewImage(index)}>
+                <Images src={url} alt={`preview-${index}`} />
+              </ImageCover>
+            ))
+          ) : (
+            <></>
+          )}
+          <UploadImg onClick={imgDivClick} />
+          <InputImg
+            type="file"
+            multiple
+            onChange={uploadImg}
+            ref={inputFileRef}
+          />
         </ImageBigDiv>
+        <PriceDiv>
+          <PriceP>인당 탑승 인원</PriceP>
+          <PriceInput type="number" value={price} onChange={priceChange} />
+        </PriceDiv>
         <FishsDiv>
           {fish.map((fish) => (
             <FishsExDiv key={fish.fishNo}>
@@ -304,6 +441,9 @@ const ShippingUpdate = () => {
         <ContentDiv>
           <ContentText value={content} onChange={contentChange}></ContentText>
         </ContentDiv>
+        <ComplateBtn>
+          <SearchBtn onClick={update}>수정하기</SearchBtn>
+        </ComplateBtn>
       </DetailWarp>
       {searchFish && (
         <Modal
@@ -313,7 +453,14 @@ const ShippingUpdate = () => {
           setFish={selectFish}
         />
       )}
-      {searchAddress && <Modal clickModal={isAddress} kind={"searchAddress"} />}
+      {searchAddress && (
+        <Modal
+          clickModal={isAddress}
+          setAddress={setAddress}
+          kind={"searchAddress"}
+          port={address}
+        />
+      )}
     </>
   );
 };

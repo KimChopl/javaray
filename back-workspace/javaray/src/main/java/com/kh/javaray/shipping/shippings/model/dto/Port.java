@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter
@@ -11,10 +12,13 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Builder
+@Setter
 public class Port {
+	private String ShippingNo;
 	private String portNo;
 	private double lat;
 	private double lon;
 	private String address;
+	private String detailAddress;
 	private String spotCode;
 }

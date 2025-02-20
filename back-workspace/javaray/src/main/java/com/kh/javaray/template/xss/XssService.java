@@ -14,7 +14,7 @@ public class XssService {
 	}
 	
 	public String changeSelectForm(String content) {
-		return content.replaceAll("<br>", "<\n"); // 이건 textarea로 돌려줘야할 때 사용하면 됩니다.(ex. 수정 시)
+		return content.replaceAll("<br />", "\n"); // 이건 textarea로 돌려줘야할 때 사용하면 됩니다.(ex. 수정 시)
 	}
 	
 }

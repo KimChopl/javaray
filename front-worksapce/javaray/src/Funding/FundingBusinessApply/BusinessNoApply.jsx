@@ -30,7 +30,7 @@ const BusinessNoApply = () => {
   useEffect(() => {
     if (auth.accessToken) {
       axios
-        .get(`http://localhost/funding/businessNo`, {
+        .get(`http://localhost/businessNo`, {
           headers: {
             Authorization: `Bearer ${auth.accessToken}`,
           },
@@ -88,7 +88,7 @@ const BusinessNoApply = () => {
     }
 
     axios
-      .post("http://localhost/funding/businessNoInsert", formData, {
+      .post("http://localhost/businessNo/businessNoInsert", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${auth.accessToken}`,

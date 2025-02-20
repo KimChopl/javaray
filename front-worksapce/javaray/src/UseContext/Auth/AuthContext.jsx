@@ -1,8 +1,10 @@
 import { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const navi = useNavigate();
   const [auth, setAuth] = useState({
     nickname: null,
     accessToken: null,
@@ -52,6 +54,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("nickname");
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    navi("/");
   };
 
   return (

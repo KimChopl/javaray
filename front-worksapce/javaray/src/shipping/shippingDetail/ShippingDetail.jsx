@@ -40,9 +40,14 @@ const ShippingDetail = () => {
   const [isAuth, setIsAuth] = useState(undefined);
   const { auth } = useContext(AuthContext);
   const [attCount, setAttCount] = useState(null);
+  const [image, setImage] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const navi = useNavigate();
   const scrollUp = () => {
     window.scroll({ top: 0 });
+  };
+  const nextImage = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % image.length);
   };
   useEffect(() => {
     axios
@@ -51,6 +56,7 @@ const ShippingDetail = () => {
         console.log(response);
         setShipping(response.data);
         setAttCount(response.data.shipping.attention);
+        setImage(response.data.shipping.images);
         setLoading(false);
       });
     setIsAuth(auth.isAuthenticated);
@@ -97,7 +103,6 @@ const ShippingDetail = () => {
             console.log(error);
           });
       } else {
-        console.log(auth.accessToken);
         axios
           .post(
             `http://localhost/shippings/attention?shippingNo=${shippingNo}`,
@@ -144,8 +149,15 @@ const ShippingDetail = () => {
         </DetailHeader>
         <DetailBody>
           <DetailBase>
-            <ImageCover>
-              <ImageBox src="" alt="여러장 넣어야하는디" />
+            <ImageCover onClick={nextImage}>
+              {image.length > 0 ? (
+                <ImageBox
+                  src={`http://${image[currentIndex].imagePath}${image[currentIndex].imageChangeName}`}
+                  alt="여러장 넣어야하는디"
+                />
+              ) : (
+                <></>
+              )}
             </ImageCover>
             <BaseCover>
               <BaseBar>
@@ -224,9 +236,12 @@ const ShippingDetail = () => {
           <WeatherCover>
             <Weather weather={shipping.weather} />
           </WeatherCover>
-          <ShippingContent id="contentSection">
-            {shipping.shipping.shippingContent}
-          </ShippingContent>
+          <ShippingContent
+            id="contentSection"
+            dangerouslySetInnerHTML={{
+              __html: shipping.shipping.shippingContent,
+            }}
+          ></ShippingContent>
           <ReviewCover id="reviewSection">리뷰들</ReviewCover>
         </DetailBody>
       </DetailWarp>

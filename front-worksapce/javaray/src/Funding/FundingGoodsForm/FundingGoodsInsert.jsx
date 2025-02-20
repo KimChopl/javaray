@@ -1,10 +1,11 @@
 import {
   Button,
-  Container,
   ContainerDiv,
   Form,
   Input,
   Label,
+  MainContainer,
+  OptionContainer,
   TextArea,
   Title,
 } from "./FundingGoodsInsert.styles";
@@ -12,16 +13,19 @@ import {
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../UseContext/Auth/AuthContext";
 import axios from "axios";
+import FundingGoodsOption from "./FundingGoodsOption";
 
 const FundingGoodsForm = () => {
-  const [categoryName, setCategoryName] = useState();
-  const [goodsTitle, setGoodsTitle] = useState();
-  const [goodsContent, setGoodsContent] = useState();
+  const [categoryName, setCategoryName] = useState("");
+  const [goodsTitle, setGoodsTitle] = useState("");
+  const [goodsContent, setGoodsContent] = useState("");
   const [saleStartDate, setSaleStartDate] = useState();
-  const [saleFinishDate, setSaleFinshDate] = useState();
+  const [saleFinishDate, setSaleFinishDate] = useState();
   const [amountOfMoney, setAmountOfMoney] = useState();
-  const [selectedValue, setSelectedValue] = useState();
+  const [options, setOptions] = useState([]);
+  const [optionNo, setOptionNo] = useState(0);
   const { auth } = useContext(AuthContext);
+  const [mainFile, setMainFile] = useState(null);
 
   useEffect(() => {
     axios
@@ -29,70 +33,167 @@ const FundingGoodsForm = () => {
       .then((response) => {
         console.log(response);
       })
-      .then((error) => {
+      .catch((error) => {
         console.log(error);
       });
   }, []);
 
-  const handleInsertFundingCompany = () => {};
+  useEffect(() => {
+    setOptions(
+      Array.from({ length: optionNo }, (_, index) => ({
+        id: index + 1,
+        title: "",
+        content: "",
+        price: "",
+        count: "",
+      }))
+    );
+  }, [optionNo]);
 
-  const handleChange = (e) => {
-    setSelectedValue(e.target.value);
+  const updateOption = (index, field, value) => {
+    setOptions((prevOptions) =>
+      prevOptions.map((option, i) =>
+        i === index ? { ...option, [field]: value } : option
+      )
+    );
   };
 
-  console.log(selectedValue);
+  const handleCategory = (e) => {
+    setCategoryName(e.target.value);
+  };
+
+  const handleOption = (e) => {
+    setOptionNo(e.target.value);
+  };
+
+  const handleMainFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    const allowedTypes = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
+    const maxSize = 10 * 1024 * 1024;
+
+    if (selectedFile && !allowedTypes.includes(selectedFile.type)) {
+      alert("허용되지 않는 파일 형식입니다.");
+      return;
+    }
+
+    if (selectedFile && selectedFile.size > maxSize) {
+      alert("파일의 크기가 너무 큽니다. 10MB이하로 선택해주세요.");
+      return;
+    }
+
+    setMainFile(selectedFile);
+  };
+
+  const handleInsertFundingGoods = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("boardWriter", auth.nickname);
+    formData.append("categoryName", categoryName);
+    formData.append("goodsTitle", goodsTitle);
+    formData.append("goodsContent", goodsContent);
+    formData.append("saleStartDate", saleStartDate);
+    formData.append("saleFinishDate", saleFinishDate);
+    formData.append("amountOfMoney", amountOfMoney);
+    console.log(mainFile);
+    if (mainFile) {
+      formData.append("mainFile", mainFile);
+    }
+
+    console.log(formData.get("boardWriter"));
+    console.log(formData.get("categoryName"));
+    console.log(formData.get("goodsTitle"));
+    console.log(formData.get("goodsContent"));
+    console.log(formData.get("saleStartDate"));
+    console.log(formData.get("saleFinishDate"));
+    console.log(formData.get("amountOfMoney"));
+    console.log(formData.get("mainFile"));
+    console.log(typeof saleStartDate);
+
+    if (mainFile) {
+      axios
+        .post("http://localhost/goods/insert", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${auth.accessToken}`,
+          },
+        })
+        .then((response) => console.log(response))
+        .catch((error) => console.log(error));
+    }
+  };
+
+  const handleSubFileChange = (e) => {};
+
   return (
     <>
       <ContainerDiv>
-        <Container>
-          <Title>상품등록</Title>
-          <Form onSubmit={handleInsertFundingCompany}>
+        <Form onSubmit={handleInsertFundingGoods}>
+          <MainContainer>
+            <Title>상품등록</Title>
+            <select
+              id="select-box"
+              value={optionNo}
+              onChange={handleOption}
+              style={{ textAlign: "center" }}
+            >
+              <option value="">-- 옵션 개수를 선택해주세요 --</option>
+              <option value="1">1개</option>
+              <option value="2">2개</option>
+              <option value="3">3개</option>
+              <option value="4">4개</option>
+            </select>
+            <br />
+            <br />
             <div>
               <Label>작성자 ID</Label>
               <Input id="username" type="text" readOnly value={auth.nickname} />
             </div>
             <div>
-              <Label htmlFor="categoryNo">상품카테고리</Label>
-              <Input id="categoryNo" value={categoryName} type="text" />
-            </div>
-            <div>
               <label htmlFor="select-box">상품 카테고리 선택: </label>
+              <br />
               <br />
               <select
                 id="select-box"
-                value={selectedValue}
-                onChange={handleChange}
+                value={categoryName}
+                onChange={handleCategory}
               >
-                <option value="선택해주세요">-- 선택하세요 --</option>
-                <option value="낚시대">🎣낚시대</option>
-                <option value="미끼">🪱미끼</option>
+                <option value="">선택해주세요</option>
+                <option value="1">🈴전체</option>
+                <option value="2">🎣낚시대</option>
+                <option value="3">🦾릴</option>
+                <option value="4">🧵낚시줄</option>
+                <option value="5">🦺낚시의류</option>
               </select>
-              <p>선택한 값: {selectedValue}</p>
+            </div>
+            <br />
+            <div>
+              <Label htmlFor="categoryNo">상품카테고리</Label>
+              <Input
+                id="categoryNo"
+                value={categoryName}
+                type="text"
+                readOnly
+              />
             </div>
             <div>
               <Label htmlFor="goodsTitle">상품 제목</Label>
               <Input
                 id="goodsTitle"
                 value={goodsTitle}
+                onChange={(e) => setGoodsTitle(e.target.value)}
                 type="text"
                 required
                 placeholder="내용을 입력하세요"
               />
             </div>
             <div>
-              <Label
-                htmlFor="goodsContent"
-                required
-                placeholder="내용을 입력하세요"
-              >
-                상품 설명
-              </Label>
+              <Label htmlFor="goodsContent">상품 설명</Label>
               <TextArea
                 id="goodsContent"
                 value={goodsContent}
                 onChange={(e) => setGoodsContent(e.target.value)}
                 required
-                placeholder="상품 설명을 입력하세요"
+                placeholder="설명을 입력하세요"
               ></TextArea>
             </div>
             <div>
@@ -102,6 +203,7 @@ const FundingGoodsForm = () => {
               <Input
                 id="saleStartDate"
                 value={saleStartDate}
+                onChange={(e) => setSaleStartDate(e.target.value)}
                 type="datetime-local"
               />
             </div>
@@ -112,65 +214,55 @@ const FundingGoodsForm = () => {
               <Input
                 id="saleFinishDate"
                 value={saleFinishDate}
+                onChange={(e) => setSaleFinishDate(e.target.value)}
                 type="datetime-local"
               />
             </div>
             <div>
-              <Label
-                htmlFor="amountOfMoney"
-                required
-                placeholder="금액을 입력하세요"
-              >
-                목표 금액
-              </Label>
-              <Input id="amountOfMoney" value={amountOfMoney} type="number" />
-            </div>
-            <Button type="submit">작성</Button>
-          </Form>
-        </Container>
-        <Container>
-          <Title>옵션 등록</Title>
-          <Form onSubmit={handleInsertFundingCompany}>
-            <div>
-              <Label htmlFor="goodsTitle">옵션 제목</Label>
+              <Label htmlFor="amountOfMoney">목표 금액</Label>
               <Input
-                id="goodsTitle"
-                value={goodsTitle}
-                type="text"
-                required
-                placeholder="내용을 입력하세요"
+                id="amountOfMoney"
+                value={amountOfMoney}
+                onChange={(e) => setAmountOfMoney(e.target.value)}
+                type="number"
+                placeholder="금액을 입력하세요"
               />
             </div>
             <div>
-              <Label
-                htmlFor="goodsContent"
-                required
-                placeholder="내용을 입력하세요"
-              >
-                옵션 설명
-              </Label>
-              <TextArea
-                id="goodsContent"
-                value={goodsContent}
-                onChange={(e) => setGoodsContent(e.target.value)}
-                required
-                placeholder="옵션 설명을 입력하세요"
-              ></TextArea>
+              <label htmlFor="mainFile"> 메인 파일 첨부 :</label>
+              <br />
+              <input
+                id="mainFile"
+                type="file"
+                accept="image/*"
+                onChange={handleMainFileChange}
+              />
             </div>
-            <div></div>
             <div>
-              <Label
-                htmlFor="amountOfMoney"
-                required
-                placeholder="금액을 입력하세요"
-              >
-                판매 금액
-              </Label>
-              <Input id="amountOfMoney" value={amountOfMoney} type="number" />
+              <label htmlFor="subFile"> 서브 파일 첨부 :</label>
+              <br />
+              <input
+                id="subFile"
+                type="file"
+                accept="image/*"
+                onChange={handleSubFileChange}
+              />
             </div>
-            <Button type="submit">작성</Button>
-          </Form>
-        </Container>
+          </MainContainer>
+          <div>
+            {options.map((option, index) => (
+              <FundingGoodsOption
+                key={option.id}
+                option={option}
+                updateOption={(field, value) =>
+                  updateOption(index, field, value)
+                }
+              />
+            ))}
+          </div>
+
+          <Button type="submit">작성</Button>
+        </Form>
       </ContainerDiv>
     </>
   );

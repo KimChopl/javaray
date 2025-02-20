@@ -110,13 +110,14 @@ export const ContentLabel = styled.label`
 `;
 export const FishTable = styled.table`
   text-align: center;
+  width: 150%;
 `;
 
 export const Td = styled.td`
   padding: 3px 5px 3px 5px;
   border-right: 1px solid #a4a4a4;
   border-left: 1px solid #a4a4a4;
-  font-size: 15px;
+  font-size: 1em;
   &:hover {
     cursor: pointer;
   }

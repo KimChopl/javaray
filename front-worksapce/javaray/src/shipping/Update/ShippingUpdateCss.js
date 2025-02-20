@@ -21,15 +21,32 @@ export const TitleInput = styled.input`
 
 export const ImageBigDiv = styled.div`
   width: 100%;
-  min-height: 250px;
+  min-height: 450px;
   height: auto;
   margin-top: 35px;
+  vertical-align: top;
 `;
 
 export const ImageCover = styled.div`
-  width: 250px;
-  height: 250px;
+  width: 200px;
+  height: 200px;
+  margin: 10px;
   display: inline-block;
+`;
+
+export const UploadImg = styled.div`
+  width: 150px;
+  height: 150px;
+  margin: 10px;
+  display: inline-block;
+  border: 1px dashed #ccc;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+export const InputImg = styled.input`
+  display: none;
 `;
 
 export const NoImageDiv = styled.div`
@@ -71,6 +88,12 @@ export const SearchBtn = styled.button`
     background-color: rgb(46, 159, 194);
     cursor: pointer;
   }
+`;
+
+export const ComplateBtn = styled.div`
+  width: 150px;
+  height: 60px;
+  margin-left: 43%;
 `;
 
 export const FishsExDiv = styled.div`
@@ -149,6 +172,25 @@ export const PepleInput = styled.input`
     outline: none;
     box-shadow: 1px 3px 5px rgba(51, 190, 232, 0.77);
   }
+`;
+
+export const PriceDiv = styled.div`
+  width: 100%;
+  height: 30px;
+  align-items: center;
+`;
+export const PriceP = styled.p`
+  width: 120px;
+  height: 30px;
+  display: inline-block;
+  padding: 5px;
+  margin: 0;
+  font-size: 16px;
+`;
+export const PriceInput = styled.input`
+  width: 120px;
+  height: 30px;
+  padding-left: 10px;
 `;
 
 export const PepleDiv = styled.div`
