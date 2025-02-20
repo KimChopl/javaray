@@ -7,35 +7,44 @@
 	
 	
 	<insert id="insertReview">
-	INSERT 
-	INTO 
-			TB_REVIEW 
-			(
-			REVIEW_NO ,
-			USER_ID 
-			USER_NO,
-			FISHING_NO,
-			CREATED_DATE ,
-			FISHING_DATE
-			TITLE,
-			CONTENT, 
-			REVIEW_FILE_URL
-			
-			)
-	VALUES
-			(
-			SEQ_FRNO.NEXTVAL,
-			#{userId},
-			#{userNo},
-			#{fishingNo},
-			SYSDATE,
-			#{fishingDate}
-			#{title},
-			#{content},
-			#{reviewFileUrl}
-			)
-	
+	    INSERT 
+	    INTO 
+	    	TB_REVIEW (
+	        REVIEW_NO,
+	        NICKNAME,
+	        FISHING_NAME,
+	        FISHING_DATE,
+	        REVIEW_FILE_URL,
+	        TITLE,
+	        CONTENT,
+	        REVIEW_FILE_URL
+	    )
+	    VALUES (
+	        SEQ_FRNO.NEXTVAL,
+	        #{nickname},
+	        #{fishingName},
+	        #{fishingDate},
+	        #{reviewFileUrl},
+	        #{title},
+	        #{content},
+	        #{reviewFileUrl}
+	    )
 	</insert>
+	
+	<select id="findReview" resultType="com.kh.javaray.fishing.review.model.dto.ReviewDTO">
+	
+	SELECT 
+		    tr.TITLE,
+		    tr.FISHING_DATE,
+		    tm.NICKNAME
+	FROM
+   			TB_REVIEW tr
+	JOIN
+  		    TB_MEMBER tm ON tr.USER_NO = tm.USER_NO
+	WHERE
+   			tr.FISHING_NO = #{fishingNo}
+	</select>
+
 
 
 

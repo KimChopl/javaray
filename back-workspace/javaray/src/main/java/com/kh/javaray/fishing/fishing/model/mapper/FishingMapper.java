@@ -7,13 +7,16 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 import com.kh.javaray.fishing.amenities.model.dto.AmenitiesDTO;
+import com.kh.javaray.fishing.day.model.dto.DayDTO;
 import com.kh.javaray.fishing.fish.model.dto.FishDTO;
 import com.kh.javaray.fishing.fishing.model.dto.FishingDTO;
+
+import jakarta.validation.Valid;
 
 @Mapper
 public interface FishingMapper {
 
-	//void fishingSave(@Valid FishingDTO fishing);
+	void fishingSave(@Valid FishingDTO fishing);
 
 	List<FishingDTO> findAll(RowBounds rowBounds);
 
@@ -26,7 +29,14 @@ public interface FishingMapper {
 	List<FishDTO> findFishByFishingNo(@Param("fishingNo") Long fishingNo);
 
 	List<AmenitiesDTO> findAmenitiesByFishingNo(@Param("fishingNo") Long fishingNo);
-	
+
+	void saveFish(@Valid FishingDTO fishing);
+
+	void saveAmenities(@Valid FishingDTO fishing);
+
+	void saveDay(@Valid FishingDTO fishing);
+
+
 	
 
 }

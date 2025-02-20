@@ -1,5 +1,8 @@
 package com.kh.javaray.fishing.review.model.service;
 
+import java.util.List;
+
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,9 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class FishingReviewServiceImpl implements FishingReviewService {
 	
-	private FishingReviewMapper reviewMapper;
-	private ReviewFileService fileService;
-	private AuthenticationService authService;
+	private final FishingReviewMapper reviewMapper;
+	private final ReviewFileService fileService;
+	private final AuthenticationService authService;
 
 	@Override
 	public void insertReview(ReviewDTO fishingReview, MultipartFile file) {
@@ -33,9 +36,21 @@ public class FishingReviewServiceImpl implements FishingReviewService {
 		}else {
 			fishingReview.setReviewFileUrl(null);
 		}
+		
+		//리뷰 작성자 번호
 		fishingReview.setUserNo(user.getUserNo());
 		
+		// 리뷰 등록
 		reviewMapper.insertReview(fishingReview);
+	}
+
+	@Override
+	public List<ReviewDTO> findReview(int page, Long fishingNo) {
+		
+		int size = 6;
+		RowBounds rowBounds = new RowBounds(page*size, size);
+		return reviewMapper.findReview(fishingNo, rowBounds);
+		
 	}
 
 }
