@@ -31,6 +31,6 @@ public interface ShippingService {
 
 	List<Port> selectSearchPort(String option, String searchContent);
 
-	void updateShipping(MultipartFile[] files, UpdateFormDTO shipping, String fishs, String option, String port);
+	void updateShipping(MultipartFile[] files, UpdateFormDTO shipping, String fishs, String option, String port, String stringImage);
 
 }

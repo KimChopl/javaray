@@ -27,9 +27,5 @@ public class UpdateFormDTO {
 	private int allowPepleNo;
 	private int price;
 	private Port port;
-	private String[] deleteOriginName;
-	private List<ShippingOption> options;
-	private List<Image> images;
-	private List<Fishs> fishs;
 
 }

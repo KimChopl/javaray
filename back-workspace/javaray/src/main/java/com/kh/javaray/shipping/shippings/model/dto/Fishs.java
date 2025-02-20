@@ -14,6 +14,7 @@ import lombok.ToString;
 @Setter
 @Builder
 public class Fishs {
+	private String shippingNo;
 	private String fishNo;
 	private String explaination;
 	private String note;

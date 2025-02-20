@@ -14,6 +14,7 @@ const Shipping = () => {
         `http://localhost/shippings?page=${page}`
       );
       setData([...data, ...response.data]);
+      console.log(response);
     };
 
     abc();
@@ -23,7 +24,7 @@ const Shipping = () => {
     <StyledShipWarp>
       <SearchBar />
       {data.map((data) => (
-        <ShippingList data={data} />
+        <ShippingList key={data.shippingNo} data={data} />
       ))}
       {data.length === 20 && (
         <More onClick={() => setPage((page) => page + 1)}>더보기</More>

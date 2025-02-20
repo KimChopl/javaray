@@ -92,15 +92,11 @@ public class ShippingController {
 		return ResponseEntity.ok().body(list);
 	}
 
-	@PutMapping(value = "update")
+	@PutMapping("update")
 	public ResponseEntity<?> updateShipping(@RequestParam(name = "files", required = false) MultipartFile[] files,
 			@ModelAttribute UpdateFormDTO shipping, @ModelAttribute(name = "fish") String fishs,
-			@ModelAttribute(name = "option") String option, @ModelAttribute(name = "portObj") String port) {
-		log.info("{}", fishs);
-		log.info(port);
-		log.info(option);
-		log.info("{}", shipping);
-		ss.updateShipping(files, shipping, fishs, option, port);
+			@ModelAttribute(name = "option") String option, @ModelAttribute(name = "portObj") String port, @ModelAttribute(name="image") String stringImage) {
+		ss.updateShipping(files, shipping, fishs, option, port, stringImage);
 		return null;
 	}
 

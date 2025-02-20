@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.kh.javaray.exception.exceptions.AlreadyUseingUsernameException;
+import com.kh.javaray.exception.exceptions.FailDeleteObjectException;
+import com.kh.javaray.exception.exceptions.FailInsertObjectException;
+import com.kh.javaray.exception.exceptions.FailUpdateException;
 import com.kh.javaray.exception.exceptions.FailUpdateUserInfoException;
 import com.kh.javaray.exception.exceptions.NotFoundInfoException;
 import com.kh.javaray.exception.exceptions.NotFoundUserInfoException;
@@ -50,6 +53,21 @@ public class GlobarExceptionHandler {
 	
 	@ExceptionHandler(NotFoundInfoException.class)
 	public ResponseEntity<?> handleNotFound(NotFoundInfoException e){
+		return ResponseEntity.badRequest().body(e.getMessage());
+	}
+	
+	@ExceptionHandler(FailUpdateException.class)
+	public ResponseEntity<?> handleUpdateFail(FailUpdateException e){
+		return ResponseEntity.badRequest().body(e.getMessage());
+	}
+	
+	@ExceptionHandler(FailDeleteObjectException.class)
+	public ResponseEntity<?> heandleDeleteFail(FailDeleteObjectException e){
+		return ResponseEntity.badRequest().body(e.getMessage());
+	}
+	
+	@ExceptionHandler(FailInsertObjectException.class)
+	public ResponseEntity<?> handleInsertFail(FailInsertObjectException e){
 		return ResponseEntity.badRequest().body(e.getMessage());
 	}
 	

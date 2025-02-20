@@ -1,34 +1,41 @@
 package com.kh.javaray.shipping.shippings.model.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.javaray.api.OpenDataApi;
 import com.kh.javaray.auth.service.AuthenticationService;
+import com.kh.javaray.exception.exceptions.FailDeleteObjectException;
+import com.kh.javaray.exception.exceptions.FailInsertObjectException;
+import com.kh.javaray.exception.exceptions.FailUpdateException;
 import com.kh.javaray.exception.exceptions.NotFoundInfoException;
 import com.kh.javaray.exception.exceptions.NotFoundUserInfoException;
 import com.kh.javaray.exception.exceptions.NotMatchBoardInfoException;
 import com.kh.javaray.exception.exceptions.NotMatchUserInfoException;
 import com.kh.javaray.member.model.dto.CustomUserDetails;
+import com.kh.javaray.shipping.dto.Image;
 import com.kh.javaray.shipping.dto.Weather;
 import com.kh.javaray.shipping.shippings.model.dto.Attention;
 import com.kh.javaray.shipping.shippings.model.dto.Fishs;
 import com.kh.javaray.shipping.shippings.model.dto.Port;
 import com.kh.javaray.shipping.shippings.model.dto.SearchPort;
 import com.kh.javaray.shipping.shippings.model.dto.Shipping;
+import com.kh.javaray.shipping.shippings.model.dto.ShippingOption;
 import com.kh.javaray.shipping.shippings.model.dto.UpdateFormDTO;
 import com.kh.javaray.shipping.shippings.model.mapper.ShippingMapper;
+import com.kh.javaray.template.model.mapper.ImageMapper;
+import com.kh.javaray.template.upload.UploadImage;
 import com.kh.javaray.template.xss.XssService;
 
 import lombok.RequiredArgsConstructor;
@@ -43,7 +50,8 @@ public class ShippingServiceImpl implements ShippingService {
 	private final OpenDataApi oda;
 	private final AuthenticationService as;
 	private final XssService xs;
-	private final ObjectMapper om;
+	private final UploadImage ui;
+	private final ImageMapper im;
 
 	@Override
 	public List<Shipping> selectShipping(int page) {
@@ -125,12 +133,12 @@ public class ShippingServiceImpl implements ShippingService {
 
 	@Override
 	public List<Fishs> selectFish() {
-		List<Fishs> list = sm.selectFishs(); 
-		if(list == null || list.isEmpty()) {
+		List<Fishs> list = sm.selectFishs();
+		if (list == null || list.isEmpty()) {
 			throw new NotFoundInfoException("해당목록을 찾지 못했습니다.");
 		}
 		return list;
-				
+
 	}
 
 	@Override
@@ -140,29 +148,240 @@ public class ShippingServiceImpl implements ShippingService {
 		return sm.selectSearchPort(search);
 	}
 
+	private List<Fishs> parseFish(String fishs) {
+		List<Fishs> fishList = new ArrayList<>();
+		String pattern = "fishNo:(.*?), fishName:(.*?)(,|$)"; // fishNo와 fishName을 추출하는 패턴
+		Pattern r = Pattern.compile(pattern);
+		Matcher m = r.matcher(fishs);
+		Fishs fish = null;
+		while (m.find()) {
+			String fishNo = m.group(1); // fishNo 값
+			String fishName = m.group(2); // fishName 값
+
+			fish = Fishs.builder().fishNo(fishNo).fishName(fishName).build();
+			fishList.add(fish);
+		}
+		return fishList;
+	}
+
+	private List<ShippingOption> parseOption(String option) {
+		List<ShippingOption> optionList = new ArrayList<>();
+		String pattern = "serviceNo:(.*?), serviceName:(.*?)(,|$)";
+		Pattern r = Pattern.compile(pattern);
+		Matcher m = r.matcher(option);
+		ShippingOption options = null;
+		while (m.find()) {
+			String serviceNo = m.group(1);
+			String serviceName = m.group(2);
+			options = ShippingOption.builder().serviceNo(serviceNo).serviceName(serviceName).build();
+			optionList.add(options);
+		}
+		return optionList;
+	}
+
+	private Port parsePort(String port) {
+		String pattern = "portNo:(.*?), address:(.*?), detailAddress:(.*?)(,|$)";
+		Pattern r = Pattern.compile(pattern);
+		Matcher m = r.matcher(port);
+		Port parsePort = null;
+		if (m.find()) {
+			String portNo = m.group(1);
+			String address = m.group(2);
+			String detailAddress = m.group(3);
+			parsePort = Port.builder().portNo(portNo).address(address).detailAddress(detailAddress).build();
+		}
+		return parsePort;
+	}
+
+	private void matchShippingInfo(String ShippingNo) {
+		Shipping shipping = sm.selectShippingDetail(ShippingNo);
+		if (shipping == null) {
+			throw new NotFoundInfoException("잘못된 접근입니다. 다시 시도해주세요.");
+		}
+		CustomUserDetails user = as.checkedUser();
+		if (user.getUserNo() != shipping.getMember().getUserNo()) {
+			throw new NotFoundUserInfoException("잘못된 접근입니다. 다시 시도해주세요.");
+		}
+	}
+
+	private void deleteOption(String shippingNo) {
+		sm.deleteOption(shippingNo);
+		List<ShippingOption> list = sm.selectOption(shippingNo);
+		if (!list.isEmpty()) {
+			throw new NotFoundInfoException("업데이트에 실패 하였습니다.");
+		}
+	}
+
+	private void updateOption(List<ShippingOption> options) {
+		deleteOption(options.get(0).getShippingNo());
+		int result = 1;
+
+		for (ShippingOption option : options) {
+			result = result * sm.updateOption(option);
+		}
+		if (result == 0) {
+			throw new FailUpdateException("업데이트에 실패 하였습니다.");
+		}
+	}
+
+	private void deleteFish(String shippingNo) {
+		sm.deleteFish(shippingNo);
+		List<Fishs> list = sm.selectFishsByShippingNo(shippingNo);
+		if (!list.isEmpty()) {
+			throw new NotFoundInfoException("업데이트에 실패 하였습니다.");
+		}
+	}
+
+	private void updateFish(List<Fishs> fishs) {
+		deleteFish(fishs.get(0).getShippingNo());
+		for (Fishs fish : fishs) {
+			sm.updateFish(fish);
+		}
+	}
+
+	private void deleteImage(List<Image> lists) {
+		int result = 1;
+		for (Image image : lists) {
+			result = result * im.deleteImage(image);
+		}
+		if (result == 0) {
+			throw new FailDeleteObjectException("업데이트 중 문제가 발생했습니다. 다시 시도해주세요.");
+		}
+	}
+
+	private List<Image> checkedImageMain(List<Image> imageList, MultipartFile[] files, String shippingNo) {
+		Shipping ship = sm.selectShippingDetail(shippingNo);
+		String path = "shipping";
+		List<Image> list = ship.getImages();
+		MultipartFile[] uploadFiles = null;
+		boolean isMain;
+		if(list.isEmpty()) { // 기존 사진이 있는지
+			if(files != null) { // 새로 업로드한 사진이 있는지
+				uploadFiles = files;
+				isMain = true;
+				return ui.store(uploadFiles, path, isMain);
+			}
+			return null;
+		} else {
+			if(files != null) {
+				if(list.size() != imageList.size()) { // 기존 사진에서 삭제한 사진이 있는지
+					List<Image> deleteImage = new ArrayList<Image>();
+					for(Image image : list) {
+						boolean isFound = false;
+						for(Image delete : imageList) {
+							if(image.getImageNo().equals(delete.getImageNo())) {
+								isFound = true;
+							}
+						}
+						if(!isFound) {
+							deleteImage.add(image);
+						}
+					}
+					ui.delete(deleteImage);
+					for(int i = 0; i< deleteImage.size(); i++) {
+						im.deleteImage(deleteImage.get(i));
+					}
+				} 
+				uploadFiles = files;
+				isMain = false;
+				return ui.store(uploadFiles, path, isMain);
+			} else {
+				if(list.size() != imageList.size()) {
+					List<Image> deleteImage = new ArrayList<Image>();
+					for(Image image : list) {
+						boolean isFound = false;
+						for(Image delete : imageList) {
+							if(image.getImageNo().equals(delete.getImageNo())) {
+								isFound = true;
+							}
+						}
+						if(!isFound) {
+							deleteImage.add(image);
+						}
+					}
+					ui.delete(deleteImage);
+					for(int i = 0; i< deleteImage.size(); i++) {
+						im.deleteImage(deleteImage.get(i));
+					}
+				}
+				return null;
+			}
+		}
+	}
+
+	private List<Fishs> settingFishsShippingNo(List<Fishs> fishs, String shippingNo) {
+		for (Fishs fish : fishs) {
+			fish.setShippingNo(shippingNo);
+		}
+		return fishs;
+	}
+
+	private List<ShippingOption> settingOptionsShippingNo(List<ShippingOption> options, String shippingNo) {
+		for (ShippingOption option : options) {
+			option.setShippingNo(shippingNo);
+		}
+		return options;
+	}
+
+	private List<Image> settingImageShippingNo(List<Image> images, String ShippingNo) {
+		if(images != null) {
+			
+			for (Image image : images) {
+				image.setBoardNo(ShippingNo);
+			}
+		}
+		return images;
+	}
+	
+	private List<Image> parseImage(String stringImage){
+		String pattern = "imageNo:(.*?), imagePath:(.*?), imageChangeName:(.*?), imageLevel:(.*?)(,|$)";
+		Pattern r = Pattern.compile(pattern);
+		Matcher m = r.matcher(stringImage);
+		Image image = null;
+		List<Image> list = new ArrayList<Image>();
+		while(m.find()) {
+			String imageNo = m.group(1);
+			String imagePath = m.group(2);
+			String imageChangeName = m.group(3);
+			int imageLevel = Integer.parseInt(m.group(4));
+			image = Image.builder().imageNo(Long.parseLong(imageNo)).imagePath(imagePath).imageChangeName(imageChangeName).imageLevel(imageLevel).build();
+			list.add(image);
+		}
+		return list;
+	}
+
 	@Override
+	@Transactional
 	public void updateShipping(MultipartFile[] files, UpdateFormDTO shipping, String fishs, String option,
-			String port) {
-		 List<Fishs> fishList = new ArrayList<>();
+			String port, String stringImage) {
+		String shippingNo = shipping.getShippingNo();
+		matchShippingInfo(shippingNo);
+		List<Image> imageList = parseImage(stringImage);
+		List<Image> uploadImage = checkedImageMain(imageList, files, shippingNo);
+		List<Fishs> fish = parseFish(fishs);
+		List<ShippingOption> options = parseOption(option);
+		Port parsePort = parsePort(port);
+		shipping.setShippingContent(xs.changeInsertForm(xs.makingXss(shipping.getShippingContent())));
+		shipping.setShippingTitle(xs.makingXss(shipping.getShippingTitle()));
+		shipping.setPort(parsePort);
+		sm.updateShipping(shipping);
+		insertImage(settingImageShippingNo(uploadImage, shippingNo));
+		updateOption(settingOptionsShippingNo(options, shippingNo));
+		updateFish(settingFishsShippingNo(fish, shippingNo));
 
-	        // 정규 표현식 패턴: fishNo와 fishName을 추출
-	        String pattern = "fishNo:(.*?), fishName:(.*?)(,|$)";  // fishNo와 fishName을 추출하는 패턴
+	}
 
-	        // 패턴에 맞는 값을 찾기 위한 Matcher 객체 생성
-	        Pattern r = Pattern.compile(pattern);
-	        Matcher m = r.matcher(fishs);
-	        Fishs fish = null;
-	        // 매칭되는 값들을 Fish 객체에 담아서 List에 추가
-	        while (m.find()) {
-	            String fishNo = m.group(1);  // fishNo 값
-	            String fishName = m.group(2);  // fishName 값
+	private void insertImage(List<Image> images) {
+		if(images != null) {
+			int result = 1;
+			for (Image image : images) {
+				result = result * im.insertImage(image);
+			}
+			if (result == 0) {
+				throw new FailInsertObjectException("업데이트에 실패했습니다. 다시 시도해주세요.");
+			}
+		}
 
-	            // Fish 객체 생성 후 리스트에 추가
-	            fish = Fishs.builder().fishNo(fishNo).fishName(fishName).build();
-	            fishList.add(fish);
-	        }
-	        log.info("{}", fish);
-		
 	}
 
 }

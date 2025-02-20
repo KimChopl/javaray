@@ -34,6 +34,7 @@
 			<result property="serviceName" column="serviceName"/>
 		</collection>
 		<collection property="images" javaType="java.util.ArrayList" ofType="Image">
+			<result property="imageNo" column="imageNo"/>
 			<result property="imagePath" column="imagePath"/>
 			<result property="imageOriginName" column="imageOriginName"/>
 			<result property="imageChangeName" column="imageChangeName"/>
@@ -62,6 +63,12 @@
 			<id property="portNo" column="portNo" />
 			<result property="address" column="address" />
 		</association>
+		<collection property="images" javaType="java.util.ArrayList" ofType="Image">
+			<result property="imageNo" column="imageNo"/>
+			<result property="imagePath" column="imagePath"/>
+			<result property="imageChangeName" column="imageChangeName"/>
+			<result property="imageOriginName" column="imageOriginName"/>
+		</collection>
 		</resultMap>
 	<select id="selectShipping" resultMap="shippings">
 		SELECT
@@ -75,7 +82,11 @@
 		       PRICE price,
 		       ADDRESS address,
 		       SHIPPING_CREATE_DATE shippingCreateDate,
-		       ROUND(avgRating, 2) avgRating
+		       ROUND(avgRating, 2) avgRating,
+		       imageNo,
+		       imagePath,
+		       imageChangeName,
+		       imageOriginName
 		  FROM 
 		       TB_SHIPPING TS
 		  JOIN
@@ -100,6 +111,22 @@
 				 GROUP
 				    BY
 				        TS.SHIPPING_NO) RA ON (RA.SHIPPING_NO = TS.SHIPPING_NO)	
+		  LEFT 
+		  JOIN
+		       (
+		       SELECT
+		              TSI.IMAGE_NO imageNo,
+		              TSI.IMAGE_PATH imagePath,
+		              TSI.IMAGE_CHANGE_NAME imageChangeName,
+		              TSI.IMAGE_ORIGIN_NAME imageOriginName,
+		              TSI.REF_BOARD_NO
+		         FROM
+		              TB_SHIPPING_IMAGE TSI
+		        WHERE
+		              TSI.STATUS = 'Y'
+		          AND
+		              TSI.IMAGE_LEVEL = 1
+		       ) IMG ON (TS.SHIPPING_NO = IMG.REF_BOARD_NO )
 		 WHERE
 		       (TS.SHIPPING_NO IS NOT NULL OR TS.SHIPPING_NO IN (SELECT
 														       SHIPPING_NO
@@ -132,7 +159,8 @@
 		       TM.EMAIL email, 
 		       TSV.SHIPPING_SERVICE_NO as serviceNo,
 		       TSV.SHIPPING_SERVICE_CONTENT as serviceName,
-		       TSI1.IMAGE_PATH inagePath,
+		       TSI1.IMAGE_NO imageNo,
+		       TSI1.IMAGE_PATH imagePath,
 		       TSI1.IMAGE_ORIGIN_NAME imageOriginName,
 		       TSI1.IMAGE_CHANGE_NAME imageChangeName,
 		       TSI1.IMAGE_LEVEL imageLevel,
@@ -255,4 +283,33 @@
 		 </if>
 		      
 	</select>
+	
+	<resultMap id="findShippingNo" type="Shipping">
+		<result  property="shippingNo" column="shippingNo"/>
+		<association property="member" javaType="Member">
+			<result property="userNo" column="userNo"/>
+		</association>
+	</resultMap>
+	<select id="findByShippingNo" resultMap="findShippingNo" parameterType="string">
+		SELECT
+		       SHIPPING_NO shippingNo,
+		       USER_NO userNo
+		  FROM
+		       TB_SHIPPING
+		 WHERE
+		       SHIPPING_NO = ${shippingNo}
+	</select>
+	<update id="updateShipping" parameterType="UpdateFormDTO">
+		UPDATE
+		       TB_SHIPPING
+		   SET
+		       SHIPPING_TITLE = #{shippingTitle},
+		       SHIPPING_CONTENT = #{shippingContent},
+		       ALLOW_PEPLE_NO = #{allowPepleNo},
+		       PRICE = #{price},
+		       PORT_NO = #{port.portNo}
+		 WHERE
+		       SHIPPING_NO = #{shippingNo}
+	</update>
+	
 </mapper>
