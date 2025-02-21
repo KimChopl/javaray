@@ -71,7 +71,7 @@ const ShippingDetail = () => {
           console.log("??");
           setAttention(true);
         } else {
-          console.log("?");
+          console.log(response);
           setAttention(false);
         }
       })
@@ -234,7 +234,7 @@ const ShippingDetail = () => {
             </BaseCover>
           </DetailBase>
           <WeatherCover>
-            <Weather weather={shipping.weather} />
+            {/*<Weather weather={shipping.weather} />*/}
           </WeatherCover>
           <ShippingContent
             id="contentSection"

@@ -216,7 +216,7 @@
 		              TB_SHIPPING_IMAGE TSI
 		        WHERE
 		              TSI.STATUS = 'Y'
-                ) IMG ON (TS.SHIPPING_NO = boardNo )
+                ) IMG ON (TS.SHIPPING_NO = boardNo)
 		  LEFT
 		  JOIN
 		       (SELECT
