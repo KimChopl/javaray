@@ -30,13 +30,13 @@ public class BusinessNoServiceImpl implements BusinessNoService {
 	
 	@Override
 	@Transactional
-	public void save(BusinessNoAPIDTO BusinessNoAPIData) {
+	public void save(BusinessNoAPIDTO businessNoAPIData) {
 		
 		CustomUserDetails user = authService.checkedUser();
-		authService.validWriter(BusinessNoAPIData.getBoardWriter(), user.getNickname());
+		authService.validWriter(businessNoAPIData.getBoardWriter(), user.getNickname());
 		
-		BusinessNoAPIData.setBoardWriter(String.valueOf(user.getUserNo()));
-		businessNoMapper.save(BusinessNoAPIData);
+		businessNoAPIData.setBoardWriter(String.valueOf(user.getUserNo()));
+		businessNoMapper.save(businessNoAPIData);
 		
 		ManagingDTO managingDTO = new ManagingDTO();
 		managingDTO.setUsername(user.getUsername());

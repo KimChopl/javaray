@@ -32,7 +32,7 @@ import axios from "axios";
 
 const FundingLists = () => {
   const navigate = useNavigate();
-  const { auth, validation } = useContext(AuthContext);
+  const { auth } = useContext(AuthContext);
   const [role, setRole] = useState("");
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
@@ -50,12 +50,9 @@ const FundingLists = () => {
         }
       )
       .then((response) => {
+        console.log(response.data);
         setRole(response.data[0].role);
-        if (
-          response.data &&
-          response.data[0].boardNo !== null &&
-          response.data[0].role
-        ) {
+        if (response.data && response.data[0].boardNo !== null) {
           setBoards([...response.data]);
           if (response.data.length < 6) {
             setHasMore(false);
@@ -77,11 +74,7 @@ const FundingLists = () => {
       })
       .then((response) => {
         setRole("");
-        if (
-          response.data &&
-          response.data[0].boardNo !== null &&
-          response.data[0].role
-        ) {
+        if (response.data && response.data[0].boardNo !== null) {
           setBoards([...response.data]);
           if (response.data.length < 6) {
             setHasMore(false);
@@ -196,7 +189,8 @@ const FundingLists = () => {
                   <GoodsDiv>
                     <GoodsImg src={board.fundingFileList[0].fileUrl} />
                     <GoodsContent>
-                      {board.currentSalePercent}% 달성
+                      {board.currentSalePercent ? board.currentSalePercent : 0}%
+                      달성
                     </GoodsContent>
                     <GoodsContent1>{board.boardTitle}</GoodsContent1>
                     <GoodsContent1>

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.javaray.funding.model.dto.FundingBoardDTO;
+import com.kh.javaray.funding.model.dto.FundingCategoryDTO;
 import com.kh.javaray.funding.model.service.FundingService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,6 @@ public class FundingController {
 	@GetMapping("/selectList/hasToken")
 	public ResponseEntity<List<FundingBoardDTO>> selectFundingListHasToken(@RequestParam(name="page", defaultValue="0") int page,
 																			@RequestParam(name="categoryNo") int categoryNo){
-		log.info("나야나");
 		List<FundingBoardDTO> list = fundingService.selectFundingListHasToken(page, categoryNo);
 		return ResponseEntity.ok().body(list);
 	}
@@ -40,7 +40,7 @@ public class FundingController {
 	}
 	
 	@GetMapping("/selectCategory")
-	public ResponseEntity<List<String>> selectCategory(){
+	public ResponseEntity<List<FundingCategoryDTO>> selectCategory(){
 		
 		return ResponseEntity.ok(fundingService.selectCategory());
 	}

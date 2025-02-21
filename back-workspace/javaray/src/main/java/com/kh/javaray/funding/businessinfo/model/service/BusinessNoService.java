@@ -8,7 +8,7 @@ import com.kh.javaray.funding.businessinfo.model.dto.BusinessNoDTO;
 
 public interface BusinessNoService {
 
-	void save(BusinessNoAPIDTO BusinessNoAPIData);
+	void save(BusinessNoAPIDTO businessNoAPIData);
 
 	BusinessNoAPIDTO  selectBusinessNo();
 

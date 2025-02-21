@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.javaray.auth.service.AuthenticationService;
 import com.kh.javaray.funding.model.dto.FundingBoardDTO;
+import com.kh.javaray.funding.model.dto.FundingCategoryDTO;
 import com.kh.javaray.funding.model.dto.FundingCompanyNameDTO;
 import com.kh.javaray.funding.model.mapper.FundingMapper;
 import com.kh.javaray.manager.model.mapper.ManagerMapper;
@@ -24,7 +25,6 @@ public class FundingServiceImpl implements FundingService {
 
 	private final FundingMapper fundingMapper;
 	private final AuthenticationService authService;
-	private final ManagerMapper managerMapper;
 	private final FundingFileService fundingFileService;
 
 	@Override
@@ -32,8 +32,7 @@ public class FundingServiceImpl implements FundingService {
 
 		CustomUserDetails user = authService.checkedUser();
 		String role = user.getAuthorities().iterator().next().getAuthority();
-		log.info("{}, {}", role, categoryNo);
-
+		log.info("{}", role);
 		int size = 6;
 		RowBounds rowBounds = new RowBounds(page * size, size);
 
@@ -41,7 +40,6 @@ public class FundingServiceImpl implements FundingService {
 		if (!list.isEmpty()) {
 
 			List<FundingCompanyNameDTO> companyNameList = fundingMapper.selectCompanyName();
-			log.info("{}", list);
 
 			Map<Long, String> companyNameMap = new HashMap();
 
@@ -53,11 +51,13 @@ public class FundingServiceImpl implements FundingService {
 				if (totalList.getUserNo() != null) {
 					String companyName = companyNameMap.get(totalList.getUserNo());
 					if (companyName != null) {
+						log.info("{}",role);
 						totalList.setCompanyName(companyName);
 						totalList.setRole(role);
 					}
 				}
 			}
+			log.info("{}", list);
 			return list;
 		} else {
 			FundingBoardDTO emptyBoardDTO = new FundingBoardDTO();
@@ -91,11 +91,12 @@ public class FundingServiceImpl implements FundingService {
 				}
 			}
 		}
+		log.info("{}",list);
 		return list;
 	}
 
 	@Override
-	public List<String> selectCategory() {
+	public List<FundingCategoryDTO> selectCategory() {
 
 		return fundingMapper.selectCategory();
 	}

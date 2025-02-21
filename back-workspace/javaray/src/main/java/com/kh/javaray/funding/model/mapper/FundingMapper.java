@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
 import com.kh.javaray.funding.model.dto.FundingBoardDTO;
+import com.kh.javaray.funding.model.dto.FundingCategoryDTO;
 import com.kh.javaray.funding.model.dto.FundingCompanyNameDTO;
 
 @Mapper
@@ -15,6 +16,6 @@ public interface FundingMapper {
 	
 	List<FundingCompanyNameDTO> selectCompanyName();
 
-	List<String> selectCategory();
+	List<FundingCategoryDTO> selectCategory();
 
 }

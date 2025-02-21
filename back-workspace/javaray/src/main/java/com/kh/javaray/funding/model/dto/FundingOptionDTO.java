@@ -14,10 +14,12 @@ import lombok.ToString;
 public class FundingOptionDTO {
 
 	private Long optionNo;
-	private Long refBnos;
 	private Long optionType;
-	private String optionTitle;
-	private String optionExplain;
-	private Long optionPrice;
-	private Long optionCount;
+	private Long refBno;
+	private int id;
+	private String title;
+	private String content;
+	private String price;
+	private String count;
+	
 }
