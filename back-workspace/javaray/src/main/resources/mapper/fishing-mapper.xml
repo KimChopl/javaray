@@ -5,7 +5,6 @@
   
 <mapper namespace="com.kh.javaray.fishing.fishing.model.mapper.FishingMapper">
 
-	<!--낚시터 insert-->
 	<insert id="fishingSave">
 	
 	 	INSERT
@@ -40,7 +39,6 @@
 		</selectKey>
 	</insert>
 	
-	<!--물고기 INSERT-->
 	<insert id="saveFish">
 	 INSERT 
 	 INTO 
@@ -58,7 +56,6 @@
 		    </foreach>
 	</insert>
 	
-	<!--상세정보 INSERT-->
 	<insert id="saveAmenities">
 	  INSERT
 	  INTO
@@ -76,7 +73,6 @@
 	  		</foreach>
 	</insert>
 	
-	<!--영업요일 insert-->
 	<insert id="saveDay">
 		INSERT
 		INTO
@@ -96,11 +92,10 @@
 
 	
 	
-	
 	<select id="findAll" resultType="com.kh.javaray.fishing.fishing.model.dto.FishingDTO">
 			SELECT 
 					FISHING_NO fishingNo,
-					USER_NO fishingWriter,
+					FISHING_WRITER fishingWriter,
 					FISHING_NAME fishingName,
 					PHONE phone,
 					ADDRESS address,
@@ -152,7 +147,7 @@
 	<select id="findByFishingNo" resultType="com.kh.javaray.fishing.fishing.model.dto.FishingDTO">
 	 SELECT 
 		        FISHING_NO fishingNo,
-		        USER_NO fishingWriter,
+		        FISHING_WRITER fishingWriter,
 		        FISHING_NAME fishingName,
 		        PHONE phone,
 		        ADDRESS address,

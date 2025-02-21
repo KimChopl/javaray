@@ -45,6 +45,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../UseContext/Auth/AuthContext";
 import axios from "axios";
 import { useAsyncError, useNavigate } from "react-router-dom";
+import AddressSearch from "./FishingAddress";
 
 const FishingInsert = () => {
   const { auth } = useContext(AuthContext);
@@ -60,12 +61,16 @@ const FishingInsert = () => {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [introduce, setIntroduce] = useState("");
+  const [file, setFile] = useState(null);
+  const [selectedAddress, setSelectedAddress] = useState("");
 
   useEffect(() => {
     if (!!!auth.isAuthenticated) {
+      console.log(auth.accessToken);
       alert("회원만 가능합니다.");
       navi("/");
     } else {
+      console.log(auth.accessToken);
       setUserId(auth.username);
       setAccessToken(auth.accessToken);
     }
@@ -75,8 +80,16 @@ const FishingInsert = () => {
     e.preventDefault();
 
     if (
-      !(fishingName || phone || address || startTime || endTime || introduce)
+      !(fishingName && phone && address && startTime && endTime && introduce)
     ) {
+      console.log("입력되지 않은 항목:");
+      if (!fishingName) console.log("낚시터명");
+      if (!phone) console.log("업체 번호");
+      if (!address) console.log("업체 주소");
+      if (!startTime) console.log("영업 시작 시간");
+      if (!endTime) console.log("영업 종료 시간");
+      if (!introduce) console.log("사장님 한마디");
+
       alert("아래 항목 모두  필수 입력사항입니다.");
       return;
     }
@@ -91,19 +104,25 @@ const FishingInsert = () => {
     formData.append("endTime", endTime);
     formData.append("introduce", introduce);
 
+    if (file) {
+      formData.append("file", file);
+    }
+
+    let amenitiesList = [];
     selectedAmenities.forEach((amenity) => {
-      formData.append("amenitiesList", amenity);
+      amenitiesList = [...amenitiesList, { amenitiesNo: amenity }];
     });
 
+    console.log(amenitiesList);
+    // formData.append("amenitiesList", amenitiesList);
+
+    let fishList = [];
     selectedFishes.forEach((fish) => {
-      formData.append("fishList", fish);
+      fishList = [...fishList, { fishNo: fish }];
     });
 
-    const dayMap = { 월: 1, 화: 2, 수: 3, 목: 4, 금: 5, 토: 6, 일: 7 };
-
-    selectedDay.forEach((day) => {
-      formData.append("dayList", dayMap[day]);
-    });
+    console.log(fishList);
+    // formData.append("fishList", fishList);
 
     axios
       .post("http://localhost/fishing/insert", formData, {
@@ -116,19 +135,20 @@ const FishingInsert = () => {
         if (response.status == 201) {
           console.log(response);
           alert("낚시터 등록 완료");
-          navi("/fishing");
+          navi("/");
         }
       })
       .catch((error) => {
         console.log(error);
       });
+
+    axios.post();
   };
 
-  const toggleDay = (day) => {
-    setSelectedDay((prev) =>
-      prev.includes(day) ? prev.filter((item) => item !== day) : [...prev, day]
-    );
-    console.log("현재 선택한 요일: ", day);
+  const handleAddressSelect = (address) => {
+    setSelectedAddress(address);
+    setAddress(address);
+    console.log("선택된 주소: ", address);
   };
 
   //amenity 선택.선택해제
@@ -180,32 +200,15 @@ const FishingInsert = () => {
               required
             ></Input>
           </FormGroup>
-          <FormGroup>
+
+          <FormGroup style={{ display: "flex", flexDirection: "column" }}>
             <Label>업체 주소</Label>
-            <Input
-              id="address"
-              type="text"
-              onChange={(e) => setAddress(e.target.value)}
-              required
-            ></Input>
-          </FormGroup>
-          <FormGroup>
-            <Label>영업요일</Label>
-            <AmenitiesContainer>
-              {["월", "화", "수", "목", "금", "토", "일"].map((day) => {
-                return (
-                  <FishText
-                    id="day"
-                    key={day}
-                    onClick={() => toggleDay(day)} // 클릭 시 toggleDay 함수 호출
-                    selected={selectedDay.includes(day)} // selectedDay에 해당 day가 포함되어 있으면 true, 아니면 false
-                    onChange={(e) => setSelectedDay(e.target.value)}
-                  >
-                    {day}
-                  </FishText>
-                );
-              })}
-            </AmenitiesContainer>
+            <AddressSearch onAddressSelect={handleAddressSelect} />
+            <p
+              style={{ marginTop: "10px", textAlign: "left", fontSize: "18px" }}
+            >
+              선택된 주소: {selectedAddress}
+            </p>
           </FormGroup>
           <FormGroup>
             <Label>영업 시작 시간</Label>
@@ -292,11 +295,21 @@ const FishingInsert = () => {
           </FormGroup>
           <FormGroup>
             <Label>사장님 한마디</Label>
-            <TextArea id="introduce" type="text" required></TextArea>
+            <TextArea
+              id="introduce"
+              type="text"
+              onChange={(e) => setIntroduce(e.target.value)}
+              value={introduce}
+              required
+            ></TextArea>
           </FormGroup>
           <FormGroup>
             <Label>낚시터 사진 등록</Label>
-            <Input type="file"></Input> <br />
+            <Input
+              type="file"
+              onChange={(e) => setFile(e.target.files[0])}
+            ></Input>{" "}
+            <br />
           </FormGroup>
           <Button type="submit">신청</Button>
         </Form>

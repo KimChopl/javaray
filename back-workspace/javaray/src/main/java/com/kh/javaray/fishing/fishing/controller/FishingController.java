@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.javaray.fishing.amenities.model.dto.AmenitiesDTO;
 import com.kh.javaray.fishing.fishing.model.dto.FishingDTO;
+import com.kh.javaray.fishing.fishing.model.dto.FishingSaveDTO;
 import com.kh.javaray.fishing.fishing.model.service.FishingService;
 
 import jakarta.validation.Valid;
@@ -30,11 +32,15 @@ public class FishingController {
 	
 	
 	@PostMapping("/insert")
-	public ResponseEntity<?> fishingSave(@ModelAttribute @Valid FishingDTO fishing, @RequestParam(name="file", required=false)MultipartFile file){
+	public ResponseEntity<?> fishingSave(@ModelAttribute @Valid FishingDTO fishing
+										, @RequestParam(name="file", required=false)MultipartFile file){
+		
+		log.info("fishing:{}, amenitiesList : {}", fishing);
 		
 		service.fishingSave(fishing, file);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body("게시물 등록 성공");
+		
 		
 	}
 	
