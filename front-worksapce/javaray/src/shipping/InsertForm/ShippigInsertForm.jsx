@@ -51,6 +51,7 @@ import restroom from "../Update/images/restroom.jpeg";
 import { AuthContext } from "../../UseContext/Auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ShippingNewImage } from "../Update/UpdateFormComponent/ShippingImage";
 
 const ShippingInsertForm = () => {
   const [content, setContent] = useState("");
@@ -202,10 +203,6 @@ const ShippingInsertForm = () => {
   const imgDivClick = () => {
     inputFileRef.current.click();
   };
-  const deleteNewImage = (e) => {
-    setFiles((deleteImg) => deleteImg.filter((_, index) => index !== e));
-    setImageUrl((prevURLs) => prevURLs.filter((_, index) => index !== e));
-  };
 
   const priceChange = (e) => {
     setPrice(e.target.value);
@@ -278,15 +275,11 @@ const ShippingInsertForm = () => {
           <TitleInput value={title} onChange={titleChange}></TitleInput>
         </TitleDiv>
         <ImageBigDiv>
-          {imageUrl.length > 0 ? (
-            imageUrl.map((url, index) => (
-              <ImageCover key={index} onClick={() => deleteNewImage(index)}>
-                <Images src={url} alt={`preview-${index}`} />
-              </ImageCover>
-            ))
-          ) : (
-            <></>
-          )}
+          <ShippingNewImage
+                      setFiles={setFiles}
+                      setImageUrl={setImageUrl}
+                      imageUrl={imageUrl}
+                    />
           <UploadImg onClick={imgDivClick} />
           <InputImg
             type="file"
@@ -295,7 +288,7 @@ const ShippingInsertForm = () => {
             ref={inputFileRef}
           />
         </ImageBigDiv>
-        <PriceDiv>
+        <PriceDiv> 
           <PriceP>인당 탑승 가격</PriceP>
           <PriceInput type="number" value={price} onChange={priceChange} />
         </PriceDiv>

@@ -10,9 +10,11 @@ import com.kh.javaray.shipping.shippings.model.dto.ShippingOption;
 import com.kh.javaray.shipping.shippings.model.mapper.ShippingMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OptionServiceImpl implements OptionService {
 	
 	private final ShippingMapper sm;
@@ -27,9 +29,9 @@ public class OptionServiceImpl implements OptionService {
 
 	@Override
 	public void uploadOption(List<ShippingOption> options) {
-		deleteOption(options.get(0).getShippingNo());
 		int result = 1;
 		for (ShippingOption option : options) {
+			deleteOption(options.get(0).getShippingNo());
 			result = sm.updateOption(option);
 			if (result == 0) {
 				throw new FailUpdateException("업데이트에 실패 하였습니다.");
@@ -39,6 +41,7 @@ public class OptionServiceImpl implements OptionService {
 
 	@Override
 	 public List<ShippingOption> settingOptionsShippingNo(List<ShippingOption> options, String shippingNo) {
+		log.info(shippingNo);
 		for (ShippingOption option : options) {
 			option.setShippingNo(shippingNo);
 		}

@@ -10,18 +10,19 @@ import { useNavigate } from "react-router-dom";
 const Shipping = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
+  const [length, setLength] = useState(0);
   const { auth } = useContext(AuthContext);
   const [user, setUser] = useState({});
   const navi = useNavigate();
   useEffect(() => {
-    const abc = async () => {
+    const selectShippings = async () => {
       const response = await axios.get(
         `http://localhost/shippings?page=${page}`
       );
       setData([...data, ...response.data]);
-      console.log(response);
+      setLength(response.data.length);
     };
-    abc();
+    selectShippings();
     if (auth.isAuthenticated) {
       axios
         .get(`http://localhost/members/users`, {
@@ -43,15 +44,8 @@ const Shipping = () => {
           </InsertBtn>
         )}
       </InsertDiv>
-      {data.map((data) => (
-        <ShippingList
-          key={data.shippingNo}
-          shippingNo={data.shippingNo}
-          data={data}
-          user={user} // 지저분함
-        />
-      ))}
-      {data.length === 20 && (
+      <ShippingList data={data} user={user}/>
+      {length === 20 && (
         <More onClick={() => setPage((page) => page + 1)}>더보기</More>
       )}
     </StyledShipWarp>

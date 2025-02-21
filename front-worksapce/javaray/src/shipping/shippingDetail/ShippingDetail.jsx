@@ -33,15 +33,15 @@ import { AuthContext } from "../../UseContext/Auth/AuthContext";
 const ShippingDetail = () => {
   const [flag, isFlag] = useState(false);
   const [attention, setAttention] = useState(false);
-  const { shippingNo } = useParams();
   const [shipping, setShipping] = useState(null);
   const [loading, setLoading] = useState(true);
   const [fishNo, setFishNo] = useState("");
   const [isAuth, setIsAuth] = useState(undefined);
-  const { auth } = useContext(AuthContext);
   const [attCount, setAttCount] = useState(null);
   const [image, setImage] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { shippingNo } = useParams();
+  const { auth } = useContext(AuthContext);
   const navi = useNavigate();
   const scrollUp = () => {
     window.scroll({ top: 0 });
@@ -76,6 +76,7 @@ const ShippingDetail = () => {
         }
       })
       .catch((error) => {
+        console.log(error)
         setAttention(false);
       });
     scrollUp();
@@ -234,7 +235,7 @@ const ShippingDetail = () => {
             </BaseCover>
           </DetailBase>
           <WeatherCover>
-            {/*<Weather weather={shipping.weather} />*/}
+            <Weather weather={shipping.weather} />
           </WeatherCover>
           <ShippingContent
             id="contentSection"

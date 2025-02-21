@@ -13,33 +13,19 @@ import hiter from "./images/hiter.jpg";
 import liferope from "./images/liferope.jpg";
 import mobile from "./images/mobile.jpg";
 import restroom from "./images/restroom.jpeg";
-import options from "./options.json";
 import {
-  Checkbox,
   ComplateBtn,
   ContentDiv,
   ContentText,
-  DeleteFishs,
-  DeleteImage,
-  FishP,
   FishsDiv,
-  FishsExDiv,
   ImageBigDiv,
-  ImageCover,
-  Images,
   InputImg,
-  Label,
   LocationAndPeple,
   LocationDiv,
   LocationP,
   LocationPepleDiv,
-  Option,
-  OptionCover,
   OptionDiv,
-  OptionExpDiv,
-  OptionImage,
   OptionLine,
-  OptionP,
   PepleDiv,
   PepleInput,
   PriceDiv,
@@ -187,6 +173,10 @@ const ShippingUpdate = () => {
   };
 
   const update = () => {
+    if(shippingNo === "" || content === "" || title === "" || peple < 1 || price < 1 || fish.length < 1 || service.length < 1){
+      alert("모든 내용을 채워 주세요.");
+      return;
+    }
     const formData = new FormData();
     formData.append("shippingNo", shippingNo);
     formData.append("shippingContent", content);

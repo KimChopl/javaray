@@ -1,8 +1,11 @@
 package com.kh.javaray.template.model.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,14 +29,37 @@ public class ImageServiceImpl implements ImageService {
 	private final UploadImage ui;
 	private final ShippingMapper sm;
 
-	private void deleteBeforeImage(List<Image> list, List<Image> imageList) {
-		log.info("{}", list);
-		log.info("{}", imageList);
+	private Map<String, List<Image>> checkedDeleteImage(List<Image> beforeImage, List<Image> changeImage) {
+		Map<String, List<Image>> map = new HashMap<String, List<Image>>();
+			Set<String> setImage = changeImage.stream().map(Image::getImageChangeName).collect(Collectors.toSet());
+			List<Image> deleteImage = beforeImage.stream().filter(image -> !setImage.contains(image.getImageChangeName()))
+					.collect(Collectors.toList());
+			List<Image> remainImage = beforeImage.stream().filter(image -> setImage.contains(image.getImageChangeName()))
+					.collect(Collectors.toList());
+			List<Image> imageLevel = deleteImage.stream().filter(image -> 1 == image.getImageLevel()).collect(Collectors.toList());
+			map.put("deleteImage", deleteImage);
+			map.put("remainImage", remainImage);
+			map.put("imageLevel", imageLevel);
+			return map;
+	}
+	
+	private boolean deleteBeforeImage(List<Image> list, List<Image> imageList) {
 		if (list.size() != imageList.size()) { // 기존 사진에서 삭제한 사진이 있는지
-			Set<String> setImage = imageList.stream().map(Image::getImageChangeName).collect(Collectors.toSet());
-			List<Image> deleteImage = list.stream().filter(image -> !setImage.contains(image.getImageChangeName())).collect(Collectors.toList());
-			log.info("{}",deleteImage);
+			Map<String, List<Image>> map = checkedDeleteImage(list, imageList);
+			List<Image> deleteImage = map.get("deleteImage");
+			List<Image> remainImage = map.get("remainImage");
+			List<Image> imageLevel = map.get("imageLevel");
+			deleteImage(deleteImage);
+			ui.delete(deleteImage);
+			if (!imageLevel.isEmpty() && !remainImage.isEmpty()) {
+				im.updateImageLevel(remainImage.get(0).getImageNo());
+				return false;
+			}
+			if (remainImage.isEmpty()) {
+				return true;
+			}
 		}
+		return false;
 
 	}
 
@@ -52,9 +78,8 @@ public class ImageServiceImpl implements ImageService {
 			return null;
 		} else {
 			if (files != null) {
-				deleteBeforeImage(list, imageList);
 				uploadFiles = files;
-				isMain = false;
+				isMain = deleteBeforeImage(list, imageList);
 				return ui.store(uploadFiles, isMain);
 			} else {
 				deleteBeforeImage(list, imageList);

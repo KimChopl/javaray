@@ -39,29 +39,26 @@ public class MemberServiceImpl implements MemberService {
 		Member newMember = Member.builder().username(member.getUsername()).userPwd(pwe.encode(member.getUserPwd()))
 				.nickname(member.getNickname()).email(member.getEmail()).phone(member.getPhone())
 				.userRealName(member.getUserRealName()).role("ROLE_USER").build();
-
 		mm.insertMember(newMember);
 	}
-
 
 	@Override
 	public LoginResponse login(LoginForm requestMember) {
 		Map<String, String> token = as.login(requestMember);
 		Member member = mm.findById(requestMember.getUsername());
-		LoginResponse user = LoginResponse.builder().username(member.getUsername()).role(cutRole(member.getRole())).tokens(token).nickname(member.getNickname()).userNo(member.getUserNo()).build();
+		LoginResponse user = LoginResponse.builder().username(member.getUsername()).role(cutRole(member.getRole()))
+				.tokens(token).nickname(member.getNickname()).userNo(member.getUserNo()).build();
 		return user;
 	}
-	
+
 	private String cutRole(String role) {
 		return role.substring(role.indexOf('_') + 1);
 	}
-	
 
 	@Override
 	public void updateAll(UpdateMemberDTO member) {
 		CustomUserDetails user = as.checkedUser();
-		log.info("{} /n{}", member, user);
-		if(!user.getUsername().equals(member.getUsername())) {
+		if (!user.getUsername().equals(member.getUsername())) {
 			throw new NotMatchUserInfoException("현제 페이지에서는 아이디를 변경할 수 없습니다. 고객센터를 통해 아이디를 변경해주세요.");
 		}
 		member.setUserNo(user.getUserNo());
@@ -70,10 +67,10 @@ public class MemberServiceImpl implements MemberService {
 
 	private CustomUserDetails checkedUserInfo(ChangePassword password) {
 		CustomUserDetails user = as.checkedUser();
-		if(!user.getUsername().equals(password.getUsername())) {
+		if (!user.getUsername().equals(password.getUsername())) {
 			throw new NotMatchUserInfoException("유저 정보가 일치하지 않습니다. 다시 시도해주세요.");
 		}
-		if(!pwe.matches(password.getOriginUserPwd(), user.getPassword())) {
+		if (!pwe.matches(password.getOriginUserPwd(), user.getPassword())) {
 			throw new NotMatchUserInfoException("비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
 		}
 		return user;
@@ -85,22 +82,20 @@ public class MemberServiceImpl implements MemberService {
 		password.setUserNo(user.getUserNo());
 		password.setChangeUserPwd(pwe.encode(password.getChangeUserPwd()));
 		int result = mm.updatePassword(password);
-		if(result < 1) {
+		if (result < 1) {
 			throw new FailUpdateUserInfoException("업데이트에 싪패했습니다. 다시 시도해주세요.");
 		}
 	}
-
 
 	@Override
 	public void deleteMember(LoginForm userPwd) {
 		CustomUserDetails user = as.checkedUser();
 		log.info("{}", user);
-		if(!pwe.matches(userPwd.getUserPwd(), user.getPassword())) {
+		if (!pwe.matches(userPwd.getUserPwd(), user.getPassword())) {
 			throw new NotMatchUserInfoException("비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
 		}
 		mm.deleteMember(user.getUserNo());
 	}
-
 
 	@Override
 	public Member selectUserRole() {

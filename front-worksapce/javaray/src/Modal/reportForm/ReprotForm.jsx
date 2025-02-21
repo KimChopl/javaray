@@ -14,14 +14,10 @@ import {
 } from "./ReprotFormCss";
 import axios from "axios";
 import { AuthContext } from "../../UseContext/Auth/AuthContext";
-import { useNavigate } from "react-router-dom";
 
-const ReportForm = ({ kind, shippingNo }) => {
-  //const kind = props.kind;
-  //const shippingNo = props.shippingNo;
+const ReportForm = ({ kind, shippingNo, clickModal }) => {
   const [content, setContent] = useState();
   const { auth } = useContext(AuthContext);
-  //const navi = useNavigate();
   const putContent = (e) => {
     setContent(e.target.value);
   };
@@ -36,7 +32,7 @@ const ReportForm = ({ kind, shippingNo }) => {
         })
         .then(() => {
           alert("삭제가 완료 되었습니다.");
-          window.location.reload(); // 좋지 않음
+          clickModal(false)
         });
     }
   };

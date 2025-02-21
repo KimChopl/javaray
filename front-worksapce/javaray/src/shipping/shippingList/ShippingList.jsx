@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   StyledShipDiv,
   StyledShipImage,
@@ -12,45 +11,48 @@ import {
 } from "./shippingListCss";
 import ShippingSmallMenu from "./shippingSmallMenu/ShippingSamllMenu";
 import { useNavigate } from "react-router-dom";
+import { ListCover } from "../ShippingCss";
 
-const ShippingList = (props) => {
+const ShippingList = ({data, user}) => {
   const navi = useNavigate();
-  const data = props.data;
-  const user = props.user;
   return (
-    <>
-      <StyledShipDiv>
-        <ShippingSmallMenu user={user} shippingNo={props.shippingNo} />
-        <ShippingToDetail
-          onClick={() => navi(`/shipping/detail/${data.shippingNo}`)}
-        >
-          <StyledShipImgCover>
-            {data.images[0] ? (
+    <ListCover>
+      {data.map((datas) => {
+        return(
+          <StyledShipDiv key={datas.shippingNo}>
+            <ShippingSmallMenu user={user} shippingNo={datas.shippingNo}/>
+            <ShippingToDetail
+            onClick={() => navi(`/shipping/detail/${datas.shippingNo}`)}
+            >
+            <StyledShipImgCover>
+            {datas.images[0] ? (
               <StyledShipImage
-                src={`http://${data.images[0].imagePath}${data.images[0].imageChangeName}`}
-                alt={data.imageOriginName}
+              src={`http://${datas.images[0].imagePath}${datas.images[0].imageChangeName}`}
+              alt={datas.imageOriginName}
               />
             ) : (
               <></>
             )}
-          </StyledShipImgCover>
-          <StyledShipTitleDiv>
-            <span>{data.shippingTitle}</span>
-          </StyledShipTitleDiv>
-          <StyledShipRatingCover>
+            </StyledShipImgCover>
+            <StyledShipTitleDiv>
+            <span>{datas.shippingTitle}</span>
+            </StyledShipTitleDiv>
+            <StyledShipRatingCover>
             <StyledShipPersonDiv>
-              <StyledShipPersonSpan>
-                최대 탑승 인원 : {data.allowPepleNo}명
-              </StyledShipPersonSpan>
+            <StyledShipPersonSpan>
+            최대 탑승 인원 : {datas.allowPepleNo}명
+            </StyledShipPersonSpan>
             </StyledShipPersonDiv>
             <StyledShipRatingDiv>
-              <StyledShipPersonSpan>⭐ : {data.avgRating}</StyledShipPersonSpan>
-            </StyledShipRatingDiv>
-          </StyledShipRatingCover>
-          <StyledShipTitleDiv>인당 가격 : {data.price}원</StyledShipTitleDiv>
-        </ShippingToDetail>
-      </StyledShipDiv>
-    </>
+                <StyledShipPersonSpan>⭐ : {datas.avgRating}</StyledShipPersonSpan>
+              </StyledShipRatingDiv>
+            </StyledShipRatingCover>
+            <StyledShipTitleDiv>인당 가격 : {datas.price}원</StyledShipTitleDiv>
+            </ShippingToDetail>
+          </StyledShipDiv>
+        )
+      })}
+    </ListCover>
   );
 };
 

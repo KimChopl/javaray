@@ -89,7 +89,7 @@ const Weather = (props) => {
                   day.prep[0] === "0"
                     ? day.sky[0] === "DB01"
                       ? sun
-                      : day.sky[0] == "DB02"
+                      : day.sky[0] === "DB02"
                       ? littlecloud
                       : day.sky[0] === "BD03"
                       ? alotofcloud
@@ -111,7 +111,7 @@ const Weather = (props) => {
                   day.prep[1] === "0"
                     ? day.sky[1] === "DB01"
                       ? sun
-                      : day.sky[1] == "DB02"
+                      : day.sky[1] === "DB02"
                       ? littlecloud
                       : day.sky[1] === "BD03"
                       ? alotofcloud
@@ -130,7 +130,7 @@ const Weather = (props) => {
                   day.prep[0] === "0"
                     ? day.sky[0] === "DB01"
                       ? sun
-                      : day.sky[0] == "DB02"
+                      : day.sky[0] === "DB02"
                       ? littlecloud
                       : day.sky[0] === "BD03"
                       ? alotofcloud
