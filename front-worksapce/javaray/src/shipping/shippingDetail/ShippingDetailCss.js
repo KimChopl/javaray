@@ -69,6 +69,7 @@ export const ShippingContent = styled.div`
   min-height: 350px;
   padding: 10px 25px 10px 25px;
   text-align: left;
+  margin-top : 120px;
 `;
 
 export const ReviewCover = styled.div`

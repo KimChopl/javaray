@@ -29,12 +29,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Weather from "./Weather/Wrather";
 import { AuthContext } from "../../UseContext/Auth/AuthContext";
+import {ShowService} from "../Update/UpdateFormComponent/OptionCheckbox";
+import options from "../Update/options.json"
 
 const ShippingDetail = () => {
   const [flag, isFlag] = useState(false);
   const [attention, setAttention] = useState(false);
   const [shipping, setShipping] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [fishNo, setFishNo] = useState("");
   const [isAuth, setIsAuth] = useState(undefined);
   const [attCount, setAttCount] = useState(null);
@@ -42,6 +43,9 @@ const ShippingDetail = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { shippingNo } = useParams();
   const { auth } = useContext(AuthContext);
+  const [option, setOption] = useState(options);
+  const [service, setService] = useState([]);
+  const [isLoad, setIsLoad] = useState(true);
   const navi = useNavigate();
   const scrollUp = () => {
     window.scroll({ top: 0 });
@@ -51,16 +55,18 @@ const ShippingDetail = () => {
   };
   useEffect(() => {
     axios
-      .get(`http://localhost/shippings/detail?shippingNo=${shippingNo}`)
-      .then((response) => {
-        console.log(response);
-        setShipping(response.data);
-        setAttCount(response.data.shipping.attention);
-        setImage(response.data.shipping.images);
-        setLoading(false);
-      });
-    setIsAuth(auth.isAuthenticated);
-    axios
+    .get(`http://localhost/shippings/detail?shippingNo=${shippingNo}`)
+    .then((response) => {
+      console.log(response);
+      setShipping(response.data);
+      setAttCount(response.data.shipping.attention);
+      setImage(response.data.shipping.images);
+      setService(response.data.shipping.options);
+      setIsLoad(false)
+      
+    });
+    if(auth.isAuthenticated){
+      axios
       .get(`http://localhost/shippings/attention?shippingNo=${shippingNo}`, {
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
@@ -68,7 +74,6 @@ const ShippingDetail = () => {
       })
       .then((response) => {
         if (response.data === 1) {
-          console.log("??");
           setAttention(true);
         } else {
           console.log(response);
@@ -79,8 +84,11 @@ const ShippingDetail = () => {
         console.log(error)
         setAttention(false);
       });
-    scrollUp();
+      scrollUp();
+    }
   }, [auth]);
+
+  
 
   const changeAttention = () => {
     setIsAuth(auth.isAuthenticated);
@@ -96,7 +104,6 @@ const ShippingDetail = () => {
             }
           )
           .then((response) => {
-            console.log(response);
             setAttCount(attCount - 1);
             setAttention(false);
           })
@@ -111,7 +118,6 @@ const ShippingDetail = () => {
             { headers: { Authorization: `Bearer ${auth.accessToken}` } }
           )
           .then((response) => {
-            console.log(response);
             setAttCount(attCount + 1);
             setAttention(true);
           })
@@ -137,9 +143,12 @@ const ShippingDetail = () => {
   const fishsNo = (e) => {
     setFishNo(e);
   };
-
-  if (loading) {
-    return <Load />;
+  
+  const settingOption = option.filter(options => service.some(services => options.no === services.serviceNo))
+  if(isLoad){
+    return(
+      <Load />
+    )
   }
 
   return (
@@ -235,6 +244,7 @@ const ShippingDetail = () => {
             </BaseCover>
           </DetailBase>
           <WeatherCover>
+            <ShowService option={settingOption}/>
             <Weather weather={shipping.weather} />
           </WeatherCover>
           <ShippingContent

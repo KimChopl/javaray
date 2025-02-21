@@ -56,7 +56,7 @@ public class SecurityConfiguration {
 					requests.requestMatchers(HttpMethod.POST, "/members/refresh", "/businessNo/**",
 							"/businessNoInsert/**", "/shippings/attention", "/goods/**", "/shippings").authenticated();
 					requests.requestMatchers(HttpMethod.GET, "/shippings/**", "/shippings/detail/**",
-							"/funding/selectList/**", "/funding/selectCategory", "uploads/**", "/uploads/shipping/**")
+							"/funding/selectList/**", "/funding/selectCategory", "uploads/**", "/uploads/images/**")
 							.permitAll();
 					requests.requestMatchers("/manager/**").hasRole("ADMIN");
 					requests.requestMatchers(HttpMethod.GET, "/fishing", "/fishing/detail/**", "/fishing/review")

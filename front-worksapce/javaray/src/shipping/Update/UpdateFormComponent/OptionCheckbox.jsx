@@ -1,14 +1,17 @@
 import {
   Checkbox,
+  CheckedLabel,
   Label,
   Option,
   OptionCover,
+  OptionDiv,
   OptionExpDiv,
   OptionImage,
+  OptionLine,
   OptionP,
 } from "../ShippingUpdateCss";
 
-const OptionCheckbox = ({ option, index, setOption, service, options }) => {
+export const OptionCheckbox = ({ option, index, setOption, service, options }) => {
   const handlCheckbox = (id) => {
     clickService(id);
     setOption((prevCheckboxes) =>
@@ -60,4 +63,25 @@ const OptionCheckbox = ({ option, index, setOption, service, options }) => {
   );
 };
 
-export default OptionCheckbox;
+export const ShowService = ({option}) => {
+  return(
+    <OptionDiv>
+      <OptionLine>
+        {option.map((options) => {
+          return(
+            <CheckedLabel key={option.no}>
+              <OptionCover>
+                <OptionExpDiv>
+                  <OptionP>{options.name}</OptionP>
+                </OptionExpDiv>
+                <Option>
+                  <OptionImage src={options.image} />
+                </Option>
+              </OptionCover>
+            </CheckedLabel>
+            )
+          })}
+      </OptionLine>
+    </OptionDiv>
+  )
+} 

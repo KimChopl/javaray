@@ -6,8 +6,11 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -22,21 +25,41 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OpenDataApi {
 	
-	private String today() {
+	private Map<String, String> today() {
+		Map<String, String> map = new HashMap<String, String>();
 		Date today = new Date();
-		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-		String day = format.format(today);
-		return day;
+		SimpleDateFormat endDateForm = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat hourForm = new SimpleDateFormat("HH");
+		SimpleDateFormat dayForm = new SimpleDateFormat("dd");
+		int day = Integer.parseInt(dayForm.format(today));
+		int hour = Integer.parseInt(hourForm.format(today));
+		Calendar calendar = Calendar.getInstance();
+		if (hour >= 0 && hour <= 9) {
+            calendar.setTime(today);
+            calendar.set(Calendar.HOUR_OF_DAY, 15);
+            calendar.set(Calendar.DAY_OF_MONTH, day-1);
+            today = calendar.getTime(); // 변경된 Date 객체 얻기
+        }else {
+        	calendar.set(Calendar.HOUR_OF_DAY, 9);
+        }
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHH");
+		String endDate = endDateForm.format(today);
+		String startDate = format.format(today);
+		map.put("startDate", startDate);
+		map.put("endDate", endDate);
+		return map;
 	}
 	
 	private StringBuilder makingURL(String spotCode) {
+		Map<String, String> map = today();
+		log.info("{}", map);
 		StringBuilder requestUrl = new StringBuilder("https://apihub.kma.go.kr/api/typ01/url/fct_afs_do.php");
 		String key = "t3nuxM67Qvq57sTOu5L69w";
 		try {
 			requestUrl.append("?authKey=" + URLEncoder.encode(key , "UTF-8"));
 			requestUrl.append("&reg=" + URLEncoder.encode(spotCode, "UTF-8"));
-			requestUrl.append("&tmfc1=" + URLEncoder.encode((today() + "00"), "UTF-8"));
-			requestUrl.append("&tmfc2=" + URLEncoder.encode((today() + "18"), "UTF-8"));
+			requestUrl.append("&tmfc1=" + URLEncoder.encode(map.get("startDate"), "UTF-8"));
+			requestUrl.append("&tmfc2=" + URLEncoder.encode((map.get("endDate") + "18"), "UTF-8"));
 			requestUrl.append("&disp=1");
 			requestUrl.append("&help=0");
 		} catch (UnsupportedEncodingException e) {
@@ -48,12 +71,14 @@ public class OpenDataApi {
 	
 	public List<Weather> weatherApi(String spotCode) {
 		StringBuilder requestUrl = makingURL(spotCode);
+		log.info(requestUrl.toString());
 		try {
 			URI uri = new URI(requestUrl.toString());
 			RestTemplate rt = new RestTemplate();
 			String result = rt.getForObject(uri, String.class);
 			List<Weather> list = new ArrayList<Weather>();
 			String[] split = result.split(",=\n");	
+			log.info(result);
 			for(int i = 0; i < 8; i ++) {
 				if(i == 0) {
 					String[] info = split[i].split("\n");

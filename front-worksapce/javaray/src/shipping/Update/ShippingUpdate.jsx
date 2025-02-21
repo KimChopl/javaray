@@ -3,16 +3,6 @@ import { DetailWarp, Load } from "../shippingDetail/ShippingDetailCss";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../UseContext/Auth/AuthContext";
-import lifevest from "./images/lifevest.jpg";
-import aircon from "./images/aircon.png";
-import bait from "./images/bait.png";
-import cctv from "./images/cctv.png";
-import fishingrod from "./images/fishingrod.jpg";
-import food from "./images/food.png";
-import hiter from "./images/hiter.jpg";
-import liferope from "./images/liferope.jpg";
-import mobile from "./images/mobile.jpg";
-import restroom from "./images/restroom.jpeg";
 import {
   ComplateBtn,
   ContentDiv,
@@ -43,7 +33,8 @@ import {
   ShippingBeforeImage,
   ShippingNewImage,
 } from "./UpdateFormComponent/ShippingImage";
-import OptionCheckbox from "./UpdateFormComponent/OptionCheckbox";
+import {OptionCheckbox} from "./UpdateFormComponent/OptionCheckbox";
+import options from "./options.json"
 
 const ShippingUpdate = () => {
   const [load, setLoad] = useState(true);
@@ -61,81 +52,9 @@ const ShippingUpdate = () => {
   const [searchAddress, setSearchAddress] = useState(false);
   const [imageUrl, setImageUrl] = useState([]);
   const [files, setFiles] = useState([]);
-
   const navi = useNavigate();
   const inputFileRef = useRef(null);
-  const [option, setOption] = useState([
-    {
-      name: "구명조끼",
-      image: lifevest,
-      option: "lifevest",
-      no: "1",
-      isSelect: false,
-    },
-    {
-      name: "에어컨",
-      image: aircon,
-      option: "aircon",
-      no: "2",
-      isSelect: false,
-    },
-    {
-      name: "미끼",
-      image: bait,
-      option: "bait",
-      no: "3",
-      isSelect: false,
-    },
-    {
-      name: "CCTV",
-      image: cctv,
-      option: "bait",
-      no: "4",
-      isSelect: false,
-    },
-    {
-      name: "낚시대",
-      image: fishingrod,
-      option: "fishingrod",
-      no: "5",
-      isSelect: false,
-    },
-    {
-      name: "식사제공",
-      image: food,
-      option: "food",
-      no: "6",
-      isSelect: false,
-    },
-    {
-      name: "난방",
-      image: hiter,
-      option: "hiter",
-      no: "7",
-      isSelect: false,
-    },
-    {
-      name: "구명밧줄",
-      image: liferope,
-      option: "liferope",
-      no: "8",
-      isSelect: false,
-    },
-    {
-      name: "온라인 명부",
-      image: mobile,
-      option: "moblie",
-      no: "9",
-      isSelect: false,
-    },
-    {
-      name: "화장실",
-      image: restroom,
-      option: "restroom",
-      no: "10",
-      isSelect: false,
-    },
-  ]);
+  const [option, setOption] = useState(options);
   const titleChange = (e) => {
     setTitle(e.target.value);
   };
@@ -226,7 +145,6 @@ const ShippingUpdate = () => {
     if (files.length !== 0) {
       for (let i = 0; i < files.length; i++) formData.append("files", files[i]);
     }
-    console.log(files);
     axios
       .put(`http://localhost/shippings`, formData, {
         headers: {
@@ -243,7 +161,6 @@ const ShippingUpdate = () => {
 
   const uploadImg = (e) => {
     const fileList = Array.from(e.target.files);
-    console.log(fileList);
     setFiles(fileList);
     const url = fileList.map((image) => URL.createObjectURL(image));
     setImageUrl([...imageUrl, ...url]);
