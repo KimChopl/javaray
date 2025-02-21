@@ -18,6 +18,12 @@ public interface FishingMapper {
 
 	void fishingSave(@Valid FishingDTO fishing);
 
+	void saveFish(@Valid FishingDTO fishing);
+	
+	void saveAmenities(@Valid FishingDTO fishing);
+	
+	void saveDay(@Valid FishingDTO fishing);
+	
 	List<FishingDTO> findAll(RowBounds rowBounds);
 
 	List<FishDTO> findFishByFishingNos(@Param("fishingNos") List<Long> fishingNos);
@@ -30,11 +36,6 @@ public interface FishingMapper {
 
 	List<AmenitiesDTO> findAmenitiesByFishingNo(@Param("fishingNo") Long fishingNo);
 
-	void saveFish(@Valid FishingDTO fishing);
-
-	void saveAmenities(@Valid FishingDTO fishing);
-
-	void saveDay(@Valid FishingDTO fishing);
 
 
 	

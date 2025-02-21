@@ -44,7 +44,7 @@ import { TitleLine, TitleText } from "../FishingList/FishingList.styled";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../UseContext/Auth/AuthContext";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useAsyncError, useNavigate } from "react-router-dom";
 
 const FishingInsert = () => {
   const { auth } = useContext(AuthContext);
@@ -54,6 +54,12 @@ const FishingInsert = () => {
   const [accessToken, setAccessToken] = useState(""); //권한이 있는 사람만 들어올 수 있게 하기 위해
   const navi = useNavigate();
   const [userId, setUserId] = useState("");
+  const [fishingName, setFishingName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [introduce, setIntroduce] = useState("");
 
   useEffect(() => {
     if (!!!auth.isAuthenticated) {
@@ -68,44 +74,54 @@ const FishingInsert = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (
+      !(fishingName || phone || address || startTime || endTime || introduce)
+    ) {
+      alert("아래 항목 모두  필수 입력사항입니다.");
+      return;
+    }
+
     const formData = new FormData();
 
     formData.append("fishingWriter", auth.nickname);
-    formData.append("fishingName", e.target.fishingName.value);
-    formData.append("phone", e.target.phone.value);
-    formData.append("address", e.target.address.value);
-    formData.append("startTime", e.target.startTime.value);
-    formData.append("endTime", e.target.endTime.value);
-    formData.append("introduce", e.target.introduce.value);
+    formData.append("fishingName", fishingName);
+    formData.append("phone", phone);
+    formData.append("address", address);
+    formData.append("startTime", startTime);
+    formData.append("endTime", endTime);
+    formData.append("introduce", introduce);
 
     selectedAmenities.forEach((amenity) => {
-      formData.append("amenities", amenity);
+      formData.append("amenitiesList", amenity);
     });
 
     selectedFishes.forEach((fish) => {
-      formData.append("fishes", fish);
+      formData.append("fishList", fish);
     });
+
+    const dayMap = { 월: 1, 화: 2, 수: 3, 목: 4, 금: 5, 토: 6, 일: 7 };
 
     selectedDay.forEach((day) => {
-      formData.append("days", day);
+      formData.append("dayList", dayMap[day]);
     });
 
-    axios.post("http://localhost/fishing/insert", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${auth.accessToken}`,
-      }
-        .then((response) => {
-          if (response.status == 201) {
-            console.log(response);
-            alert("낚시터 등록 완료");
-            navi("/fishing");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        }),
-    });
+    axios
+      .post("http://localhost/fishing/insert", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
+      })
+      .then((response) => {
+        if (response.status == 201) {
+          console.log(response);
+          alert("낚시터 등록 완료");
+          navi("/fishing");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const toggleDay = (day) => {
@@ -148,25 +164,42 @@ const FishingInsert = () => {
           </FormGroup>
           <FormGroup>
             <Label>낚시터명</Label>
-            <Input id="fishingName" type="text" required></Input>
+            <Input
+              id="fishingName"
+              type="text"
+              onChange={(e) => setFishingName(e.target.value)}
+              required
+            ></Input>
           </FormGroup>
           <FormGroup>
             <Label>업체 번호</Label>
-            <Input id="phone" type="" required></Input>
+            <Input
+              id="phone"
+              type="text"
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            ></Input>
           </FormGroup>
           <FormGroup>
             <Label>업체 주소</Label>
-            <Input id="address" type="text" required></Input>
+            <Input
+              id="address"
+              type="text"
+              onChange={(e) => setAddress(e.target.value)}
+              required
+            ></Input>
           </FormGroup>
           <FormGroup>
             <Label>영업요일</Label>
-            <AmenitiesContainer id="day">
+            <AmenitiesContainer>
               {["월", "화", "수", "목", "금", "토", "일"].map((day) => {
                 return (
                   <FishText
+                    id="day"
                     key={day}
                     onClick={() => toggleDay(day)} // 클릭 시 toggleDay 함수 호출
                     selected={selectedDay.includes(day)} // selectedDay에 해당 day가 포함되어 있으면 true, 아니면 false
+                    onChange={(e) => setSelectedDay(e.target.value)}
                   >
                     {day}
                   </FishText>
@@ -176,11 +209,21 @@ const FishingInsert = () => {
           </FormGroup>
           <FormGroup>
             <Label>영업 시작 시간</Label>
-            <Input id="startTime" type="time" required></Input>
+            <Input
+              id="startTime"
+              type="time"
+              onChange={(e) => setStartTime(e.target.value)}
+              required
+            ></Input>
           </FormGroup>
           <FormGroup>
             <Label>영업 종료 시간</Label>
-            <Input id="endTime" type="time" required></Input>
+            <Input
+              id="endTime"
+              type="time"
+              onChange={(e) => setEndTime(e.target.value)}
+              required
+            ></Input>
           </FormGroup>
           <FormGroup>
             <Label>상세정보</Label>
@@ -201,6 +244,7 @@ const FishingInsert = () => {
                   key={item.label}
                   onClick={() => toggleAmenity(item.amenitiesNo)}
                   selected={selectedAmenities.includes(item.amenitiesNo)}
+                  onChange={(e) => setSelectedAmenities(e.target.value)}
                 >
                   <AmenitiesImgDiv>
                     <AmenitiesImg src={item.img} />
@@ -234,6 +278,7 @@ const FishingInsert = () => {
                   key={item.label}
                   onClick={() => toggleFish(item.fishNo)}
                   selected={selectedFishes.includes(item.fishNo)}
+                  onChange={(e) => setSelectedFishes(e.target.value)}
                 >
                   <AmenitiesImgDiv>
                     <AmenitiesImg src={item.img} />
@@ -251,8 +296,6 @@ const FishingInsert = () => {
           </FormGroup>
           <FormGroup>
             <Label>낚시터 사진 등록</Label>
-            <Input type="file"></Input> <br />
-            <Input type="file"></Input> <br />
             <Input type="file"></Input> <br />
           </FormGroup>
           <Button type="submit">신청</Button>

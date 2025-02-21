@@ -43,11 +43,15 @@ public class FishingDTO {
 	@NotBlank(message="영업종료 시간은 비어있을 수 없습니다.")
 	private String endTime;
 	
+	@NotBlank(message="사장님 소개는 비어있을 수 없습니다.")
+	@Size(min=10, message="사장님 소개는 10자 이상 작성해주세요.")
 	private String introduce;
+	
 	private Long lat;
 	private Long lng;
 	private char status;
 	private String fishingFileUrl;
+	
 	private List<FishDTO> fishList;
 	private List<AmenitiesDTO> amenitiesList;
 	private List<ProductDTO> product;

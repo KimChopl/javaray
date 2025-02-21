@@ -13,7 +13,7 @@
 				TB_FISHING (
 					FISHING_NO,
 		            FISHING_WRITER, 
-		            FISHINGNAME 
+		            FISHING_NAME ,
 		            ADDRESS, 
 		            PHONE, 
 		            START_TIME, 
@@ -50,10 +50,10 @@
 			FISH_NO
 			)
     VALUES
-		    <foreach collection="fishList" item="fishNo" separator=",">
+		    <foreach collection="fishList" item="fish" separator=",">
 		        (
 				#{fishingNo}, 
-		        #{fishNo}
+		        #{fish.fishNo}
 		        )
 		    </foreach>
 	</insert>
@@ -68,10 +68,10 @@
 			AMENITIES_NO
 			)
 	  VALUES
-	  		<foreach collection="amenitiesList" item="amenitiesNo" separator=",">
+	  		<foreach collection="amenitiesList" item="amenities" separator=",">
 	  			(
 				#{fishingNo},
-				#{amenitiesNo}
+				#{amenities.amenitiesNo}
 				)
 	  		</foreach>
 	</insert>
@@ -86,10 +86,10 @@
 					DAY_NO
 				)
 		VALUES
-				<foreach collection="dayList" item="dayNo" separator=",">
+				<foreach collection="dayList" item="day" separator=",">
 				(
 				#{fishingNo},
-				#{dayNo}
+				#{day.dayNo}
 				)
 				</foreach>
 	</insert>
