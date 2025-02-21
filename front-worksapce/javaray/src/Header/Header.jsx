@@ -42,7 +42,7 @@ function CollapsibleExample() {
                 id="collapsible-nav-dropdown"
                 style={{ position: "relative", zIndex: "30" }}
               >
-                <NavDropdown.Item onClick={() => goTo("/")}>
+                <NavDropdown.Item onClick={() => goTo("/shipping")}>
                   선박예약
                 </NavDropdown.Item>
                 <NavDropdown.Divider />

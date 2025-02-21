@@ -164,6 +164,7 @@ export const AmenitiesDiv = styled.div`
   text-align: center;
   float: left;
   border-radius: 3px;
+  background-color: ${({ selected }) => (selected ? "#e0f7ff" : "white")};
 
   &:hover {
     outline: 2px solid skyblue;
@@ -197,6 +198,7 @@ export const FishText = styled.label`
   border: 1px solid rgb(225, 218, 203);
   text-align: center;
   border-radius: 3px;
+  background-color: ${({ selected }) => (selected ? "#e0f7ff" : "white")};
 
   &:hover {
     width: auto;

@@ -18,7 +18,6 @@ import com.kh.javaray.member.model.dto.MemberDTO;
 import com.kh.javaray.member.model.dto.UpdateMemberDTO;
 import com.kh.javaray.member.model.mapper.MemberMapper;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,19 +32,15 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void insertMember(MemberDTO member) {
-
 		Member isMember = mm.findById(member.getUsername());
-
 		if (isMember != null) {
 			throw new AlreadyUseingUsernameException("이미 존재하는 사용자 입니다.");
 		}
-
 		Member newMember = Member.builder().username(member.getUsername()).userPwd(pwe.encode(member.getUserPwd()))
 				.nickname(member.getNickname()).email(member.getEmail()).phone(member.getPhone())
 				.userRealName(member.getUserRealName()).role("ROLE_USER").build();
 
 		mm.insertMember(newMember);
-
 	}
 
 
@@ -81,22 +76,18 @@ public class MemberServiceImpl implements MemberService {
 		if(!pwe.matches(password.getOriginUserPwd(), user.getPassword())) {
 			throw new NotMatchUserInfoException("비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
 		}
-		
 		return user;
 	}
 
 	@Override
 	public void updatePassword(ChangePassword password) {
-		
 		CustomUserDetails user = checkedUserInfo(password);
-		
 		password.setUserNo(user.getUserNo());
 		password.setChangeUserPwd(pwe.encode(password.getChangeUserPwd()));
 		int result = mm.updatePassword(password);
 		if(result < 1) {
 			throw new FailUpdateUserInfoException("업데이트에 싪패했습니다. 다시 시도해주세요.");
 		}
-		
 	}
 
 
@@ -108,6 +99,13 @@ public class MemberServiceImpl implements MemberService {
 			throw new NotMatchUserInfoException("비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
 		}
 		mm.deleteMember(user.getUserNo());
+	}
+
+
+	@Override
+	public Member selectUserRole() {
+		CustomUserDetails user = as.checkedUser();
+		return mm.selectUserRole(user.getUserNo());
 	}
 
 }

@@ -22,7 +22,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.kh.javaray.auth.util.JwtFilter;
 
-import jakarta.servlet.ServletContext;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -51,12 +50,14 @@ public class SecurityConfiguration {
 				.csrf(AbstractHttpConfigurer::disable).cors(Customizer.withDefaults())
 				.authorizeHttpRequests(requests -> {
 				 	requests.requestMatchers("/members", "/members/login", "/uploads/**", "/businessNo", "/funding").permitAll();
-					requests.requestMatchers(HttpMethod.PUT, "/members/update/**", "/shippings/update").authenticated();
+					requests.requestMatchers(HttpMethod.PUT, "/members/update/**", "/shippings").authenticated();
 					requests.requestMatchers(HttpMethod.DELETE, "/members", "/shippings/attention").authenticated();
-					requests.requestMatchers(HttpMethod.POST, "/members/refresh", "/businessNo/**", "/businessNoInsert/**", "/shippings/attention", "/goods/**").authenticated();
+					requests.requestMatchers(HttpMethod.POST, "/members/refresh", "/businessNo/**", "/businessNoInsert/**", "/shippings/attention", "/goods/**", "/shippings").authenticated();
 					requests.requestMatchers(HttpMethod.GET, "/shippings/**", "/shippings/detail/**", "/funding/selectList/**", "/funding/selectCategory", "uploads/**", "/uploads/shipping/**").permitAll();
 					requests.requestMatchers("/manager/**").hasRole("ADMIN");
-					requests.requestMatchers(HttpMethod.GET, "/fishing", "/fishing/detail/**").permitAll();
+					requests.requestMatchers(HttpMethod.GET, "/fishing", "/fishing/detail/**","/fishing/review").permitAll();
+					requests.requestMatchers(HttpMethod.POST, "/fishing/review/insert", "/fishing/insert").authenticated();
+					requests.requestMatchers(HttpMethod.GET, "/members/users").authenticated();
 				})
 				.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).build();

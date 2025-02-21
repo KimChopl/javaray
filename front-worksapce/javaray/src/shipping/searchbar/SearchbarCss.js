@@ -9,6 +9,7 @@ export const SearchMainCover = styled.div`
   width: 700px;
   height: 50px;
   margin-left: 300px;
+  margin-top: 50px;
 `;
 
 export const SearchInnerCover = styled.div`

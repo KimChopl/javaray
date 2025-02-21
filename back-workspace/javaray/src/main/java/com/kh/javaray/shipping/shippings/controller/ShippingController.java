@@ -9,17 +9,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kh.javaray.shipping.shippings.model.dto.Attention;
 import com.kh.javaray.shipping.shippings.model.dto.Fishs;
 import com.kh.javaray.shipping.shippings.model.dto.Port;
 import com.kh.javaray.shipping.shippings.model.dto.Shipping;
 import com.kh.javaray.shipping.shippings.model.dto.UpdateFormDTO;
+import com.kh.javaray.shipping.shippings.model.service.AttentionService;
+import com.kh.javaray.shipping.shippings.model.service.FishService;
 import com.kh.javaray.shipping.shippings.model.service.ShippingService;
 
 import lombok.RequiredArgsConstructor;
@@ -32,6 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ShippingController {
 
 	private final ShippingService ss;
+	private final AttentionService as;
+	private final FishService fs;
 
 	@GetMapping
 	public ResponseEntity<List<Shipping>> selectShippings(@RequestParam(name = "page", defaultValue = "0") int page) {
@@ -50,26 +52,26 @@ public class ShippingController {
 
 	@GetMapping("fish")
 	public ResponseEntity<Fishs> selectFish(@RequestParam(name = "fishNo") String fishNo) {
-		Fishs fish = ss.selectFish(fishNo);
+		Fishs fish = fs.selectFish(fishNo);
 		return ResponseEntity.ok().body(fish);
 	}
 
 	@PostMapping("attention")
 	public ResponseEntity<String> insertAttention(@RequestParam(name = "shippingNo") String shippingNo) {
 		log.info(shippingNo);
-		ss.insertAttention(shippingNo);
+		as.insertAttention(shippingNo);
 		return ResponseEntity.ok().body("등록 완료");
 	}
 
 	@DeleteMapping("attention")
 	public ResponseEntity<String> deleteAttention(@RequestParam(name = "shippingNo") String shippingNo) {
-		ss.deleteAttention(shippingNo);
+		as.deleteAttention(shippingNo);
 		return ResponseEntity.ok().body("삭제 완료");
 	}
 
 	@GetMapping("attention")
 	public ResponseEntity<?> selectAttention(@RequestParam(name = "shippingNo") String shippingNo) {
-		int att = ss.selectAttention(shippingNo);
+		int att = as.selectAttention(shippingNo);
 		return ResponseEntity.ok().body(att);
 	}
 
@@ -81,7 +83,7 @@ public class ShippingController {
 
 	@GetMapping("fishs")
 	public ResponseEntity<List<Fishs>> selectFishs() {
-		List<Fishs> list = ss.selectFish();
+		List<Fishs> list = fs.selectFish();
 		return ResponseEntity.ok().body(list);
 	}
 
@@ -92,11 +94,19 @@ public class ShippingController {
 		return ResponseEntity.ok().body(list);
 	}
 
-	@PutMapping("update")
+	@PutMapping // 얘가 하는일이 너무 많음
 	public ResponseEntity<?> updateShipping(@RequestParam(name = "files", required = false) MultipartFile[] files,
 			@ModelAttribute UpdateFormDTO shipping, @ModelAttribute(name = "fish") String fishs,
 			@ModelAttribute(name = "option") String option, @ModelAttribute(name = "portObj") String port, @ModelAttribute(name="image") String stringImage) {
 		ss.updateShipping(files, shipping, fishs, option, port, stringImage);
+		return null;
+	}
+	
+	@PostMapping
+	public ResponseEntity<?> insertShipping(@RequestParam(name="files", required = false) MultipartFile[] files,
+			@ModelAttribute UpdateFormDTO shipping, @ModelAttribute(name = "fish") String fishs,
+			@ModelAttribute(name = "option") String option, @ModelAttribute(name = "portObj") String port) {
+		ss.insertShipping(files, shipping, fishs, option, port);
 		return null;
 	}
 

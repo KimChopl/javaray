@@ -174,6 +174,25 @@ export const PepleInput = styled.input`
   }
 `;
 
+export const PriceDiv = styled.div`
+  width: 100%;
+  height: 30px;
+  align-items: center;
+`;
+export const PriceP = styled.p`
+  width: 120px;
+  height: 30px;
+  display: inline-block;
+  padding: 5px;
+  margin: 0;
+  font-size: 16px;
+`;
+export const PriceInput = styled.input`
+  width: 120px;
+  height: 30px;
+  padding-left: 10px;
+`;
+
 export const PepleDiv = styled.div`
   width: auto;
   height: 50px;

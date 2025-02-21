@@ -16,10 +16,11 @@ import { useNavigate } from "react-router-dom";
 const ShippingList = (props) => {
   const navi = useNavigate();
   const data = props.data;
+  const user = props.user;
   return (
     <>
       <StyledShipDiv>
-        <ShippingSmallMenu />
+        <ShippingSmallMenu user={user} shippingNo={props.shippingNo} />
         <ShippingToDetail
           onClick={() => navi(`/shipping/detail/${data.shippingNo}`)}
         >

@@ -71,7 +71,7 @@ const ShippingDetail = () => {
           console.log("??");
           setAttention(true);
         } else {
-          console.log("?");
+          console.log(response);
           setAttention(false);
         }
       })
@@ -150,10 +150,14 @@ const ShippingDetail = () => {
         <DetailBody>
           <DetailBase>
             <ImageCover onClick={nextImage}>
-              <ImageBox
-                src={`http://${image[currentIndex].imagePath}${image[currentIndex].imageChangeName}`}
-                alt="여러장 넣어야하는디"
-              />
+              {image.length > 0 ? (
+                <ImageBox
+                  src={`http://${image[currentIndex].imagePath}${image[currentIndex].imageChangeName}`}
+                  alt="여러장 넣어야하는디"
+                />
+              ) : (
+                <></>
+              )}
             </ImageCover>
             <BaseCover>
               <BaseBar>
@@ -230,7 +234,7 @@ const ShippingDetail = () => {
             </BaseCover>
           </DetailBase>
           <WeatherCover>
-            <Weather weather={shipping.weather} />
+            {/*<Weather weather={shipping.weather} />*/}
           </WeatherCover>
           <ShippingContent
             id="contentSection"

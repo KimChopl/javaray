@@ -4,6 +4,97 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.kh.javaray.fishing.fishing.model.mapper.FishingMapper">
+
+	<!--낚시터 insert-->
+	<insert id="fishingSave">
+	
+	 	INSERT
+	 	INTO
+				TB_FISHING (
+					FISHING_NO,
+		            FISHING_WRITER, 
+		            FISHING_NAME ,
+		            ADDRESS, 
+		            PHONE, 
+		            START_TIME, 
+		            END_TIME, 
+		            INTRODUCE, 
+		            STATUS, 
+		            FISHING_FILE_URL
+		        )
+        VALUES 
+		        (
+					SEQ_FHNO.NEXTVAL,
+		            #{fishingWriter}, 
+		            #{fishingName}, 
+		            #{address}, 
+		            #{phone}, 
+		            #{startTime}, 
+		            #{endTime}, 
+		            #{introduce}, 
+		            'Y', 
+		            #{fishingFileUrl}
+		        )
+		<selectKey keyProperty="fishingNo" resultType="long" order="AFTER">
+		SELECT SEQ_FHNO.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<!--물고기 INSERT-->
+	<insert id="saveFish">
+	 INSERT 
+	 INTO 
+	 		TB_REGISTERED_FISH 
+	 		(
+			FISHING_NO,
+			FISH_NO
+			)
+    VALUES
+		    <foreach collection="fishList" item="fish" separator=",">
+		        (
+				#{fishingNo}, 
+		        #{fish.fishNo}
+		        )
+		    </foreach>
+	</insert>
+	
+	<!--상세정보 INSERT-->
+	<insert id="saveAmenities">
+	  INSERT
+	  INTO
+	  		TB_REGISTERED_AMENITIES
+	  		(
+			FISHING_NO,
+			AMENITIES_NO
+			)
+	  VALUES
+	  		<foreach collection="amenitiesList" item="amenities" separator=",">
+	  			(
+				#{fishingNo},
+				#{amenities.amenitiesNo}
+				)
+	  		</foreach>
+	</insert>
+	
+	<!--영업요일 insert-->
+	<insert id="saveDay">
+		INSERT
+		INTO
+				TB_FISHING_DAY
+				(
+					FISHING_NO,
+					DAY_NO
+				)
+		VALUES
+				<foreach collection="dayList" item="day" separator=",">
+				(
+				#{fishingNo},
+				#{day.dayNo}
+				)
+				</foreach>
+	</insert>
+
+	
 	
 	
 	<select id="findAll" resultType="com.kh.javaray.fishing.fishing.model.dto.FishingDTO">
@@ -26,6 +117,7 @@
 					FISHING_NO DESC
 	</select>
 	
+	
 	<select id="findFishByFishingNos" resultType="com.kh.javaray.fishing.fish.model.dto.FishDTO">
 		    SELECT 
 			        rf.FISHING_NO fishingNo,
@@ -41,6 +133,8 @@
 			            #{fishingNo}
 			        </foreach>
 	</select>
+	
+	
 	
 	<select id="findAmenitiesByFishingNos" resultType="com.kh.javaray.fishing.amenities.model.dto.AmenitiesDTO">
 		SELECT 
