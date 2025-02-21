@@ -20,12 +20,12 @@
 		</association>
 		<collection property="fundingOptionList" javaType="java.util.ArrayList" ofType="FundingOptionDTO">
 			<id property="optionNo" column="OPTION_NO" />
-			<result property="refBnos" column="TB_PRODUCT_OPTION.BOARD_NO" />
+			<result property="refBno" column="TB_PRODUCT_OPTION.BOARD_NO" />
 			<result property="optionType" column="OPTION_TYPE" />
-			<result property="optionTitle" column="OPTION_TITLE" />
-			<result property="optionExplain" column="OPTION_EXPLAIN" />
-			<result property="optionPrice" column="OPTION_PRICE" />
-			<result property="optionCount" column="TOTAL_COUNT" />
+			<result property="title" column="OPTION_TITLE" />
+			<result property="content" column="OPTION_EXPLAIN" />
+			<result property="price" column="OPTION_PRICE" />
+			<result property="count" column="TOTAL_COUNT" />
 		</collection>
 		<collection property="fundingFileList" javaType="java.util.ArrayList" ofType="FundingFileDTO">
 			<id property="refBno" column="REF_BNO" />
@@ -97,7 +97,8 @@ SELECT
 	
 	<select id="selectCategory">
 		SELECT
-			   CATEGORY_NAME
+			   CATEGORY_NO categoryNo,
+			   CATEGORY_NAME categoryName
 		  FROM
 		  	   TB_FUNDING_CATEGORY
 	</select>
