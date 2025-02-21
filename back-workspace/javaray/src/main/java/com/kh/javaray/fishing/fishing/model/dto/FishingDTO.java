@@ -41,7 +41,7 @@ public class FishingDTO {
 	private String startTime;
 	
 	@NotBlank(message="영업종료 시간은 비어있을 수 없습니다.")
-	private String endTime;
+	private String endTime; 
 	
 	@NotBlank(message="사장님 소개는 비어있을 수 없습니다.")
 	@Size(min=10, message="사장님 소개는 10자 이상 작성해주세요.")

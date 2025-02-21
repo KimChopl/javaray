@@ -19,6 +19,7 @@ import FishingReviewInsert from "./fishing/FishingDetail/FishingReviewInsert";
 import { AuthProvider } from "./UseContext/Auth/AuthContext";
 import ShippingUpdate from "./shipping/Update/ShippingUpdate";
 import ShippingInsertForm from "./shipping/InsertForm/ShippigInsertForm";
+import AddressSearch from "./fishing/FishingInsert/FishingAddress";
 
 function App() {
   return (
