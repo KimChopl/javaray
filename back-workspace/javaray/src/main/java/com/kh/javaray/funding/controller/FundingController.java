@@ -28,7 +28,6 @@ public class FundingController {
 	@GetMapping("/selectList/hasToken")
 	public ResponseEntity<List<FundingBoardDTO>> selectFundingListHasToken(@RequestParam(name="page", defaultValue="0") int page,
 																			@RequestParam(name="categoryNo") int categoryNo){
-		log.info("나야나");
 		List<FundingBoardDTO> list = fundingService.selectFundingListHasToken(page, categoryNo);
 		return ResponseEntity.ok().body(list);
 	}

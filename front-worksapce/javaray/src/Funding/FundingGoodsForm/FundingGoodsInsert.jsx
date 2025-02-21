@@ -5,7 +5,6 @@ import {
   Input,
   Label,
   MainContainer,
-  OptionContainer,
   TextArea,
   Title,
 } from "./FundingGoodsInsert.styles";
@@ -140,25 +139,28 @@ const FundingGoodsForm = () => {
 
     if (mainFile) {
       const a = async () => {
-        const response = await axios
-          .post("http://localhost/goods/insert", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${auth.accessToken}`,
-            },
-          })
-          .then((response) => {
-            console.log(response);
-            console.log(response.data);
-            setBoardNo(response.data);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-        return response;
+        try {
+          const response = await axios.post(
+            "http://localhost/goods/insert",
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${auth.accessToken}`,
+              },
+            }
+          );
+          console.log(response);
+          console.log(response.data);
+          setBoardNo(response.data);
+
+          return response.data;
+        } catch (error) {
+          console.log(error);
+        }
       };
 
-      const b = async (r) => {
+      const b = async (boardNo) => {
         console.log(boardNo);
         const response = await axios
           .post(
@@ -180,8 +182,8 @@ const FundingGoodsForm = () => {
       };
 
       const c = async () => {
-        await a();
-        await b();
+        const boardNo = await a();
+        await b(boardNo);
       };
 
       c();

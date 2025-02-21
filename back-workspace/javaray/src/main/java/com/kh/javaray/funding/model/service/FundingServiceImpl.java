@@ -33,7 +33,7 @@ public class FundingServiceImpl implements FundingService {
 
 		CustomUserDetails user = authService.checkedUser();
 		String role = user.getAuthorities().iterator().next().getAuthority();
-
+		log.info("{}", role);
 		int size = 6;
 		RowBounds rowBounds = new RowBounds(page * size, size);
 
@@ -41,7 +41,6 @@ public class FundingServiceImpl implements FundingService {
 		if (!list.isEmpty()) {
 
 			List<FundingCompanyNameDTO> companyNameList = fundingMapper.selectCompanyName();
-			log.info("{}", list);
 
 			Map<Long, String> companyNameMap = new HashMap();
 
@@ -53,11 +52,13 @@ public class FundingServiceImpl implements FundingService {
 				if (totalList.getUserNo() != null) {
 					String companyName = companyNameMap.get(totalList.getUserNo());
 					if (companyName != null) {
+						log.info("{}",role);
 						totalList.setCompanyName(companyName);
 						totalList.setRole(role);
 					}
 				}
 			}
+			log.info("{}", list);
 			return list;
 		} else {
 			FundingBoardDTO emptyBoardDTO = new FundingBoardDTO();
@@ -91,6 +92,7 @@ public class FundingServiceImpl implements FundingService {
 				}
 			}
 		}
+		log.info("{}",list);
 		return list;
 	}
 

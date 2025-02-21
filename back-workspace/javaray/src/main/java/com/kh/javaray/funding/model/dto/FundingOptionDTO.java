@@ -14,6 +14,7 @@ import lombok.ToString;
 public class FundingOptionDTO {
 
 	private Long optionNo;
+	private Long optionType;
 	private Long refBno;
 	private int id;
 	private String title;
