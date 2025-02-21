@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("goods")
 @Slf4j
 @Validated
-public class Goods {
+public class GoodsController {
 	
 	private final GoodsService goodsService ;
 	

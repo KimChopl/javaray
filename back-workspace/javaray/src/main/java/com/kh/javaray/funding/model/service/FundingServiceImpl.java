@@ -25,7 +25,6 @@ public class FundingServiceImpl implements FundingService {
 
 	private final FundingMapper fundingMapper;
 	private final AuthenticationService authService;
-	private final ManagerMapper managerMapper;
 	private final FundingFileService fundingFileService;
 
 	@Override
