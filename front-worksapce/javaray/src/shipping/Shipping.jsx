@@ -12,7 +12,6 @@ const Shipping = () => {
   const [page, setPage] = useState(0);
   const [length, setLength] = useState(0);
   const { auth } = useContext(AuthContext);
-  const [user, setUser] = useState({});
   const navi = useNavigate();
   useEffect(() => {
     const selectShippings = async () => {
@@ -23,16 +22,7 @@ const Shipping = () => {
       setLength(response.data.length);
     };
     selectShippings();
-    if (auth.isAuthenticated) {
-      axios
-        .get(`http://localhost/members/users`, {
-          headers: { Authorization: `Bearer ${auth.accessToken}` },
-        })
-        .then((response) => {
-          setUser(response.data);
-        });
-    }
-  }, [page, auth]);
+  }, [page]);
 
   return (
     <StyledShipWarp>
@@ -44,7 +34,7 @@ const Shipping = () => {
           </InsertBtn>
         )}
       </InsertDiv>
-      <ShippingList data={data} user={user}/>
+      <ShippingList setData={setData} data={data} />
       {length === 20 && (
         <More onClick={() => setPage((page) => page + 1)}>더보기</More>
       )}

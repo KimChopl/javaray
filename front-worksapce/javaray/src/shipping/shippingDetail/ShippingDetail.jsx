@@ -14,8 +14,6 @@ import {
   PriceDiv,
   AllowNumberDiv,
   ContentLabel,
-  FishTable,
-  Td,
   BookBtn,
   OtherInfo,
   BookBtnCover,
@@ -31,6 +29,7 @@ import Weather from "./Weather/Wrather";
 import { AuthContext } from "../../UseContext/Auth/AuthContext";
 import {ShowService} from "../Update/UpdateFormComponent/OptionCheckbox";
 import options from "../Update/options.json"
+import DetailFish from "./DetailComponent/Fish/DetailFish";
 
 const ShippingDetail = () => {
   const [flag, isFlag] = useState(false);
@@ -41,6 +40,7 @@ const ShippingDetail = () => {
   const [attCount, setAttCount] = useState(null);
   const [image, setImage] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [fishs, setFishs] = useState([]);
   const { shippingNo } = useParams();
   const { auth } = useContext(AuthContext);
   const [option, setOption] = useState(options);
@@ -62,6 +62,7 @@ const ShippingDetail = () => {
       setAttCount(response.data.shipping.attention);
       setImage(response.data.shipping.images);
       setService(response.data.shipping.options);
+      setFishs(response.data.shipping.fishs);
       setIsLoad(false)
       
     });
@@ -129,7 +130,11 @@ const ShippingDetail = () => {
       alert("로그인 후 이용 가능합니다.");
     }
   };
-  const clickModal = (e) => {
+  const clickModal = (e, fishNo) => {
+    console.log(fishNo)
+    if(fishNo){
+      setFishNo(fishNo);
+    }
     isFlag(e);
   };
   const closeModal = (e) => {
@@ -140,9 +145,6 @@ const ShippingDetail = () => {
     document.getElementById(e).scrollIntoView({ behavior: "smooth" });
   };
 
-  const fishsNo = (e) => {
-    setFishNo(e);
-  };
   
   const settingOption = option.filter(options => service.some(services => options.no === services.serviceNo))
   if(isLoad){
@@ -188,30 +190,7 @@ const ShippingDetail = () => {
                 </AllowNumberDiv>
               </BaseBar>
               <BaseBar>
-                <FishTable>
-                  <thead>
-                    <tr>
-                      <th colSpan={shipping.shipping.fishs.length}>
-                        낚시 가능 어종
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      {shipping.shipping.fishs.map((fish) => (
-                        <Td
-                          key={fish.fishNo}
-                          onClick={() => {
-                            clickModal(true);
-                            fishsNo(fish.fishNo);
-                          }}
-                        >
-                          {fish.fishName}
-                        </Td>
-                      ))}
-                    </tr>
-                  </tbody>
-                </FishTable>
+                <DetailFish clickModal={clickModal} fishs={fishs}/>
               </BaseBar>
               <BaseBar>
                 <BookBtnCover>

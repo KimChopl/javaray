@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CircleCover, CircleDiv, PositionDiv } from "./ShippingSmallMenuCss";
 import ShippingReport from "./shippingReport/ShippingReport";
+import { AuthContext } from "../../../UseContext/Auth/AuthContext";
+import axios from "axios";
 
 const TripleCircleDiv = () => {
   return (
@@ -14,15 +16,34 @@ const TripleCircleDiv = () => {
 
 const ShippingSmallMenu = (props) => {
   const [displayDiv, setDisplayDiv] = useState(false);
-  const user = props.user;
+  const [count, setCount] = useState(0);
+  const data = props.data;
+  const [user, setUser] = useState();
+  const {auth} = useContext(AuthContext);
+  const accessToken = auth.accessToken;
+  const setData = (e) => {
+    props.setData(e);
+  }
   const onClickDiv = () => {
     setDisplayDiv(true);
-    console.log(user);
-  };
+    if(auth.isAuthenticated){
+
+      axios.get('http://localhost/members/users', {
+        headers : {
+          Authorization : `Bearer ${accessToken}`
+        }
+      }).then(response =>{
+        console.log(response)
+        setUser(response.data)
+      });
+    }
+  }
+    
 
   const closeDiv = () => {
     setDisplayDiv(false);
   };
+ 
 
   return (
     <CircleCover>
@@ -31,9 +52,11 @@ const ShippingSmallMenu = (props) => {
       </PositionDiv>
       {displayDiv && (
         <ShippingReport
-          user={user}
           shippingNo={props.shippingNo}
           i={setDisplayDiv}
+          data={data}
+          setData={setData}
+          user={user}
         />
       )}
     </CircleCover>
