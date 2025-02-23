@@ -13,6 +13,7 @@ import com.kh.javaray.exception.exceptions.FailDeleteObjectException;
 import com.kh.javaray.exception.exceptions.FailInsertObjectException;
 import com.kh.javaray.exception.exceptions.FailUpdateException;
 import com.kh.javaray.exception.exceptions.FailUpdateUserInfoException;
+import com.kh.javaray.exception.exceptions.NotFoundFileException;
 import com.kh.javaray.exception.exceptions.NotFoundInfoException;
 import com.kh.javaray.exception.exceptions.NotFoundUserInfoException;
 import com.kh.javaray.exception.exceptions.NotMatchBoardInfoException;
@@ -68,6 +69,11 @@ public class GlobarExceptionHandler {
 	
 	@ExceptionHandler(FailInsertObjectException.class)
 	public ResponseEntity<?> handleInsertFail(FailInsertObjectException e){
+		return ResponseEntity.badRequest().body(e.getMessage());
+	}
+	
+	@ExceptionHandler(NotFoundFileException.class)
+	public ResponseEntity<?> handleNotFoundFile(NotFoundFileException e){
 		return ResponseEntity.badRequest().body(e.getMessage());
 	}
 	

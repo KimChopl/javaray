@@ -32,7 +32,6 @@ public class MemberController {
 	
 	@PostMapping
 	public ResponseEntity<?> insertMember(@Valid @RequestBody MemberDTO member) {
-		log.info("{}", member);
 		ms.insertMember(member);
 		return ResponseEntity.ok("회원가입에 완료하였습니다.");
 	}
@@ -45,7 +44,6 @@ public class MemberController {
 	
 	@PutMapping("update/all")
 	public ResponseEntity<?> update (@Valid @RequestBody UpdateMemberDTO member){
-		log.info("{}", member);
 		ms.updateAll(member);
 		return ResponseEntity.status(HttpStatusCode.valueOf(201)).body("수정에 성공했습니다.");
 	}
@@ -58,7 +56,6 @@ public class MemberController {
 	
 	@DeleteMapping
 	public ResponseEntity<?> deleteMember (@RequestBody LoginForm userPwd) {
-		log.info("{}", userPwd);
 		ms.deleteMember(userPwd);
 		return ResponseEntity.status(HttpStatusCode.valueOf(201)).body("회원 탈퇴에 완료하였습니다.");
 	}

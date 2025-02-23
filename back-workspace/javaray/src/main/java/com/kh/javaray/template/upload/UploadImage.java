@@ -14,10 +14,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.javaray.exception.exceptions.FailDeleteObjectException;
+import com.kh.javaray.exception.exceptions.NotFoundFileException;
 import com.kh.javaray.shipping.dto.Image;
-import com.kh.javaray.template.model.mapper.ImageMapper;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -59,7 +58,7 @@ private final Path fileLocation;
 				Image image = Image.builder().imagePath(imagePath).imageChangeName(imageChangeName).imageOriginName(imageOriginName).imageLevel(imageLevel).build();
 				list.add(image);
 			} catch (IOException e) {
-				//throw new RuntimeException("파일을 찾을 수 없음.");
+				throw new NotFoundFileException("파일을 찾을 수 없음.");
 			}
 		}
 		return list;

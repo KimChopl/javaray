@@ -14,7 +14,7 @@
 		<result property="avgRating" column="avgRating" />
 		<result property="attention" column="attention" />
 		<result property="price" column="price" />
-		<association property="member" javaType="Member" >
+		<association property="member" javaType="MemberDTO" >
 			<id property="userNo" column="userNo"/>
 			<result property="nickname" column="nickname"/>
 			<result property="username" column="username"/>
@@ -55,7 +55,7 @@
 		<result property="shippingCreateDate" column="shippingCreateDate"/>
 		<result property="avgRating" column="avgRating" />
 		<result property="price" column="price" />
-			<association property="member" javaType="Member">
+			<association property="member" javaType="MemberDTO">
 				<id property="userNo" column="userNo"/>
 				<result property="username" column="username"/>
 				<result property="nickname" column="nickname"/>

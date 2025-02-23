@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.List;
 
 import com.kh.javaray.member.model.dto.Member;
+import com.kh.javaray.member.model.dto.MemberDTO;
 import com.kh.javaray.shipping.book.model.dto.Book;
 import com.kh.javaray.shipping.dto.Image;
 import com.kh.javaray.shipping.review.model.dto.Review;
@@ -30,7 +31,7 @@ public class Shipping {
 	private int attention;
 	private int price;
 	private Port port;
-	private Member member;
+	private MemberDTO member;
 	private List<ShippingOption> options;
 	private List<Image> images;
 	private List<Fishs> fishs;

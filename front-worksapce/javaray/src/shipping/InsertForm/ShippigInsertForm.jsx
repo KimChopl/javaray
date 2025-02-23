@@ -12,8 +12,6 @@ import {
   FishsDiv,
   FishsExDiv,
   ImageBigDiv,
-  ImageCover,
-  Images,
   InputImg,
   Label,
   LocationAndPeple,
@@ -38,19 +36,11 @@ import {
   TitleInput,
   UploadImg,
 } from "../Update/ShippingUpdateCss";
-import lifevest from "../Update/images/lifevest.jpg";
-import aircon from "../Update/images/aircon.png";
-import bait from "../Update/images/bait.png";
-import cctv from "../Update/images/cctv.png";
-import fishingrod from "../Update/images/fishingrod.jpg";
-import food from "../Update/images/food.png";
-import hiter from "../Update/images/hiter.jpg";
-import liferope from "../Update/images/liferope.jpg";
-import mobile from "../Update/images/mobile.jpg";
-import restroom from "../Update/images/restroom.jpeg";
 import { AuthContext } from "../../UseContext/Auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ShippingNewImage } from "../Update/UpdateFormComponent/ShippingImage";
+import optionss from "../Update/options.json"
 
 const ShippingInsertForm = () => {
   const [content, setContent] = useState("");
@@ -67,78 +57,7 @@ const ShippingInsertForm = () => {
   const { auth } = useContext(AuthContext);
   const inputFileRef = useRef(null);
   const navi = useNavigate();
-  const [option, setOption] = useState([
-    {
-      name: "구명조끼",
-      image: lifevest,
-      option: "lifevest",
-      no: "1",
-      isSelect: false,
-    },
-    {
-      name: "에어컨",
-      image: aircon,
-      option: "aircon",
-      no: "2",
-      isSelect: false,
-    },
-    {
-      name: "미끼",
-      image: bait,
-      option: "bait",
-      no: "3",
-      isSelect: false,
-    },
-    {
-      name: "CCTV",
-      image: cctv,
-      option: "bait",
-      no: "4",
-      isSelect: false,
-    },
-    {
-      name: "낚시대",
-      image: fishingrod,
-      option: "fishingrod",
-      no: "5",
-      isSelect: false,
-    },
-    {
-      name: "식사제공",
-      image: food,
-      option: "food",
-      no: "6",
-      isSelect: false,
-    },
-    {
-      name: "난방",
-      image: hiter,
-      option: "hiter",
-      no: "7",
-      isSelect: false,
-    },
-    {
-      name: "구명밧줄",
-      image: liferope,
-      option: "liferope",
-      no: "8",
-      isSelect: false,
-    },
-    {
-      name: "온라인 명부",
-      image: mobile,
-      option: "moblie",
-      no: "9",
-      isSelect: false,
-    },
-    {
-      name: "화장실",
-      image: restroom,
-      option: "restroom",
-      no: "10",
-      isSelect: false,
-    },
-  ]);
+  const [option, setOption] = useState(optionss);
   const titleChange = (e) => {
     setTitle(e.target.value);
   };
@@ -156,14 +75,13 @@ const ShippingInsertForm = () => {
   };
   const uploadImg = (e) => {
     const fileList = Array.from(e.target.files);
-    console.log(fileList);
     setFiles(fileList);
     const url = fileList.map((image) => URL.createObjectURL(image));
     setImageUrl([...imageUrl, ...url]);
   };
   const deleteFish = (e) => {
     const newFish = fish.filter((fish) => {
-      return fish != e;
+      return fish !== e;
     });
     setFish(newFish);
   };
@@ -201,10 +119,6 @@ const ShippingInsertForm = () => {
   };
   const imgDivClick = () => {
     inputFileRef.current.click();
-  };
-  const deleteNewImage = (e) => {
-    setFiles((deleteImg) => deleteImg.filter((_, index) => index !== e));
-    setImageUrl((prevURLs) => prevURLs.filter((_, index) => index !== e));
   };
 
   const priceChange = (e) => {
@@ -278,15 +192,11 @@ const ShippingInsertForm = () => {
           <TitleInput value={title} onChange={titleChange}></TitleInput>
         </TitleDiv>
         <ImageBigDiv>
-          {imageUrl.length > 0 ? (
-            imageUrl.map((url, index) => (
-              <ImageCover key={index} onClick={() => deleteNewImage(index)}>
-                <Images src={url} alt={`preview-${index}`} />
-              </ImageCover>
-            ))
-          ) : (
-            <></>
-          )}
+          <ShippingNewImage
+                      setFiles={setFiles}
+                      setImageUrl={setImageUrl}
+                      imageUrl={imageUrl}
+                    />
           <UploadImg onClick={imgDivClick} />
           <InputImg
             type="file"
@@ -295,7 +205,7 @@ const ShippingInsertForm = () => {
             ref={inputFileRef}
           />
         </ImageBigDiv>
-        <PriceDiv>
+        <PriceDiv> 
           <PriceP>인당 탑승 가격</PriceP>
           <PriceInput type="number" value={price} onChange={priceChange} />
         </PriceDiv>
