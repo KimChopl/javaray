@@ -37,7 +37,6 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 	public CustomUserDetails checkedUser() {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		log.info("{}",auth.getPrincipal());
 		return (CustomUserDetails) auth.getPrincipal();
 	}
 

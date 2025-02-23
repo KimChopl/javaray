@@ -11,6 +11,7 @@ import com.kh.javaray.manager.model.dto.DeleteFormDTO;
 import com.kh.javaray.manager.model.dto.ManagingDTO;
 import com.kh.javaray.manager.model.mapper.ManagerMapper;
 import com.kh.javaray.member.model.dto.Member;
+import com.kh.javaray.member.model.dto.MemberDTO;
 import com.kh.javaray.member.model.mapper.MemberMapper;
 import com.kh.javaray.shipping.shippings.model.dto.Shipping;
 import com.kh.javaray.shipping.shippings.model.mapper.ShippingMapper;
@@ -31,13 +32,13 @@ public class ManagerServiceImpl implements ManagerService {
 
 	@Override
 	public int changeRole(ManagingDTO member) {
-		Member checkedMember = mm.findById(member.getUsername());
+		MemberDTO checkedMember = mm.findById(member.getUsername());
 		chekedMember(member, checkedMember);
 		member.setChangeRole("ROLE_" + member.getChangeRole());
 		return mgm.changeRole(member);
 	}
 
-	private void chekedMember(ManagingDTO member, Member checkedMember) {
+	private void chekedMember(ManagingDTO member, MemberDTO checkedMember) {
 		if (checkedMember == null) {
 			throw new NotFoundUserInfoException("조회된 이용자가 없음.");
 		}

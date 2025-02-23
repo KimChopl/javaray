@@ -74,9 +74,10 @@ const Weather = (props) => {
     setDay([...settingDay]);
   }, []);
   return (
+    
     <WeatherWarp>
-      {day.map((day) => (
-        <Days>
+        {day.map((day, index) => (
+        <Days key={index}>
           <DayDiv>
             <DayP>
               {day.day.substring(0, 2)}월{day.day.substring(2, 4)}일
@@ -85,63 +86,63 @@ const Weather = (props) => {
           <WeatherImgCover>
             {day.prep[1] ? (
               <WeatherImg
-                src={
-                  day.prep[0] === "0"
-                    ? day.sky[0] === "DB01"
-                      ? sun
-                      : day.sky[0] === "DB02"
-                      ? littlecloud
-                      : day.sky[0] === "BD03"
-                      ? alotofcloud
-                      : cloudy
-                    : day.prep[0] === "1"
-                    ? rain
-                    : day.prep[0] === "2" || day.prep[0] === "3"
-                    ? snowandrain
-                    : snow
-                }
-                alt=""
+              src={
+                day.prep[0] === "0"
+                ? day.sky[0] === "DB01"
+                ? sun
+                : day.sky[0] === "DB02"
+                ? littlecloud
+                : day.sky[0] === "BD03"
+                ? alotofcloud
+                : cloudy
+                : day.prep[0] === "1"
+                ? rain
+                : day.prep[0] === "2" || day.prep[0] === "3"
+                ? snowandrain
+                : snow
+              }
+              alt=""
               />
             ) : (
               ""
             )}
             {day.prep[1] ? (
               <WeatherImg
-                src={
-                  day.prep[1] === "0"
-                    ? day.sky[1] === "DB01"
-                      ? sun
-                      : day.sky[1] === "DB02"
-                      ? littlecloud
-                      : day.sky[1] === "BD03"
-                      ? alotofcloud
-                      : cloudy
-                    : day.prep[1] === "1"
-                    ? rain
-                    : day.prep[1] === "2" || day.prep[0] === "3"
-                    ? snowandrain
-                    : snow
-                }
-                alt=""
+              src={
+                day.prep[1] === "0"
+                ? day.sky[1] === "DB01"
+                ? sun
+                : day.sky[1] === "DB02"
+                ? littlecloud
+                : day.sky[1] === "BD03"
+                ? alotofcloud
+                : cloudy
+                : day.prep[1] === "1"
+                ? rain
+                : day.prep[1] === "2" || day.prep[0] === "3"
+                ? snowandrain
+                : snow
+              }
+              alt=""
               />
             ) : (
               <WeatherImg
-                src={
-                  day.prep[0] === "0"
-                    ? day.sky[0] === "DB01"
-                      ? sun
-                      : day.sky[0] === "DB02"
-                      ? littlecloud
-                      : day.sky[0] === "BD03"
-                      ? alotofcloud
-                      : cloudy
-                    : day.prep[0] === "1"
-                    ? rain
-                    : day.prep[0] === "2" || day.prep[0] === "3"
-                    ? snowandrain
-                    : snow
-                }
-                alt=""
+              src={
+                day.prep[0] === "0"
+                ? day.sky[0] === "DB01"
+                ? sun
+                : day.sky[0] === "DB02"
+                ? littlecloud
+                : day.sky[0] === "BD03"
+                ? alotofcloud
+                : cloudy
+                : day.prep[0] === "1"
+                ? rain
+                : day.prep[0] === "2" || day.prep[0] === "3"
+                ? snowandrain
+                : snow
+              }
+              alt=""
               />
             )}
           </WeatherImgCover>
@@ -177,8 +178,9 @@ const Weather = (props) => {
           </WindAndTention>
         </Days>
       ))}
-    </WeatherWarp>
-  );
-};
-
-export default Weather;
+      </WeatherWarp>
+    );
+  };
+  
+  export default Weather;
+  

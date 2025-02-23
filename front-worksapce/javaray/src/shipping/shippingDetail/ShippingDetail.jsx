@@ -64,29 +64,9 @@ const ShippingDetail = () => {
       setService(response.data.shipping.options);
       setFishs(response.data.shipping.fishs);
       setIsLoad(false)
-      
     });
-    if(auth.isAuthenticated){
-      axios
-      .get(`http://localhost/shippings/attention?shippingNo=${shippingNo}`, {
-        headers: {
-          Authorization: `Bearer ${auth.accessToken}`,
-        },
-      })
-      .then((response) => {
-        if (response.data === 1) {
-          setAttention(true);
-        } else {
-          console.log(response);
-          setAttention(false);
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-        setAttention(false);
-      });
-      scrollUp();
-    }
+    
+    scrollUp();
   }, [auth]);
 
   
@@ -224,7 +204,7 @@ const ShippingDetail = () => {
           </DetailBase>
           <WeatherCover>
             <ShowService option={settingOption}/>
-            <Weather weather={shipping.weather} />
+            {shipping.weather && <Weather weather={shipping.weather} />}
           </WeatherCover>
           <ShippingContent
             id="contentSection"

@@ -32,7 +32,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void insertMember(MemberDTO member) {
-		Member isMember = mm.findById(member.getUsername());
+		MemberDTO isMember = mm.findById(member.getUsername()); // DTO
 		if (isMember != null) {
 			throw new AlreadyUseingUsernameException("이미 존재하는 사용자 입니다.");
 		}
@@ -45,7 +45,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public LoginResponse login(LoginForm requestMember) {
 		Map<String, String> token = as.login(requestMember);
-		Member member = mm.findById(requestMember.getUsername());
+		MemberDTO member = mm.findById(requestMember.getUsername()); //DTO
 		LoginResponse user = LoginResponse.builder().username(member.getUsername()).role(cutRole(member.getRole()))
 				.tokens(token).nickname(member.getNickname()).userNo(member.getUserNo()).build();
 		return user;
@@ -90,7 +90,6 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void deleteMember(LoginForm userPwd) {
 		CustomUserDetails user = as.checkedUser();
-		log.info("{}", user);
 		if (!pwe.matches(userPwd.getUserPwd(), user.getPassword())) {
 			throw new NotMatchUserInfoException("비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
 		}

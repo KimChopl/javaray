@@ -62,6 +62,7 @@ public class ShippingServiceImpl implements ShippingService {
 	}
 
 	private Shipping checkedShipping(String shippingNo) {
+		log.info(shippingNo);
 		Shipping shipping = sm.selectShippingDetail(shippingNo);
 		if (shipping == null) {
 			throw new NotMatchBoardInfoException("조회된 항목이 없습니다.");

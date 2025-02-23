@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { CircleCover, CircleDiv, PositionDiv } from "./ShippingSmallMenuCss";
 import ShippingReport from "./shippingReport/ShippingReport";
 import { AuthContext } from "../../../UseContext/Auth/AuthContext";
@@ -16,7 +16,6 @@ const TripleCircleDiv = () => {
 
 const ShippingSmallMenu = (props) => {
   const [displayDiv, setDisplayDiv] = useState(false);
-  const [count, setCount] = useState(0);
   const data = props.data;
   const [user, setUser] = useState();
   const {auth} = useContext(AuthContext);
