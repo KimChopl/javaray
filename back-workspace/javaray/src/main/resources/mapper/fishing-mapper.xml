@@ -40,76 +40,52 @@
 	</insert>
 	
 	<insert id="saveFish">
-	 INSERT 
-	 INTO 
-	 		TB_REGISTERED_FISH 
-	 		(
-			FISHING_NO,
-			FISH_NO
-			)
-    VALUES
-		    <foreach collection="fishList" item="fish" separator=",">
-		        (
-				#{fishingNo}, 
-		        #{fish.fishNo}
-		        )
-		    </foreach>
-	</insert>
-	
-	<insert id="saveAmenities">
-	  INSERT
-	  INTO
-	  		TB_REGISTERED_AMENITIES
-	  		(
-			FISHING_NO,
-			AMENITIES_NO
-			)
-	  VALUES
-	  		<foreach collection="amenitiesList" item="amenities" separator=",">
-	  			(
-				#{fishingNo},
-				#{amenities.amenitiesNo}
-				)
-	  		</foreach>
-	</insert>
-	
-	<insert id="saveDay">
-		INSERT
-		INTO
-				TB_FISHING_DAY
-				(
-					FISHING_NO,
-					DAY_NO
-				)
-		VALUES
-				<foreach collection="dayList" item="day" separator=",">
-				(
-				#{fishingNo},
-				#{day.dayNo}
-				)
-				</foreach>
+	    INSERT INTO TB_REGISTERED_FISH (FISHING_NO, FISH_NO)
+	    <foreach collection="fishList" item="fish" separator=" UNION ALL ">
+	        SELECT #{fish.fishingNo}, #{fish.fishNo} FROM DUAL
+	    </foreach>
 	</insert>
 
 	
+	<insert id="saveAmenities" parameterType="AmenitiesDTO">
+		INSERT  
+		  INTO
+		  		TB_REGISTERED_AMENITIES
+		  		(
+				FISHING_NO,
+				AMENITIES_NO
+				)
+		<foreach collection="amenitiesList" item="amenities" separator=" UNION ALL ">
+		SELECT
+	  			
+				#{amenities.fishingNo},
+				#{amenities.amenitiesNo}
+		  FROM
+		  	   DUAL
+  		</foreach>
+	</insert>
+		
 	
 	<select id="findAll" resultType="com.kh.javaray.fishing.fishing.model.dto.FishingDTO">
 			SELECT 
-					FISHING_NO fishingNo,
-					FISHING_WRITER fishingWriter,
-					FISHING_NAME fishingName,
-					PHONE phone,
-					ADDRESS address,
-					START_TIME startTime,
-					END_TIME endTime,
-					INTRODUCE introduce,
-					STATUS status
+					F.FISHING_NO fishingNo,
+					M.NICKNAME fishingWriter,
+					F.FISHING_NAME fishingName,
+					F.PHONE phone,
+					F.ADDRESS address,
+					F.START_TIME startTime,
+					F.END_TIME endTime,
+					F.INTRODUCE introduce,
+					F.STATUS status
 			FROM 
-					TB_FISHING 
+					TB_FISHING F
+			JOIN
+				    TB_MEMBER M ON (F.FISHING_WRITER = M.USER_NO)
 			WHERE
-					STATUS = 'Y'
+					F.STATUS = 'Y'
 			ORDER 
 			BY 
-					FISHING_NO DESC
+					F.FISHING_NO DESC
 	</select>
 	
 	
@@ -146,21 +122,24 @@
 	
 	<select id="findByFishingNo" resultType="com.kh.javaray.fishing.fishing.model.dto.FishingDTO">
 	 SELECT 
-		        FISHING_NO fishingNo,
-		        FISHING_WRITER fishingWriter,
-		        FISHING_NAME fishingName,
-		        PHONE phone,
-		        ADDRESS address,
-		        START_TIME startTime,
-		        END_TIME endTime,
-		        INTRODUCE introduce,
-		        LATITUDE lat,
-		        LONGITUDE lng,
-		        STATUS status
+		        F.FISHING_NO fishingNo,
+		        M.NICKNAME fishingWriter,
+		        F.FISHING_NAME fishingName,
+		        F.PHONE phone,
+		        F.ADDRESS address,
+		        F.START_TIME startTime,
+		        F.END_TIME endTime,
+		        F.INTRODUCE introduce,
+		        F.LATITUDE lat,
+		        F.LONGITUDE lng,
+		        F.STATUS status,
+		        F.FISHING_FILE_URL fishingFileUrl
   	  FROM 
-      		    TB_FISHING 
+      		    TB_FISHING F
+      JOIN
+      			TB_MEMBER M ON (F.FISHING_WRITER = M.USER_NO)
       WHERE 
-      			STATUS = 'Y'
+      			F.STATUS = 'Y'
       		    
         AND 
        		    FISHING_NO = #{fishingNo}

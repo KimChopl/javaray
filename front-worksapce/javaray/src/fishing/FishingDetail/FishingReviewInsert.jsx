@@ -72,7 +72,6 @@ const FishingReviewInsert = () => {
     formData.append("nickname", auth.nickname);
     formData.append("fishingDate", fishingDate);
     formData.append("fishingNo", fishingsDetail.fishingNo);
-    formData.append("userId", auth.userId);
     formData.append("userNo", auth.userNo);
 
     if (file) {

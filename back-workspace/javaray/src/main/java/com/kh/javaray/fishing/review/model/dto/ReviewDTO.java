@@ -19,7 +19,6 @@ public class ReviewDTO {
 	
 	private Long reviewNo;
 	private Long userNo;
-	private String userId;
 	private String nickname;
 	private Long fishingNo;
 	private String fishingName;
