@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.kh.javaray.exception.exceptions.NotFoundUserInfoException;
 import com.kh.javaray.member.model.dto.CustomUserDetails;
 import com.kh.javaray.member.model.dto.Member;
+import com.kh.javaray.member.model.dto.MemberDTO;
 import com.kh.javaray.member.model.mapper.MemberMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class UserServiceImpl implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Member member = mm.findById(username);
+		MemberDTO member = mm.findById(username);
 		if(member == null) {
 			throw new NotFoundUserInfoException("아이디 또는 비밀번호가 일치하지 않습니다.");
 		}

@@ -10,9 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
-@Setter
 @Getter
 @ToString
 public class LoginResponse {

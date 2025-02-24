@@ -1,9 +1,73 @@
+
 [
   {
     "name": "구명조끼",
-    "image": "lifevest",
+    "image": "http://localhost/uploads/images/lifevest.jpg",
     "option": "lifevest",
     "no": "1",
+    "isSelect": false
+  },
+  {
+    "name": "에어컨",
+    "image": "http://localhost/uploads/images/aircon.png",
+    "option": "aircon",
+    "no": "2",
+    "isSelect": false
+  },
+  {
+    "name": "미끼",
+    "image": "http://localhost/uploads/images/bait.png",
+    "option": "bait",
+    "no": "3",
+    "isSelect": false
+  },
+  {
+    "name": "CCTV",
+    "image": "http://localhost/uploads/images/cctv.png",
+    "option": "bait",
+    "no": "4",
+    "isSelect": false
+  },
+  {
+    "name": "낚시대",
+    "image": "http://localhost/uploads/images/fishingrod.jpg",
+    "option": "fishingrod",
+    "no": "5",
+    "isSelect": false
+  },
+  {
+    "name": "식사제공",
+    "image": "http://localhost/uploads/images/food.png",
+    "option": "food",
+    "no": "6",
+    "isSelect": false
+  },
+  {
+    "name": "난방",
+    "image": "http://localhost/uploads/images/hiter.jpg",
+    "option": "hiter",
+    "no": "7",
+    "isSelect": false
+  },
+  {
+    "name": "구명밧줄",
+    "image": "http://localhost/uploads/images/liferope.jpg",
+    "option": "liferope",
+    "no": "8",
+    "isSelect": false
+  },
+  {
+    "name": "온라인 명부",
+    "image": "http://localhost/uploads/images/mobile.jpg",
+    "option": "moblie",
+    "no": "9",
+    "isSelect": false
+  },
+  {
+    "name": "화장실",
+    "image": "http://localhost/uploads/images/restroom.jpeg",
+    "option": "restroom",
+    "no": "10",
     "isSelect": false
   }
 ]

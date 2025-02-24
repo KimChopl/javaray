@@ -35,54 +35,53 @@
 	</resultMap>
 	
 	<select id="selectBoardList" resultMap="fundingBoard">
-SELECT
-			   TB_FUNDING_BOARD.BOARD_NO AS BOARD_NO,
-			   USER_NO,
-			   CATEGORY_NAME,
-			   TITLE,
-			   CONTENT,
-			   START_DATE,
-			   END_DATE,
-			   STATUS,
-			   PURPOSE_AMOUNT,
-			   OPTION_NO,
-			   OPTION_TYPE,
-			   OPTION_TITLE,
-			   OPTION_EXPLAIN,
-			   OPTION_PRICE,
-			   TOTAL_COUNT,
-			   FILE_LEVEL,
-			   FILE_URL,
-			   (SELECT 
-					   SUM(OPTION_COUNT * OPTION_PRICE)
-				  FROM 
-				  	   TB_PURCHASE_INFO
-				  JOIN
-				  	   TB_PRODUCT_OPTION USING (OPTION_NO)
-				 WHERE 
-				 	   OPTION_NO IN (SELECT
-										   OPTION_NO
-									  FROM
-									  	   TB_PRODUCT_OPTION
-									 WHERE
-									 	   BOARD_NO = TB_FUNDING_BOARD.BOARD_NO)) / PURPOSE_AMOUNT * 100 AS CURRENTSALEPERCENT
+		SELECT
+		       TB_FUNDING_BOARD.BOARD_NO AS BOARD_NO,
+		       USER_NO,
+		       CATEGORY_NAME,
+		       TITLE,
+		       CONTENT,
+		       START_DATE,
+		       END_DATE,
+		       STATUS,
+		       PURPOSE_AMOUNT,
+		       OPTION_NO,
+		       OPTION_TYPE,
+		       OPTION_TITLE,
+		       OPTION_EXPLAIN,
+		       OPTION_PRICE,
+		       TOTAL_COUNT,
+		       FILE_LEVEL,
+		       FILE_URL,
+		       NVL((
+		           SELECT 
+		               SUM(TB_PURCHASE_INFO.OPTION_COUNT * TB_PRODUCT_OPTION.OPTION_PRICE)
+		           FROM 
+		               TB_PURCHASE_INFO
+		           JOIN
+		               TB_PRODUCT_OPTION ON TB_PURCHASE_INFO.OPTION_NO = TB_PRODUCT_OPTION.OPTION_NO
+		           WHERE 
+		               TB_PRODUCT_OPTION.BOARD_NO = TB_FUNDING_BOARD.BOARD_NO
+		       ), 0) / PURPOSE_AMOUNT * 100 AS CURRENTSALEPERCENT
 		  FROM
-		  	   TB_PRODUCT_OPTION
+		       TB_PRODUCT_OPTION
 		  JOIN
-		  	   TB_FUNDING_FILE ON (TB_PRODUCT_OPTION.BOARD_NO = TB_FUNDING_FILE.REF_BNO)
+		       TB_FUNDING_FILE ON (TB_PRODUCT_OPTION.BOARD_NO = TB_FUNDING_FILE.REF_BNO)
 		  JOIN
-		  	   TB_FUNDING_BOARD ON (TB_FUNDING_BOARD.BOARD_NO = TB_FUNDING_FILE.REF_BNO)
+		       TB_FUNDING_BOARD ON (TB_FUNDING_BOARD.BOARD_NO = TB_FUNDING_FILE.REF_BNO)
 		  JOIN
-		  	   TB_FUNDING_CATEGORY USING (CATEGORY_NO)
+		       TB_FUNDING_CATEGORY USING (CATEGORY_NO)
 		 WHERE
-		 	   STATUS = 'N'
+		       STATUS = 'N'
 		   AND
-		   	   TB_PRODUCT_OPTION.OPTION_NO = 1
+		       TB_PRODUCT_OPTION.OPTION_NO = 1
 		   AND
-		   	   (#{categoryNo} = 1 OR CATEGORY_NO = #{categoryNo})
-		 ORDER
-		    BY
+		       (#{categoryNo} = 1 OR CATEGORY_NO = #{categoryNo})
+		   AND
+   	  		   TB_FUNDING_FILE.FILE_LEVEL = 1
+		 ORDER BY
 		       START_DATE
+
 	</select>
 	
 	<select id="selectCompanyName">

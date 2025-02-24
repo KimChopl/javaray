@@ -14,8 +14,6 @@ import {
   PriceDiv,
   AllowNumberDiv,
   ContentLabel,
-  FishTable,
-  Td,
   BookBtn,
   OtherInfo,
   BookBtnCover,
@@ -29,19 +27,25 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Weather from "./Weather/Wrather";
 import { AuthContext } from "../../UseContext/Auth/AuthContext";
+import {ShowService} from "../Update/UpdateFormComponent/OptionCheckbox";
+import options from "../Update/options.json"
+import DetailFish from "./DetailComponent/Fish/DetailFish";
 
 const ShippingDetail = () => {
   const [flag, isFlag] = useState(false);
   const [attention, setAttention] = useState(false);
-  const { shippingNo } = useParams();
   const [shipping, setShipping] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [fishNo, setFishNo] = useState("");
   const [isAuth, setIsAuth] = useState(undefined);
-  const { auth } = useContext(AuthContext);
   const [attCount, setAttCount] = useState(null);
   const [image, setImage] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [fishs, setFishs] = useState([]);
+  const { shippingNo } = useParams();
+  const { auth } = useContext(AuthContext);
+  const [option, setOption] = useState(options);
+  const [service, setService] = useState([]);
+  const [isLoad, setIsLoad] = useState(true);
   const navi = useNavigate();
   const scrollUp = () => {
     window.scroll({ top: 0 });
@@ -51,35 +55,21 @@ const ShippingDetail = () => {
   };
   useEffect(() => {
     axios
-      .get(`http://localhost/shippings/detail?shippingNo=${shippingNo}`)
-      .then((response) => {
-        console.log(response);
-        setShipping(response.data);
-        setAttCount(response.data.shipping.attention);
-        setImage(response.data.shipping.images);
-        setLoading(false);
-      });
-    setIsAuth(auth.isAuthenticated);
-    axios
-      .get(`http://localhost/shippings/attention?shippingNo=${shippingNo}`, {
-        headers: {
-          Authorization: `Bearer ${auth.accessToken}`,
-        },
-      })
-      .then((response) => {
-        if (response.data === 1) {
-          console.log("??");
-          setAttention(true);
-        } else {
-          console.log(response);
-          setAttention(false);
-        }
-      })
-      .catch((error) => {
-        setAttention(false);
-      });
+    .get(`http://localhost/shippings/detail?shippingNo=${shippingNo}`)
+    .then((response) => {
+      console.log(response);
+      setShipping(response.data);
+      setAttCount(response.data.shipping.attention);
+      setImage(response.data.shipping.images);
+      setService(response.data.shipping.options);
+      setFishs(response.data.shipping.fishs);
+      setIsLoad(false)
+    });
+    
     scrollUp();
   }, [auth]);
+
+  
 
   const changeAttention = () => {
     setIsAuth(auth.isAuthenticated);
@@ -95,7 +85,6 @@ const ShippingDetail = () => {
             }
           )
           .then((response) => {
-            console.log(response);
             setAttCount(attCount - 1);
             setAttention(false);
           })
@@ -110,7 +99,6 @@ const ShippingDetail = () => {
             { headers: { Authorization: `Bearer ${auth.accessToken}` } }
           )
           .then((response) => {
-            console.log(response);
             setAttCount(attCount + 1);
             setAttention(true);
           })
@@ -122,7 +110,11 @@ const ShippingDetail = () => {
       alert("로그인 후 이용 가능합니다.");
     }
   };
-  const clickModal = (e) => {
+  const clickModal = (e, fishNo) => {
+    console.log(fishNo)
+    if(fishNo){
+      setFishNo(fishNo);
+    }
     isFlag(e);
   };
   const closeModal = (e) => {
@@ -133,12 +125,12 @@ const ShippingDetail = () => {
     document.getElementById(e).scrollIntoView({ behavior: "smooth" });
   };
 
-  const fishsNo = (e) => {
-    setFishNo(e);
-  };
-
-  if (loading) {
-    return <Load />;
+  
+  const settingOption = option.filter(options => service.some(services => options.no === services.serviceNo))
+  if(isLoad){
+    return(
+      <Load />
+    )
   }
 
   return (
@@ -178,30 +170,7 @@ const ShippingDetail = () => {
                 </AllowNumberDiv>
               </BaseBar>
               <BaseBar>
-                <FishTable>
-                  <thead>
-                    <tr>
-                      <th colSpan={shipping.shipping.fishs.length}>
-                        낚시 가능 어종
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      {shipping.shipping.fishs.map((fish) => (
-                        <Td
-                          key={fish.fishNo}
-                          onClick={() => {
-                            clickModal(true);
-                            fishsNo(fish.fishNo);
-                          }}
-                        >
-                          {fish.fishName}
-                        </Td>
-                      ))}
-                    </tr>
-                  </tbody>
-                </FishTable>
+                <DetailFish clickModal={clickModal} fishs={fishs}/>
               </BaseBar>
               <BaseBar>
                 <BookBtnCover>
@@ -234,7 +203,8 @@ const ShippingDetail = () => {
             </BaseCover>
           </DetailBase>
           <WeatherCover>
-            {/*<Weather weather={shipping.weather} />*/}
+            <ShowService option={settingOption}/>
+            {shipping.weather && <Weather weather={shipping.weather} />}
           </WeatherCover>
           <ShippingContent
             id="contentSection"

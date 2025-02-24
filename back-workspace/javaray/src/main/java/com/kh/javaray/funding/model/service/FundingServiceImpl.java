@@ -32,7 +32,6 @@ public class FundingServiceImpl implements FundingService {
 
 		CustomUserDetails user = authService.checkedUser();
 		String role = user.getAuthorities().iterator().next().getAuthority();
-		log.info("{}", role);
 		int size = 6;
 		RowBounds rowBounds = new RowBounds(page * size, size);
 
@@ -57,7 +56,7 @@ public class FundingServiceImpl implements FundingService {
 					}
 				}
 			}
-			log.info("{}", list);
+			log.info("나야나 {}", list);
 			return list;
 		} else {
 			FundingBoardDTO emptyBoardDTO = new FundingBoardDTO();

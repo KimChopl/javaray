@@ -1,5 +1,11 @@
 import styled from "styled-components";
 
+export const ListCover = styled.div`
+  width : 1200px;
+  height : auto;
+  min-hieght : 400px
+`
+
 export const StyledShipWarp = styled.div`
   width: 1200px;
   height: auto;

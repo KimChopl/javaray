@@ -13,7 +13,7 @@ import jakarta.validation.Valid;
 @Mapper
 public interface MemberMapper {
 
-	Member findById(String username);
+	MemberDTO findById(String username);
 
 	void insertMember(Member member);
 

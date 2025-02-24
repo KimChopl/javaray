@@ -1,11 +1,15 @@
-import { useState } from "react";
+import {  useState } from "react";
 import Modal from "../../../../Modal/Modal";
 import { Report } from "./ShippingReportCss";
 const ShippingReport = (props) => {
   const [flag, isFlag] = useState(false);
   const [kind, setKind] = useState("");
+  const data = props.data;
   const user = props.user;
-
+  const setData = (e) => {
+    props.setData(e)
+  }
+  
   const clickModal = (boolean, kind) => {
     console.log(boolean);
     isFlag(boolean);
@@ -21,13 +25,13 @@ const ShippingReport = (props) => {
   return (
     <>
       <Report>
-        {user.role === "ROLE_ADMIN" ? (
+        {user && user.role === "ROLE_ADMIN" ? (
           <div>
-            <label onClick={() => clickModal(true, "2")}>삭제하기</label>
+            <label onClick={() => clickModal(true, "deleteManager")}>삭제하기</label>
           </div>
         ) : (
           <div>
-            <label onClick={() => clickModal(true, "1")}>신고하기</label>
+            <label onClick={() => clickModal(true, "ReportUser")}>신고하기</label>
           </div>
         )}
       </Report>
@@ -37,6 +41,8 @@ const ShippingReport = (props) => {
           kind={kind}
           shippingNo={props.shippingNo}
           clickModal={closeModal}
+          data={data}
+          setData={setData}
         />
       )}
     </>

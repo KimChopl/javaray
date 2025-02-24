@@ -62,6 +62,7 @@ public class ShippingServiceImpl implements ShippingService {
 	}
 
 	private Shipping checkedShipping(String shippingNo) {
+		log.info(shippingNo);
 		Shipping shipping = sm.selectShippingDetail(shippingNo);
 		if (shipping == null) {
 			throw new NotMatchBoardInfoException("조회된 항목이 없습니다.");
@@ -73,10 +74,10 @@ public class ShippingServiceImpl implements ShippingService {
 	@Transactional
 	public Map<String, Object> selectShippingDetail(String shippingNo) {
 		Shipping shipping = checkedShipping(shippingNo);
-		//List<Weather> weather = oda.weatherApi(shipping.getPort().getSpotCode());
+		List<Weather> weather = oda.weatherApi(shipping.getPort().getSpotCode());
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("shipping", shipping);
-		//response.put("weather", weather);
+		response.put("weather", weather);
 		return response;
 	}
 
@@ -102,7 +103,6 @@ public class ShippingServiceImpl implements ShippingService {
 	}
 
 	private void matchShippingInfo(String shippingNo) {
-		log.info(shippingNo);
 		Shipping shipping = sm.selectShippingDetail(shippingNo);
 		if (shipping == null) {
 			throw new NotFoundInfoException("잘못된 접근입니다. 다시 시도해주세요.");
@@ -185,7 +185,6 @@ public class ShippingServiceImpl implements ShippingService {
 			String stringImage) {
 		Map<String, Object> map = addShipping(files, shipping, fishs, option, port, stringImage);
 		UpdateFormDTO uploadShipping = (UpdateFormDTO) map.get("upload");
-		log.info("{}", uploadShipping);
 		sm.updateShipping(uploadShipping);
 		updateValues(map, String.valueOf(map.get("shippingNo")), files);
 		// 너무 많음
@@ -220,9 +219,7 @@ public class ShippingServiceImpl implements ShippingService {
 			String port) {
 		Map<String, Object> map = addUserNo(files, shipping, fishs, option, port);
 		UpdateFormDTO uploadShipping = (UpdateFormDTO) map.get("uploadShipping");
-		log.info("{}", uploadShipping.getShippingNo());
 		sm.insertShipping(uploadShipping);
-		log.info("{}", uploadShipping.getShippingNo());
 		String shippingNo = ((UpdateFormDTO) (map.get("uploadShipping"))).getShippingNo();
 		updateValues(map, shippingNo, null);
 	}

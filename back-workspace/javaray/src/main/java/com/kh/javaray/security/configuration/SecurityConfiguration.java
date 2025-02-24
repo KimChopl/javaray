@@ -1,4 +1,4 @@
-package com.kh.javaray.security.configuration;
+ package com.kh.javaray.security.configuration;
 
 import java.util.Arrays;
 
@@ -49,17 +49,28 @@ public class SecurityConfiguration {
 		return httpSecurity.formLogin(AbstractHttpConfigurer::disable).httpBasic(AbstractHttpConfigurer::disable)
 				.csrf(AbstractHttpConfigurer::disable).cors(Customizer.withDefaults())
 				.authorizeHttpRequests(requests -> {
-				 	requests.requestMatchers("/members", "/members/login", "/uploads/**", "/businessNo", "/funding").permitAll();
+					requests.requestMatchers("/members", "/members/login", "/uploads/**", "/businessNo", "/funding")
+							.permitAll();
 					requests.requestMatchers(HttpMethod.PUT, "/members/update/**", "/shippings").authenticated();
 					requests.requestMatchers(HttpMethod.DELETE, "/members", "/shippings/attention").authenticated();
-					requests.requestMatchers(HttpMethod.POST, "/members/refresh", "/businessNo/**", "/businessNoInsert/**", "/shippings/attention", "/goods/**", "/shippings").authenticated();
-					requests.requestMatchers(HttpMethod.GET, "/shippings/**", "/shippings/detail/**", "/funding/selectList/**", "/funding/selectCategory", "uploads/**", "/uploads/shipping/**").permitAll();
+					requests.requestMatchers(HttpMethod.POST, "/members/refresh", "/businessNo/**",
+							"/businessNoInsert/**", "/shippings/attention", "/goods/**", "/shippings").authenticated();
+					requests.requestMatchers(HttpMethod.GET, "/shippings/**", "/shippings/detail/**",
+							"/funding/selectList/**", "/funding/selectCategory", "uploads/**", "/uploads/images/**")
+							.permitAll();
 					requests.requestMatchers("/manager/**").hasRole("ADMIN");
-					requests.requestMatchers(HttpMethod.GET, "/fishing", "/fishing/detail/**","/fishing/review").permitAll();
-					requests.requestMatchers(HttpMethod.POST, "/fishing/review/insert", "/fishing/insert", "/fishing/insertList").authenticated();
-					requests.requestMatchers(HttpMethod.GET, "/members/users").authenticated();
+<
+					
+
+					requests.requestMatchers(HttpMethod.GET, "/fishing", "/fishing/detail/**", "/fishing/review")
+							.permitAll();
+					requests.requestMatchers(HttpMethod.POST, "/fishing/review/insert", "/fishing/insert","/fishing/insertList")
+							.authenticated();
+					requests.requestMatchers(HttpMethod.GET, "/members/users", "/shippings/attention").authenticated();
+
 				})
-				.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.sessionManagement(
+						sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).build();
 	}
 
@@ -73,6 +84,5 @@ public class SecurityConfiguration {
 			throws Exception {
 		return authenticationConfiguration.getAuthenticationManager();
 	}
-	
-	
+
 }

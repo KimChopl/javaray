@@ -264,6 +264,14 @@ export const Label = styled.label`
   margin: 2px;
 `;
 
+export const CheckedLabel = styled.label`
+  border: 1px solid black;
+    margin: 1px;
+    width: 72px;
+    height: 47px;
+  
+`;
+
 export const ContentDiv = styled.div`
   width: 100%;
   min-height: 400px;
