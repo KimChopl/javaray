@@ -27,8 +27,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Weather from "./Weather/Wrather";
 import { AuthContext } from "../../UseContext/Auth/AuthContext";
-import {ShowService} from "../Update/UpdateFormComponent/OptionCheckbox";
-import options from "../Update/options.json"
+import { ShowService } from "../Update/UpdateFormComponent/OptionCheckbox";
+import options from "../Update/options.json";
 import DetailFish from "./DetailComponent/Fish/DetailFish";
 
 const ShippingDetail = () => {
@@ -55,21 +55,18 @@ const ShippingDetail = () => {
   };
   useEffect(() => {
     axios
-    .get(`http://localhost/shippings/detail?shippingNo=${shippingNo}`)
-    .then((response) => {
-      console.log(response);
-      setShipping(response.data);
-      setAttCount(response.data.shipping.attention);
-      setImage(response.data.shipping.images);
-      setService(response.data.shipping.options);
-      setFishs(response.data.shipping.fishs);
-      setIsLoad(false)
-    });
-    
+      .get(`http://localhost/shippings/detail?shippingNo=${shippingNo}`)
+      .then((response) => {
+        setShipping(response.data);
+        setAttCount(response.data.shipping.attention);
+        setImage(response.data.shipping.images);
+        setService(response.data.shipping.options);
+        setFishs(response.data.shipping.fishs);
+        setIsLoad(false);
+      });
+
     scrollUp();
   }, [auth]);
-
-  
 
   const changeAttention = () => {
     setIsAuth(auth.isAuthenticated);
@@ -98,7 +95,7 @@ const ShippingDetail = () => {
             null,
             { headers: { Authorization: `Bearer ${auth.accessToken}` } }
           )
-          .then((response) => {
+          .then(() => {
             setAttCount(attCount + 1);
             setAttention(true);
           })
@@ -111,8 +108,7 @@ const ShippingDetail = () => {
     }
   };
   const clickModal = (e, fishNo) => {
-    console.log(fishNo)
-    if(fishNo){
+    if (fishNo) {
       setFishNo(fishNo);
     }
     isFlag(e);
@@ -125,12 +121,11 @@ const ShippingDetail = () => {
     document.getElementById(e).scrollIntoView({ behavior: "smooth" });
   };
 
-  
-  const settingOption = option.filter(options => service.some(services => options.no === services.serviceNo))
-  if(isLoad){
-    return(
-      <Load />
-    )
+  const settingOption = option.filter((options) =>
+    service.some((services) => options.no === services.serviceNo)
+  );
+  if (isLoad) {
+    return <Load />;
   }
 
   return (
@@ -170,7 +165,7 @@ const ShippingDetail = () => {
                 </AllowNumberDiv>
               </BaseBar>
               <BaseBar>
-                <DetailFish clickModal={clickModal} fishs={fishs}/>
+                <DetailFish clickModal={clickModal} fishs={fishs} />
               </BaseBar>
               <BaseBar>
                 <BookBtnCover>
@@ -203,8 +198,10 @@ const ShippingDetail = () => {
             </BaseCover>
           </DetailBase>
           <WeatherCover>
-            <ShowService option={settingOption}/>
-            {shipping.weather && <Weather weather={shipping.weather} />}
+            <ShowService option={settingOption} />
+            {shipping.weather.length !== 0 && (
+              <Weather weather={shipping.weather} />
+            )}
           </WeatherCover>
           <ShippingContent
             id="contentSection"

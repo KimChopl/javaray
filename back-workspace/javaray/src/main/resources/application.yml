@@ -16,6 +16,8 @@ spring:
       enabled: true
       max-file-size: 60MB
       max-request-size: 65MB
+  profiles:
+    include: private
 
 server:
   port: 80

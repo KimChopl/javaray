@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.javaray.api.OpenDataApi;
 import com.kh.javaray.auth.service.AuthenticationService;
 import com.kh.javaray.exception.exceptions.NotFoundInfoException;
@@ -16,6 +18,7 @@ import com.kh.javaray.exception.exceptions.NotMatchBoardInfoException;
 import com.kh.javaray.exception.exceptions.NotMatchUserInfoException;
 import com.kh.javaray.member.model.dto.CustomUserDetails;
 import com.kh.javaray.exception.exceptions.FailInsertObjectException;
+import com.kh.javaray.exception.exceptions.FailUpdateException;
 import com.kh.javaray.exception.exceptions.NotFoundUserInfoException;
 import com.kh.javaray.shipping.dto.Image;
 import com.kh.javaray.shipping.dto.Weather;
@@ -42,8 +45,6 @@ public class ShippingServiceImpl implements ShippingService {
 	private final OpenDataApi oda;
 	private final AuthenticationService as;
 	private final XssService xs;
-	private final ImageMapper im;
-	private final ParseObject po;
 	private final ImageService is;
 	private final FishService fs;
 	private final OptionService os;
@@ -122,106 +123,68 @@ public class ShippingServiceImpl implements ShippingService {
 		return images;
 	}
 
-	private Map<String, Object> parse(MultipartFile[] files, UpdateFormDTO shipping, String fishs, String option,
-			String port, String stringImage) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		String shippingNo = shipping.getShippingNo();
-		if(shippingNo != null) {
-			matchShippingInfo(shippingNo);
-		}
-		List<Image> imageList = null;
-		List<Image> uploadImage = null;
-		if (stringImage != null) {
-			imageList = po.parseImage(stringImage);
-		} else {
-			uploadImage = is.checkedImageMain(files, shippingNo);
-		}
-		List<Fishs> fish = po.parseFish(fishs);
-		List<ShippingOption> options = po.parseOption(option);
-		Port parsePort = po.parsePort(port);
-		map.put("uploadImage", uploadImage);
-		map.put("fish", fish);
-		map.put("options", options);
-		map.put("parsePort", parsePort);
-		map.put("imageList", imageList);
-		map.put("parseShippingNo", shippingNo);
-		return map;
-	}
 
-	private UpdateFormDTO settingXss(UpdateFormDTO shipping, Port parsePort) {
+
+	private UpdateFormDTO settingXss(UpdateFormDTO shipping) {
 		shipping.setShippingContent(xs.changeInsertForm(xs.makingXss(shipping.getShippingContent())));
 		shipping.setShippingTitle(xs.makingXss(shipping.getShippingTitle()));
-		shipping.setPort(parsePort);
 		return shipping;
 	}
 
-	private void updateValues(Map<String, Object> map, String shippingNo, MultipartFile[] files) {
-		List<Image> uploadImage = (List<Image>) map.get("uploadImage");
-		List<ShippingOption> uploadUption = (List<ShippingOption>) map.get("options");
-		List<Fishs> uploadFish = (List<Fishs>) map.get("fish");
+	private void updateValues(UpdateFormDTO shipping) {
+		String shippingNo = shipping.getShippingNo();
+		List<ShippingOption> uploadUption = shipping.getOptions();
+		List<Fishs> uploadFish = shipping.getFishs();
 		os.uploadOption(os.settingOptionsShippingNo(uploadUption, shippingNo));
 		fs.uploadFish(fs.settingFishsShippingNo(uploadFish, shippingNo));
-		if(uploadImage == null) {
-			uploadImage = is.checkedImageMain((List<Image>)map.get("imageList"), files, shippingNo);
-		}
-		insertImage(settingImageShippingNo(uploadImage, shippingNo));
 	}
 
-	private Map<String, Object> addShipping(MultipartFile[] files, UpdateFormDTO shipping, String fishs, String option,
-			String port, String stringImage) {
+	private UpdateFormDTO addShipping(UpdateFormDTO shipping) {
 		String shippingNo = shipping.getShippingNo();
 		matchShippingInfo(shippingNo);
-		Map<String, Object> map = parse(files, shipping, fishs, option, port, stringImage);
-		Port uploadPort = (Port) map.get("parsePort");
-		UpdateFormDTO uploadShipping = settingXss(shipping, uploadPort);
-		map.put("upload", uploadShipping);
-		map.put("shippingNo", shippingNo);
-		return map;
+		UpdateFormDTO uploadShipping = settingXss(shipping);
+		return uploadShipping;
 	}
 
-	@Override
-	@Transactional
-	public void updateShipping(MultipartFile[] files, UpdateFormDTO shipping, String fishs, String option, String port,
-			String stringImage) {
-		Map<String, Object> map = addShipping(files, shipping, fishs, option, port, stringImage);
-		UpdateFormDTO uploadShipping = (UpdateFormDTO) map.get("upload");
-		sm.updateShipping(uploadShipping);
-		updateValues(map, String.valueOf(map.get("shippingNo")), files);
-		// 너무 많음
-	}
-
-	private void insertImage(List<Image> images) {
-		if (images != null) {
-			int result = 1;
-			for (Image image : images) {
-				result = im.insertImage(image);
-				if (result == 0) {
-					throw new FailInsertObjectException("업데이트에 실패했습니다. 다시 시도해주세요.");
-				}
-			}
+	private UpdateFormDTO parsedShipping(String shippingString) {
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			UpdateFormDTO shipping = objectMapper.readValue(shippingString, UpdateFormDTO.class);
+			return shipping;
+		} catch (JsonProcessingException e) {
+			throw new FailUpdateException("업데이트에 실패하였습니다.");
 		}
-
+	}
+	
+	@Override
+	@Transactional
+	public void updateShipping(MultipartFile[] files, String shippingString) {
+		UpdateFormDTO shipping = addShipping(parsedShipping(shippingString));
+		updateValues(shipping);
+		String shippingNo = shipping.getShippingNo();
+		List<Image> changeImage = shipping.getImages();
+		List<Image> uploadImage = settingImageShippingNo(is.checkedImageMain(changeImage, files, shippingNo), shippingNo);
+		is.insertImage(uploadImage);
 	}
 
-	private Map<String, Object> addUserNo(MultipartFile[] files, UpdateFormDTO shipping, String fishs, String option,
-			String port) {
-		Map<String, Object> map = parse(files, shipping, fishs, option, port, null);
-		UpdateFormDTO uploadShipping = settingXss(shipping, (Port) map.get("parsePort"));
+	
+
+	private UpdateFormDTO addUserNo(UpdateFormDTO shipping) {
 		CustomUserDetails user = as.checkedUser();
-		uploadShipping.setUserNo(user.getUserNo());
-		map.put("uploadShipping", uploadShipping);
-		return map;
+		shipping.setUserNo(user.getUserNo());
+		return shipping;
 	}
 
 	@Override
 	@Transactional
-	public void insertShipping(MultipartFile[] files, UpdateFormDTO shipping, String fishs, String option,
-			String port) {
-		Map<String, Object> map = addUserNo(files, shipping, fishs, option, port);
-		UpdateFormDTO uploadShipping = (UpdateFormDTO) map.get("uploadShipping");
+	public void insertShipping(MultipartFile[] files, String shipping) {
+		UpdateFormDTO uploadShipping = addUserNo(settingXss(parsedShipping(shipping)));
 		sm.insertShipping(uploadShipping);
-		String shippingNo = ((UpdateFormDTO) (map.get("uploadShipping"))).getShippingNo();
-		updateValues(map, shippingNo, null);
+		updateValues(uploadShipping);
+		String shippingNo = uploadShipping.getShippingNo();
+		List<Image> uploadImage = is.checkedImageMain(files, shippingNo);
+		
+		is.insertImage(settingImageShippingNo(uploadImage, shippingNo));
 	}
 
 }

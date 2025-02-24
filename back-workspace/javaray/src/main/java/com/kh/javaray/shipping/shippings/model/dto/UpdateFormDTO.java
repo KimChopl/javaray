@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.List;
 
 import com.kh.javaray.member.model.dto.Member;
+import com.kh.javaray.member.model.dto.MemberDTO;
 import com.kh.javaray.shipping.dto.Image;
 
 import lombok.AllArgsConstructor;
@@ -26,7 +27,10 @@ public class UpdateFormDTO {
 	private String shippingContent;
 	private int allowPepleNo;
 	private int price;
-	private Port port;
 	private Long userNo;
+	private Port port;
+	private List<ShippingOption> options;
+	private List<Image> images;
+	private List<Fishs> fishs;
 
 }

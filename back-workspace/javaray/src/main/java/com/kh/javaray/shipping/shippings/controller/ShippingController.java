@@ -58,7 +58,6 @@ public class ShippingController {
 
 	@PostMapping("attention")
 	public ResponseEntity<String> insertAttention(@RequestParam(name = "shippingNo") String shippingNo) {
-		log.info(shippingNo);
 		as.insertAttention(shippingNo);
 		return ResponseEntity.ok().body("등록 완료");
 	}
@@ -94,20 +93,18 @@ public class ShippingController {
 		return ResponseEntity.ok().body(list);
 	}
 
-	@PutMapping // 얘가 하는일이 너무 많음
+	@PutMapping
 	public ResponseEntity<?> updateShipping(@RequestParam(name = "files", required = false) MultipartFile[] files,
-			@ModelAttribute UpdateFormDTO shipping, @ModelAttribute(name = "fish") String fishs,
-			@ModelAttribute(name = "option") String option, @ModelAttribute(name = "portObj") String port, @ModelAttribute(name="image") String stringImage) {
-		ss.updateShipping(files, shipping, fishs, option, port, stringImage);
-		return null;
+			@RequestParam(name = "shipping") String shipping) {
+		ss.updateShipping(files, shipping);
+		return ResponseEntity.ok(null);
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<?> insertShipping(@RequestParam(name="files", required = false) MultipartFile[] files,
-			@ModelAttribute UpdateFormDTO shipping, @ModelAttribute(name = "fish") String fishs,
-			@ModelAttribute(name = "option") String option, @ModelAttribute(name = "portObj") String port) {
-		ss.insertShipping(files, shipping, fishs, option, port);
-		return null;
+	public ResponseEntity<?> insertShipping(@RequestParam(name = "files", required = false) MultipartFile[] files,
+			@RequestParam(name = "shipping") String shipping) {
+		ss.insertShipping(files, shipping);
+		return ResponseEntity.ok(null);
 	}
 
 }

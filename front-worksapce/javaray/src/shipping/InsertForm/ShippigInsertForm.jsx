@@ -40,7 +40,7 @@ import { AuthContext } from "../../UseContext/Auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ShippingNewImage } from "../Update/UpdateFormComponent/ShippingImage";
-import optionss from "../Update/options.json"
+import optionss from "../Update/options.json";
 
 const ShippingInsertForm = () => {
   const [content, setContent] = useState("");
@@ -127,39 +127,49 @@ const ShippingInsertForm = () => {
 
   const insert = () => {
     const formData = new FormData();
-    formData.append("ShippingTitle", title);
-    formData.append("ShippingContent", content);
-    formData.append("price", price);
-    formData.append("allowPepleNo", peple);
+    const shipping = {
+      shippingTitle: title,
+      shippingContent: content,
+      allowPepleNo: peple,
+      price: price,
+      options: options,
+      port: address,
+      fishs: fish,
+    };
+    formData.append("shipping", JSON.stringify(shipping));
+    // formData.append("ShippingTitle", title);
+    // formData.append("ShippingContent", content);
+    // formData.append("price", price);
+    // formData.append("allowPepleNo", peple);
     if (files.length !== 0) {
       files.map((file) => formData.append("files", file));
     }
-    const optionArr = options.map((e) => {
-      return {
-        serviceNo: e.serviceName,
-        serviceName: e.serviceName,
-        toString: function () {
-          return `serviceNo:${e.serviceNo}, serviceName:${e.serviceName}`;
-        },
-      };
-    });
-    formData.append("option", optionArr);
+    // const optionArr = options.map((e) => {
+    //   return {
+    //     serviceNo: e.serviceName,
+    //     serviceName: e.serviceName,
+    //     toString: function () {
+    //       return `serviceNo:${e.serviceNo}, serviceName:${e.serviceName}`;
+    //     },
+    //   };
+    // });
+    // formData.append("option", optionArr);
 
-    const portObj = `portNo:${address.portNo}, address:${address.address}, detailAddress:${address.detailAddress}`;
+    // const portObj = `portNo:${address.portNo}, address:${address.address}, detailAddress:${address.detailAddress}`;
 
-    formData.append("portObj", portObj);
+    // formData.append("portObj", portObj);
 
-    const fishArr = fish.map((e) => {
-      return {
-        fishNo: e.fishNo,
-        fishName: e.fishName,
-        toString: function () {
-          return `fishNo:${e.fishNo}, fishName:${e.fishName}`;
-        },
-      };
-    });
+    // const fishArr = fish.map((e) => {
+    //   return {
+    //     fishNo: e.fishNo,
+    //     fishName: e.fishName,
+    //     toString: function () {
+    //       return `fishNo:${e.fishNo}, fishName:${e.fishName}`;
+    //     },
+    //   };
+    // });
 
-    formData.append("fish", fishArr);
+    // formData.append("fish", fishArr);
 
     axios
       .post(`http://localhost/shippings`, formData, {
@@ -173,6 +183,7 @@ const ShippingInsertForm = () => {
         navi("/shipping");
       })
       .catch((error) => {
+        console.log(error);
         alert(error.data);
       });
   };
@@ -193,10 +204,10 @@ const ShippingInsertForm = () => {
         </TitleDiv>
         <ImageBigDiv>
           <ShippingNewImage
-                      setFiles={setFiles}
-                      setImageUrl={setImageUrl}
-                      imageUrl={imageUrl}
-                    />
+            setFiles={setFiles}
+            setImageUrl={setImageUrl}
+            imageUrl={imageUrl}
+          />
           <UploadImg onClick={imgDivClick} />
           <InputImg
             type="file"
@@ -205,7 +216,7 @@ const ShippingInsertForm = () => {
             ref={inputFileRef}
           />
         </ImageBigDiv>
-        <PriceDiv> 
+        <PriceDiv>
           <PriceP>인당 탑승 가격</PriceP>
           <PriceInput type="number" value={price} onChange={priceChange} />
         </PriceDiv>
