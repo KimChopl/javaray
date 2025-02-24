@@ -10,11 +10,13 @@ import {
 } from "./FundingGoodsInsert.styles";
 
 import { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../UseContext/Auth/AuthContext";
 import axios from "axios";
 import FundingGoodsOption from "./FundingGoodsOption";
 
 const FundingGoodsForm = () => {
+  const navi = useNavigate();
   const [categoryName, setCategoryName] = useState("");
   const [goodsTitle, setGoodsTitle] = useState("");
   const [goodsContent, setGoodsContent] = useState("");
@@ -188,6 +190,8 @@ const FundingGoodsForm = () => {
         };
 
         c();
+        alert("상품등록에 성공하셨습니다!");
+        navi("/funding");
       }
     } else {
       alert("옵션을 최소 한개를 선택하셔야합니다!");
