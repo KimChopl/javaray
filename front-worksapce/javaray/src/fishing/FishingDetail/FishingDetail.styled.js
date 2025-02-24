@@ -22,7 +22,7 @@ export const TopBlock = styled.div`
   margin-top: 50px;
 `;
 
-export const TopImageBlock = styled.div`
+export const TopImageBlock = styled.img`
   width: 60%;
   height: 100%;
   border: 1px solid red;

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.javaray.auth.service.AuthenticationService;
@@ -31,10 +32,10 @@ public class FishingServiceImpl implements FishingService {
 	
 	//게시물 등록
 	@Override
-	public void fishingSave(@Valid FishingDTO fishing,  MultipartFile file) {
+	public void fishingSave(@Valid FishingDTO fishing,  MultipartFile file, String amenities, String fish) {
 	
 		CustomUserDetails user = authService.checkedUser(); // 사용자확인
-		authService.validWriter(fishing.getFishingWriter(), user.getUsername());
+		authService.validWriter(fishing.getFishingWriter(), user.getNickname());
 		
 		// 올바른 사용자로 인증이 된 경우
 		if(file != null && !file.isEmpty()) {
@@ -47,22 +48,53 @@ public class FishingServiceImpl implements FishingService {
 		fishing.setFishingWriter(String.valueOf(user.getUserNo()));
 		fishingMapper.fishingSave(fishing);
 		
+		log.info("Insert하고 가져온 fishingNo : {}", fishing.getFishingNo());
+		
+		fishing = fishingSaveList(fishing, amenities, fish);
+		
 		// fish 리스트 처리
 		if (fishing.getFishList() != null && !fishing.getFishList().isEmpty()) {
-	        fishingMapper.saveFish(fishing);
+	        fishingMapper.saveFish(fishing.getFishList());
 	    }
 		
 		//amenities 리스트 처리
 		if(fishing.getAmenitiesList() != null && !fishing.getAmenitiesList().isEmpty()) {
-			fishingMapper.saveAmenities(fishing);
+			fishingMapper.saveAmenities(fishing.getAmenitiesList());
 		}
 		
-		// 요일 리스트 처리
-		if(fishing.getDayList() != null && !fishing.getDayList().isEmpty()) {
-			fishingMapper.saveDay(fishing);
+	}
+	
+	private FishingDTO fishingSaveList(FishingDTO fishing, String amenities, String fish) {
+		
+		String[] amenitiesArray = amenities.split(",");
+		String[] fishArray = fish.split(",");
+		
+		List<AmenitiesDTO> amenitiesList = new ArrayList();
+		List<FishDTO> fishList = new ArrayList();
+		
+		for(String s : amenitiesArray) {
+			AmenitiesDTO amenitiesDto = new AmenitiesDTO();
+			
+			amenitiesDto.setAmenitiesNo(Long.parseLong(s));
+			amenitiesDto.setFishingNo(fishing.getFishingNo());
+			
+			amenitiesList.add(amenitiesDto);
 		}
-
-	    
+		fishing.setAmenitiesList(amenitiesList);
+				
+		for(String s : fishArray) {
+			FishDTO fishDto = new FishDTO();
+			
+			fishDto.setFishNo(Long.parseLong(s));
+			fishDto.setFishingNo(fishing.getFishingNo());
+			
+			fishList.add(fishDto);
+		}
+		fishing.setFishList(fishList);
+		
+		log.info("바뀐 fishing 정보 : {}", fishing);
+		
+		return fishing;
 	}
 	
 
