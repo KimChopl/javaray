@@ -199,9 +199,9 @@ const ShippingDetail = () => {
           </DetailBase>
           <WeatherCover>
             <ShowService option={settingOption} />
-            {shipping.weather.length !== 0 && (
+            {shipping.weather.length !== 0 ? (
               <Weather weather={shipping.weather} />
-            )}
+            ) : <div>날씨 정보가 준비 중이에요</div>}
           </WeatherCover>
           <ShippingContent
             id="contentSection"

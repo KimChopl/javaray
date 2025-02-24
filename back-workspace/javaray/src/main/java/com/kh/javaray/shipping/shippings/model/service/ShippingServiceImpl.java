@@ -158,13 +158,14 @@ public class ShippingServiceImpl implements ShippingService {
 	
 	@Override
 	@Transactional
-	public void updateShipping(MultipartFile[] files, String shippingString) {
+	public UpdateFormDTO updateShipping(MultipartFile[] files, String shippingString) {
 		UpdateFormDTO shipping = addShipping(parsedShipping(shippingString));
 		updateValues(shipping);
 		String shippingNo = shipping.getShippingNo();
 		List<Image> changeImage = shipping.getImages();
 		List<Image> uploadImage = settingImageShippingNo(is.checkedImageMain(changeImage, files, shippingNo), shippingNo);
 		is.insertImage(uploadImage);
+		return shipping;
 	}
 
 	
@@ -177,14 +178,14 @@ public class ShippingServiceImpl implements ShippingService {
 
 	@Override
 	@Transactional
-	public void insertShipping(MultipartFile[] files, String shipping) {
+	public UpdateFormDTO insertShipping(MultipartFile[] files, String shipping) {
 		UpdateFormDTO uploadShipping = addUserNo(settingXss(parsedShipping(shipping)));
 		sm.insertShipping(uploadShipping);
 		updateValues(uploadShipping);
 		String shippingNo = uploadShipping.getShippingNo();
 		List<Image> uploadImage = is.checkedImageMain(files, shippingNo);
-		
 		is.insertImage(settingImageShippingNo(uploadImage, shippingNo));
+		return uploadShipping;
 	}
 
 }

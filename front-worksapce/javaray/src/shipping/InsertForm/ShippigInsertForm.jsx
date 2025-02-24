@@ -137,40 +137,9 @@ const ShippingInsertForm = () => {
       fishs: fish,
     };
     formData.append("shipping", JSON.stringify(shipping));
-    // formData.append("ShippingTitle", title);
-    // formData.append("ShippingContent", content);
-    // formData.append("price", price);
-    // formData.append("allowPepleNo", peple);
     if (files.length !== 0) {
       files.map((file) => formData.append("files", file));
     }
-    // const optionArr = options.map((e) => {
-    //   return {
-    //     serviceNo: e.serviceName,
-    //     serviceName: e.serviceName,
-    //     toString: function () {
-    //       return `serviceNo:${e.serviceNo}, serviceName:${e.serviceName}`;
-    //     },
-    //   };
-    // });
-    // formData.append("option", optionArr);
-
-    // const portObj = `portNo:${address.portNo}, address:${address.address}, detailAddress:${address.detailAddress}`;
-
-    // formData.append("portObj", portObj);
-
-    // const fishArr = fish.map((e) => {
-    //   return {
-    //     fishNo: e.fishNo,
-    //     fishName: e.fishName,
-    //     toString: function () {
-    //       return `fishNo:${e.fishNo}, fishName:${e.fishName}`;
-    //     },
-    //   };
-    // });
-
-    // formData.append("fish", fishArr);
-
     axios
       .post(`http://localhost/shippings`, formData, {
         headers: {

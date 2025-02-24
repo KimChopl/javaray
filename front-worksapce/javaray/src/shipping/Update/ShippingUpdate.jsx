@@ -91,13 +91,8 @@ const ShippingUpdate = () => {
     setSearchFish(e);
   };
 
-  const valid = ([...string]) => {
-    return string.map((e) => e.trim() === "");
-  };
 
   const update = () => {
-    const arr2 = [shippingNo, content, title];
-    valid(arr2);
     if (
       shippingNo.trim() === "" ||
       content.trim() === "" ||
@@ -123,47 +118,6 @@ const ShippingUpdate = () => {
       port: address,
     };
     formData.append("shipping", JSON.stringify(shipping));
-
-    // const formData = new FormData();
-    // formData.append("shippingNo", shippingNo);
-    // formData.append("shippingContent", content);
-    // formData.append("shippingTitle", title);
-    // formData.append("allowPepleNo", peple);
-    // formData.append("price", price);
-    // const imageArr = image.map((img) => {
-    //   return {
-    //     imageNo: img.imageNo,
-    //     imagePath: img.imagepath,
-    //     imageChangeName: img.imageChangeName,
-    //     imageLeval: img.imageLevel,
-    //     toString: function () {
-    //       return `imageNo:${img.imageNo}, imagePath:${img.imagePath}, imageChangeName:${img.imageChangeName}, imageLevel:${img.imageLevel}`;
-    //     },
-    //   };
-    // });
-    // formData.append("image", imageArr);
-    // const arr = fish.map((e) => {
-    //   return {
-    //     fishNo: e.fishNo,
-    //     fishName: e.fishName,
-    //     toString: function () {
-    //       return `fishNo:${e.fishNo}, fishName:${e.fishName}`;
-    //     },
-    //   };
-    // });
-    // formData.append("fish", arr);
-    // const serviceArr = service.map((e) => {
-    //   return {
-    //     serviceNo: e.serviceName,
-    //     serviceName: e.serviceName,
-    //     toString: function () {
-    //       return `serviceNo:${e.serviceNo}, serviceName:${e.serviceName}`;
-    //     },
-    //   };
-    // });
-    // formData.append("option", serviceArr);
-    // const portObj = `portNo:${address.portNo}, address:${address.address}, detailAddress:${address.detailAddress}`;
-    // formData.append("portObj", portObj);
 
     if (files.length !== 0) {
       for (let i = 0; i < files.length; i++) formData.append("files", files[i]);

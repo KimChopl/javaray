@@ -3,6 +3,7 @@ package com.kh.javaray.shipping.shippings.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,13 +60,13 @@ public class ShippingController {
 	@PostMapping("attention")
 	public ResponseEntity<String> insertAttention(@RequestParam(name = "shippingNo") String shippingNo) {
 		as.insertAttention(shippingNo);
-		return ResponseEntity.ok().body("등록 완료");
+		return ResponseEntity.status(HttpStatusCode.valueOf(201)).body("등록 완료");
 	}
 
 	@DeleteMapping("attention")
 	public ResponseEntity<String> deleteAttention(@RequestParam(name = "shippingNo") String shippingNo) {
 		as.deleteAttention(shippingNo);
-		return ResponseEntity.ok().body("삭제 완료");
+		return ResponseEntity.status(HttpStatusCode.valueOf(201)).body("삭제 완료");
 	}
 
 	@GetMapping("attention")
@@ -96,15 +97,15 @@ public class ShippingController {
 	@PutMapping
 	public ResponseEntity<?> updateShipping(@RequestParam(name = "files", required = false) MultipartFile[] files,
 			@RequestParam(name = "shipping") String shipping) {
-		ss.updateShipping(files, shipping);
-		return ResponseEntity.ok(null);
+		UpdateFormDTO updateShipping = ss.updateShipping(files, shipping);
+		return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(updateShipping);
 	}
 
 	@PostMapping
 	public ResponseEntity<?> insertShipping(@RequestParam(name = "files", required = false) MultipartFile[] files,
 			@RequestParam(name = "shipping") String shipping) {
-		ss.insertShipping(files, shipping);
-		return ResponseEntity.ok(null);
+		UpdateFormDTO insertShipping = ss.insertShipping(files, shipping);
+		return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(insertShipping);
 	}
 
 }
