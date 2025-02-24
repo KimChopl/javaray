@@ -10,4 +10,6 @@ public interface ImageService {
 	List<Image> checkedImageMain(List<Image> imageList, MultipartFile[] files, String shippingNo);
 	List<Image> checkedImageMain(MultipartFile[] files, String shippingNo);
 	void deleteImage(List<Image> lists);
+	public void deleteImage(Image deleteImage);
+	void insertImage(List<Image> images);
 }

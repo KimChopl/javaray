@@ -1,7 +1,6 @@
 package com.kh.javaray.api;
 
 import java.io.UnsupportedEncodingException;
-import java.net.ConnectException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -13,13 +12,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import com.kh.javaray.exception.exceptions.NotMatchUserInfoException;
-import com.kh.javaray.shipping.dto.MiddleWeather;
 import com.kh.javaray.shipping.dto.Weather;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +26,9 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class OpenDataApi {
+	
+	@Value("${api.key}")
+	private String key;
 
 	private Map<String, String> today() {
 		Map<String, String> map = new HashMap<String, String>();
@@ -57,9 +59,7 @@ public class OpenDataApi {
 
 	private StringBuilder makingURL(String spotCode) {
 		Map<String, String> map = today();
-		log.info("{}", map);
 		StringBuilder requestUrl = new StringBuilder("https://apihub.kma.go.kr/api/typ01/url/fct_afs_do.php");
-		String key = "t3nuxM67Qvq57sTOu5L69w";
 		try {
 			requestUrl.append("?authKey=" + URLEncoder.encode(key, "UTF-8"));
 			requestUrl.append("&reg=" + URLEncoder.encode(spotCode, "UTF-8"));

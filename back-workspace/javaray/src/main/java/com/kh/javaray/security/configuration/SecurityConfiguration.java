@@ -1,4 +1,4 @@
-package com.kh.javaray.security.configuration;
+ package com.kh.javaray.security.configuration;
 
 import java.util.Arrays;
 
@@ -58,12 +58,13 @@ public class SecurityConfiguration {
 					requests.requestMatchers(HttpMethod.GET, "/shippings/**", "/shippings/detail/**",
 							"/funding/selectList/**", "/funding/selectCategory", "uploads/**", "/uploads/images/**")
 							.permitAll();
-					requests.requestMatchers("/manager/**").hasRole("ADMIN");
 					requests.requestMatchers(HttpMethod.GET, "/fishing", "/fishing/detail/**", "/fishing/review")
 							.permitAll();
-					requests.requestMatchers(HttpMethod.POST, "/fishing/review/insert", "/fishing/insert")
+					requests.requestMatchers(HttpMethod.POST, "/fishing/review/insert", "/fishing/insert","/fishing/insertList")
 							.authenticated();
 					requests.requestMatchers(HttpMethod.GET, "/members/users", "/shippings/attention").authenticated();
+					requests.requestMatchers("/manager/**").hasRole("ADMIN");
+
 				})
 				.sessionManagement(
 						sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

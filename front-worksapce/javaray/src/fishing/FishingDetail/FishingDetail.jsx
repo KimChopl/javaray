@@ -59,7 +59,7 @@ const FishingDetail = () => {
       <DetailWrap>
         <TopWrap>
           <TopBlock>
-            <TopImageBlock></TopImageBlock>
+            <TopImageBlock src={fishingsDetail.fishingFileUrl}></TopImageBlock>
             <TopTextBlock>
               <DetailTitleBlock>
                 <DetailTitle>{fishingsDetail.fishingName}</DetailTitle>

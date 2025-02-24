@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.javaray.exception.exceptions.FailDeleteObjectException;
+import com.kh.javaray.exception.exceptions.FailInsertObjectException;
 import com.kh.javaray.shipping.dto.Image;
 import com.kh.javaray.shipping.shippings.model.dto.Shipping;
 import com.kh.javaray.shipping.shippings.model.mapper.ShippingMapper;
@@ -44,6 +45,9 @@ public class ImageServiceImpl implements ImageService {
 	}
 	
 	private boolean deleteBeforeImage(List<Image> list, List<Image> imageList) {
+		if(list == null || list.isEmpty()) {
+			return true;
+		}
 		if (list.size() != imageList.size()) { // 기존 사진에서 삭제한 사진이 있는지
 			Map<String, List<Image>> map = checkedDeleteImage(list, imageList);
 			List<Image> deleteImage = map.get("deleteImage");
@@ -69,22 +73,13 @@ public class ImageServiceImpl implements ImageService {
 		List<Image> list = ship.getImages();
 		MultipartFile[] uploadFiles = null;
 		boolean isMain;
-		if (list.isEmpty()) { // 기존 사진이 있는지
-			if (files != null) { // 새로 업로드한 사진이 있는지
-				uploadFiles = files;
-				isMain = true;
-				return ui.store(uploadFiles, isMain);
-			}
-			return null;
+		if (files != null) {
+			uploadFiles = files;
+			isMain = deleteBeforeImage(list, imageList);
+			return ui.store(uploadFiles, isMain);
 		} else {
-			if (files != null) {
-				uploadFiles = files;
-				isMain = deleteBeforeImage(list, imageList);
-				return ui.store(uploadFiles, isMain);
-			} else {
-				deleteBeforeImage(list, imageList);
-				return null;
-			}
+			deleteBeforeImage(list, imageList);
+			return null;
 		}
 	}
 
@@ -104,9 +99,23 @@ public class ImageServiceImpl implements ImageService {
 		}
 	}
 
+	@Override
 	public void deleteImage(Image deleteImage) {
 		if (im.deleteImage(deleteImage) == 0) {
 			throw new FailDeleteObjectException("업데이트 중 문제가 발생했습니다. 다시 시도해주세요.");
+		}
+	}
+	
+	@Override
+	public void insertImage(List<Image> images) {
+		if (images != null) {
+			int result = 1;
+			for (Image image : images) {
+				result = im.insertImage(image);
+				if (result == 0) {
+					throw new FailInsertObjectException("업데이트에 실패했습니다. 다시 시도해주세요.");
+				}
+			}
 		}
 	}
 

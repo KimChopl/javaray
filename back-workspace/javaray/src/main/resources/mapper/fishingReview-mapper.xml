@@ -10,21 +10,19 @@
 	    INSERT 
 	    INTO 
 	    	TB_REVIEW (
-	        REVIEW_NO,
+	        USER_NO,
 	        NICKNAME,
 	        FISHING_NAME,
 	        FISHING_DATE,
-	        REVIEW_FILE_URL,
 	        TITLE,
 	        CONTENT,
 	        REVIEW_FILE_URL
 	    )
 	    VALUES (
 	        SEQ_FRNO.NEXTVAL,
-	        #{nickname},
+	        #{userNo},
 	        #{fishingName},
 	        #{fishingDate},
-	        #{reviewFileUrl},
 	        #{title},
 	        #{content},
 	        #{reviewFileUrl}

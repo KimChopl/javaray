@@ -14,15 +14,14 @@ import com.kh.javaray.fishing.fishing.model.dto.FishingDTO;
 import jakarta.validation.Valid;
 
 @Mapper
+
 public interface FishingMapper {
 
 	void fishingSave(@Valid FishingDTO fishing);
 
-	void saveFish(@Valid FishingDTO fishing);
+	void saveFish(@Param("fishList") List<FishDTO> fishList);
 	
-	void saveAmenities(@Valid FishingDTO fishing);
-	
-	void saveDay(@Valid FishingDTO fishing);
+	void saveAmenities(@Param("amenitiesList") List<AmenitiesDTO> amenitiesList);
 	
 	List<FishingDTO> findAll(RowBounds rowBounds);
 

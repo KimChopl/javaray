@@ -33,8 +33,8 @@ import {
   ShippingBeforeImage,
   ShippingNewImage,
 } from "./UpdateFormComponent/ShippingImage";
-import {OptionCheckbox} from "./UpdateFormComponent/OptionCheckbox";
-import options from "./options.json"
+import { OptionCheckbox } from "./UpdateFormComponent/OptionCheckbox";
+import options from "./options.json";
 
 const ShippingUpdate = () => {
   const [load, setLoad] = useState(true);
@@ -91,56 +91,33 @@ const ShippingUpdate = () => {
     setSearchFish(e);
   };
 
+
   const update = () => {
-    if(shippingNo === "" || content === "" || title === "" || peple < 1 || price < 1 || fish.length < 1 || service.length < 1){
+    if (
+      shippingNo.trim() === "" ||
+      content.trim() === "" ||
+      title.trim() === "" ||
+      peple < 1 ||
+      price < 1 ||
+      fish.length < 1 ||
+      service.length < 1
+    ) {
       alert("모든 내용을 채워 주세요.");
       return;
     }
     const formData = new FormData();
-    formData.append("shippingNo", shippingNo);
-    formData.append("shippingContent", content);
-    formData.append("shippingTitle", title);
-    formData.append("allowPepleNo", peple);
-    formData.append("price", price);
-    //formData.append("fishs", JSON.stringify(fish));
-    const imageArr = image.map((img) => {
-      return {
-        imageNo: img.imageNo,
-        imagePath: img.imagepath,
-        imageChangeName: img.imageChangeName,
-        imageLeval: img.imageLevel,
-        toString: function () {
-          return `imageNo:${img.imageNo}, imagePath:${img.imagePath}, imageChangeName:${img.imageChangeName}, imageLevel:${img.imageLevel}`;
-        },
-      };
-    });
-    formData.append("image", imageArr);
-
-    const arr = fish.map((e) => {
-      return {
-        fishNo: e.fishNo,
-        fishName: e.fishName,
-        toString: function () {
-          return `fishNo:${e.fishNo}, fishName:${e.fishName}`;
-        },
-      };
-    });
-    formData.append("fish", arr);
-
-    const serviceArr = service.map((e) => {
-      return {
-        serviceNo: e.serviceName,
-        serviceName: e.serviceName,
-        toString: function () {
-          return `serviceNo:${e.serviceNo}, serviceName:${e.serviceName}`;
-        },
-      };
-    });
-    formData.append("option", serviceArr);
-
-    const portObj = `portNo:${address.portNo}, address:${address.address}, detailAddress:${address.detailAddress}`;
-
-    formData.append("portObj", portObj);
+    const shipping = {
+      shippingNo: shippingNo,
+      shippingTitle: title,
+      shippingContent: content,
+      allowPepleNo: peple,
+      price: price,
+      images: image,
+      options: service,
+      fishs: fish,
+      port: address,
+    };
+    formData.append("shipping", JSON.stringify(shipping));
 
     if (files.length !== 0) {
       for (let i = 0; i < files.length; i++) formData.append("files", files[i]);

@@ -28,7 +28,7 @@ public class FishingReviewServiceImpl implements FishingReviewService {
 		
 		CustomUserDetails user = authService.checkedUser();
 		
-		authService.validWriter(fishingReview.getUserId(), user.getUsername()); // 아이디로 작성자랑 로그인자 확인
+		authService.validWriter(fishingReview.getNickname(), user.getNickname()); // 아이디로 작성자랑 로그인자 확인
 		
 		if(file != null && !file.isEmpty()) {
 			String filePath = fileService.store(file);

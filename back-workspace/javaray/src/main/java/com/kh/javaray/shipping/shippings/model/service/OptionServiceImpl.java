@@ -30,8 +30,8 @@ public class OptionServiceImpl implements OptionService {
 	@Override
 	public void uploadOption(List<ShippingOption> options) {
 		int result = 1;
+		deleteOption(options.get(0).getShippingNo());
 		for (ShippingOption option : options) {
-			deleteOption(options.get(0).getShippingNo());
 			result = sm.updateOption(option);
 			if (result == 0) {
 				throw new FailUpdateException("업데이트에 실패 하였습니다.");
