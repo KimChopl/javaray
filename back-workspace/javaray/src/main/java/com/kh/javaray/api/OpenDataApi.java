@@ -39,7 +39,7 @@ public class OpenDataApi {
 		int day = Integer.parseInt(dayForm.format(today));
 		int hour = Integer.parseInt(hourForm.format(today));
 		Calendar calendar = Calendar.getInstance();
-		if (hour >= 0 && hour <= 9) {
+		if (hour >= 0 && hour <= 8) {
 			calendar.setTime(today);
 			calendar.set(Calendar.HOUR_OF_DAY, 15);
 			calendar.set(Calendar.DAY_OF_MONTH, day - 1);
@@ -87,7 +87,7 @@ public class OpenDataApi {
 			String result = rt.getForObject(uri, String.class);
 			String[] split = result.split(",=\n");
 			log.info(result);
-			if (split.length < 9) {
+			if (split.length < 3) {
 				return list;
 			}
 			for (int i = 0; i < 8; i++) {
@@ -99,9 +99,11 @@ public class OpenDataApi {
 					list.add(weather);
 				} else {
 					String[] infos = split[i].split(",");
-					Weather weather = Weather.builder().regName(infos[0]).tmef(infos[2]).s1(infos[12]).s2(infos[13])
-							.wh1(infos[14]).wh2(infos[15]).prep(infos[17]).wf(infos[18]).sky(infos[16]).build();
-					list.add(weather);
+					if(infos.length == 19) {
+						Weather weather = Weather.builder().regName(infos[0]).tmef(infos[2]).s1(infos[12]).s2(infos[13])
+								.wh1(infos[14]).wh2(infos[15]).prep(infos[17]).wf(infos[18]).sky(infos[16]).build();
+						list.add(weather);
+					}
 				}
 			}
 			return list;

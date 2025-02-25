@@ -21,15 +21,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService{
 	
-	private final AuthenticationManager am;
-	private final TokenService ts;
+	private final AuthenticationManager authMapper;
+	private final TokenService tokenServie;
 
 	@Override
 	public Map<String, String> login(LoginForm requestMember) {
-		Authentication auth = am.authenticate(new UsernamePasswordAuthenticationToken(requestMember.getUsername(), requestMember.getUserPwd()));
+		Authentication auth = authMapper.authenticate(new UsernamePasswordAuthenticationToken(requestMember.getUsername(), requestMember.getUserPwd()));
 		
 		CustomUserDetails user = (CustomUserDetails)auth.getPrincipal();
-		Map<String, String> token = ts.generateToken(user.getUsername(), user.getUserNo());
+		Map<String, String> token = tokenServie.generateToken(user.getUsername(), user.getUserNo());
 		return token;
 	}
 

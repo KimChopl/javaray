@@ -21,7 +21,7 @@ const SearchAddress = (props) => {
   const [port, setPort] = useState(null);
   const [selectPort, setSelectPort] = useState();
   const setAddress = (e) => {
-    props.setAddress(e);
+    props.setAddress(e, "port");
   };
   const changeInput = (e) => {
     setInputVal(e.target.value);
@@ -79,7 +79,7 @@ const SearchAddress = (props) => {
             port.map((port) => (
               <ResultPort key={port.portNo}>
                 <input
-                  name="address"
+                  name="port"
                   type="radio"
                   value={port.portNo}
                   onChange={selectAddress}

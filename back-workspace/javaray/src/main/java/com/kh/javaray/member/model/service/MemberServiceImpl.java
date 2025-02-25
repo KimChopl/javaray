@@ -26,26 +26,26 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
-	private final MemberMapper mm;
-	private final PasswordEncoder pwe;
-	private final AuthenticationService as;
+	private final MemberMapper memberMapper;
+	private final PasswordEncoder passworedEncoder;
+	private final AuthenticationService authService;
 
 	@Override
 	public void insertMember(MemberDTO member) {
-		MemberDTO isMember = mm.findById(member.getUsername()); // DTO
+		MemberDTO isMember = memberMapper.findById(member.getUsername()); // DTO
 		if (isMember != null) {
 			throw new AlreadyUseingUsernameException("이미 존재하는 사용자 입니다.");
 		}
-		Member newMember = Member.builder().username(member.getUsername()).userPwd(pwe.encode(member.getUserPwd()))
+		Member newMember = Member.builder().username(member.getUsername()).userPwd(passworedEncoder.encode(member.getUserPwd()))
 				.nickname(member.getNickname()).email(member.getEmail()).phone(member.getPhone())
 				.userRealName(member.getUserRealName()).role("ROLE_USER").build();
-		mm.insertMember(newMember);
+		memberMapper.insertMember(newMember);
 	}
 
 	@Override
 	public LoginResponse login(LoginForm requestMember) {
-		Map<String, String> token = as.login(requestMember);
-		MemberDTO member = mm.findById(requestMember.getUsername()); //DTO
+		Map<String, String> token = authService.login(requestMember);
+		MemberDTO member = memberMapper.findById(requestMember.getUsername()); //DTO
 		LoginResponse user = LoginResponse.builder().username(member.getUsername()).role(cutRole(member.getRole()))
 				.tokens(token).nickname(member.getNickname()).userNo(member.getUserNo()).build();
 		return user;
@@ -57,20 +57,20 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void updateAll(UpdateMemberDTO member) {
-		CustomUserDetails user = as.checkedUser();
+		CustomUserDetails user = authService.checkedUser();
 		if (!user.getUsername().equals(member.getUsername())) {
 			throw new NotMatchUserInfoException("현제 페이지에서는 아이디를 변경할 수 없습니다. 고객센터를 통해 아이디를 변경해주세요.");
 		}
 		member.setUserNo(user.getUserNo());
-		mm.updateAll(member);
+		memberMapper.updateAll(member);
 	}
 
 	private CustomUserDetails checkedUserInfo(ChangePassword password) {
-		CustomUserDetails user = as.checkedUser();
+		CustomUserDetails user = authService.checkedUser();
 		if (!user.getUsername().equals(password.getUsername())) {
 			throw new NotMatchUserInfoException("유저 정보가 일치하지 않습니다. 다시 시도해주세요.");
 		}
-		if (!pwe.matches(password.getOriginUserPwd(), user.getPassword())) {
+		if (!passworedEncoder.matches(password.getOriginUserPwd(), user.getPassword())) {
 			throw new NotMatchUserInfoException("비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
 		}
 		return user;
@@ -80,8 +80,8 @@ public class MemberServiceImpl implements MemberService {
 	public void updatePassword(ChangePassword password) {
 		CustomUserDetails user = checkedUserInfo(password);
 		password.setUserNo(user.getUserNo());
-		password.setChangeUserPwd(pwe.encode(password.getChangeUserPwd()));
-		int result = mm.updatePassword(password);
+		password.setChangeUserPwd(passworedEncoder.encode(password.getChangeUserPwd()));
+		int result = memberMapper.updatePassword(password);
 		if (result < 1) {
 			throw new FailUpdateUserInfoException("업데이트에 싪패했습니다. 다시 시도해주세요.");
 		}
@@ -89,17 +89,17 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void deleteMember(LoginForm userPwd) {
-		CustomUserDetails user = as.checkedUser();
-		if (!pwe.matches(userPwd.getUserPwd(), user.getPassword())) {
+		CustomUserDetails user = authService.checkedUser();
+		if (!passworedEncoder.matches(userPwd.getUserPwd(), user.getPassword())) {
 			throw new NotMatchUserInfoException("비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
 		}
-		mm.deleteMember(user.getUserNo());
+		memberMapper.deleteMember(user.getUserNo());
 	}
 
 	@Override
 	public Member selectUserRole() {
-		CustomUserDetails user = as.checkedUser();
-		return mm.selectUserRole(user.getUserNo());
+		CustomUserDetails user = authService.checkedUser();
+		return memberMapper.selectUserRole(user.getUserNo());
 	}
 
 }

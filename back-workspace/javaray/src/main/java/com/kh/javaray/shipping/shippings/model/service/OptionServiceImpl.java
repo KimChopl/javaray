@@ -3,6 +3,7 @@ package com.kh.javaray.shipping.shippings.model.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.javaray.exception.exceptions.FailUpdateException;
 import com.kh.javaray.exception.exceptions.NotFoundInfoException;
@@ -17,22 +18,24 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OptionServiceImpl implements OptionService {
 	
-	private final ShippingMapper sm;
+	private final ShippingMapper shippingMapper;
 
+	@Transactional
 	private void deleteOption(String shippingNo) {
-		sm.deleteOption(shippingNo);
-		List<ShippingOption> list = sm.selectOption(shippingNo);
+		shippingMapper.deleteOption(shippingNo);
+		List<ShippingOption> list = shippingMapper.selectOption(shippingNo);
 		if (!list.isEmpty()) {
 			throw new NotFoundInfoException("업데이트에 실패 하였습니다.");
 		}
 	}
 
 	@Override
+	@Transactional
 	public void uploadOption(List<ShippingOption> options) {
 		int result = 1;
 		deleteOption(options.get(0).getShippingNo());
 		for (ShippingOption option : options) {
-			result = sm.updateOption(option);
+			result = shippingMapper.updateOption(option);
 			if (result == 0) {
 				throw new FailUpdateException("업데이트에 실패 하였습니다.");
 			}
