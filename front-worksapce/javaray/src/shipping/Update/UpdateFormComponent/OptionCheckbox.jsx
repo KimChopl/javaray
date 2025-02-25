@@ -11,64 +11,58 @@ import {
   OptionP,
 } from "../ShippingUpdateCss";
 
-export const OptionCheckbox = ({ option, index, setOption, service, options }) => {
-  const handlCheckbox = (id) => {
-    clickService(id);
-    setOption((prevCheckboxes) =>
-      prevCheckboxes.map((checkbox) =>
-        checkbox.id === id
-          ? { ...option, isSelcted: !option.isSelcted }
-          : checkbox
-      )
-    );
-  };
-  const clickService = (e) => {
+export const OptionCheckbox = ({ options, service, setOption, setService }) => {
+  const handleCheckbox = (e) => {
     const i = e.target.value;
-    console.log(option[i]);
-    if (option[i].isSelect) {
-      option[i].isSelect = false;
-      const index = service.findIndex(
-        (service) => service.serviceNo === option[i].no
+    const isSelect = options[i].isSelect;
+    if (isSelect) {
+      options[i].isSelect = false;
+      const newService = service.filter(
+        (service) => service.serviceNo !== i + 1
       );
-      if (index !== -1) {
-        service.splice(index, 1);
-      }
+      setService(newService, "options");
     } else {
-      option[i].isSelect = true;
-      service.push({ serviceNo: option[i].no, serviceName: option[i].name });
-      setOption(option);
+      options[i].isSelect = true;
+      setService(
+        [
+          ...service,
+          { serviceNo: options[i].no, serviceName: options[i].name },
+        ],
+        "options"
+      );
     }
+    setOption(options);
   };
 
-  return (
+  return options.map((option, index) => (
     <>
       <Checkbox
         id={"ss" + index}
         value={index}
-        name={options.value}
-        checked={options.isSelect}
-        onChange={handlCheckbox}
+        name={option.value}
+        checked={option.isSelect}
+        onChange={handleCheckbox}
       />
       <Label htmlFor={"ss" + index}>
         <OptionCover>
           <OptionExpDiv>
-            <OptionP>{options.name}</OptionP>
+            <OptionP>{option.name}</OptionP>
           </OptionExpDiv>
           <Option>
-            <OptionImage src={options.image} />
+            <OptionImage src={option.image} />
           </Option>
         </OptionCover>
       </Label>
     </>
-  );
+  ));
 };
 
-export const ShowService = ({option}) => {
-  return(
+export const ShowService = ({ option }) => {
+  return (
     <OptionDiv>
       <OptionLine>
         {option.map((options) => {
-          return(
+          return (
             <CheckedLabel key={option.no}>
               <OptionCover>
                 <OptionExpDiv>
@@ -79,9 +73,9 @@ export const ShowService = ({option}) => {
                 </Option>
               </OptionCover>
             </CheckedLabel>
-            )
-          })}
+          );
+        })}
       </OptionLine>
     </OptionDiv>
-  )
-} 
+  );
+};

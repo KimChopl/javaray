@@ -1,7 +1,6 @@
 package com.kh.javaray.api;
 
 import java.io.UnsupportedEncodingException;
-import java.net.ConnectException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -13,13 +12,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import com.kh.javaray.exception.exceptions.NotMatchUserInfoException;
-import com.kh.javaray.shipping.dto.MiddleWeather;
 import com.kh.javaray.shipping.dto.Weather;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +26,9 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class OpenDataApi {
+	
+	@Value("${api.key}")
+	private String key;
 
 	private Map<String, String> today() {
 		Map<String, String> map = new HashMap<String, String>();
@@ -37,7 +39,7 @@ public class OpenDataApi {
 		int day = Integer.parseInt(dayForm.format(today));
 		int hour = Integer.parseInt(hourForm.format(today));
 		Calendar calendar = Calendar.getInstance();
-		if (hour >= 0 && hour <= 9) {
+		if (hour >= 0 && hour <= 8) {
 			calendar.setTime(today);
 			calendar.set(Calendar.HOUR_OF_DAY, 15);
 			calendar.set(Calendar.DAY_OF_MONTH, day - 1);
@@ -57,9 +59,7 @@ public class OpenDataApi {
 
 	private StringBuilder makingURL(String spotCode) {
 		Map<String, String> map = today();
-		log.info("{}", map);
 		StringBuilder requestUrl = new StringBuilder("https://apihub.kma.go.kr/api/typ01/url/fct_afs_do.php");
-		String key = "t3nuxM67Qvq57sTOu5L69w";
 		try {
 			requestUrl.append("?authKey=" + URLEncoder.encode(key, "UTF-8"));
 			requestUrl.append("&reg=" + URLEncoder.encode(spotCode, "UTF-8"));
@@ -87,7 +87,7 @@ public class OpenDataApi {
 			String result = rt.getForObject(uri, String.class);
 			String[] split = result.split(",=\n");
 			log.info(result);
-			if (split.length < 9) {
+			if (split.length < 3) {
 				return list;
 			}
 			for (int i = 0; i < 8; i++) {
@@ -99,9 +99,11 @@ public class OpenDataApi {
 					list.add(weather);
 				} else {
 					String[] infos = split[i].split(",");
-					Weather weather = Weather.builder().regName(infos[0]).tmef(infos[2]).s1(infos[12]).s2(infos[13])
-							.wh1(infos[14]).wh2(infos[15]).prep(infos[17]).wf(infos[18]).sky(infos[16]).build();
-					list.add(weather);
+					if(infos.length == 19) {
+						Weather weather = Weather.builder().regName(infos[0]).tmef(infos[2]).s1(infos[12]).s2(infos[13])
+								.wh1(infos[14]).wh2(infos[15]).prep(infos[17]).wf(infos[18]).sky(infos[16]).build();
+						list.add(weather);
+					}
 				}
 			}
 			return list;

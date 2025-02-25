@@ -14,9 +14,6 @@ const FishForm = (props) => {
   const [load, isLoad] = useState(true);
   const [fishs, setFishs] = useState([]);
   const fish = props.fishs;
-  const setFish = (e) => {
-    props.setFish(e);
-  };
   const checkedFish = (e) => {
     e.forEach((fishs) => {
       const findFish = fish.find((fish) => fish.fishNo === fishs.fishNo);
@@ -27,16 +24,23 @@ const FishForm = (props) => {
     return fishs;
   };
   const changeFishs = (e) => {
+    console.log(e.target.checked);
     const findFish = fishs.find((fishs) => fishs.fishNo === e.target.value);
-    const newFish = fish.filter((fish) => fish.fishNo !== findFish.fishNo);
-    if (fish.length === newFish.length) {
-      fish.push({ fishNo: findFish.fishNo, fishName: findFish.fishName });
-      setFish(fish);
+    if (e.target.checked) {
+      const newFish = fish.push({
+        fishNo: findFish.fishNo,
+        fishName: findFish.fishName,
+      });
+      props.setFish([...fish, newFish]);
+      return (e.target.checked = true);
     } else {
-      const index = fishs.findIndex((e) => e.fishNo === findFish.fishNo);
-      console.log(index);
-      fishs[index].note = false;
-      setFish(newFish);
+      const deleteFish = fish.filter((fish) => {
+        return fish.fishNo !== findFish.fishNo;
+      });
+      console.log(findFish.fishNo);
+      console.log(deleteFish);
+      props.setFish([...deleteFish], "fishs");
+      return (e.target.checked = false);
     }
   };
   useEffect(() => {
@@ -65,10 +69,10 @@ const FishForm = (props) => {
         {fishs.map((fishs) => (
           <FishDiv key={fishs.fishNo}>
             <CheckBox
-              name="fish"
+              name="fishs"
               value={fishs.fishNo}
               checked={fishs.note}
-              onChange={changeFishs}
+              onChange={(e) => changeFishs(e)}
             />
             <FishLabel>{fishs.fishName}</FishLabel>
           </FishDiv>

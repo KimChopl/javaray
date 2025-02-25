@@ -29,6 +29,7 @@ import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../UseContext/Auth/AuthContext";
 import axios from "axios";
+import "../../App.css";
 
 const FundingLists = () => {
   const navigate = useNavigate();
@@ -50,7 +51,6 @@ const FundingLists = () => {
         }
       )
       .then((response) => {
-        console.log(response.data);
         setRole(response.data[0].role);
         if (response.data && response.data[0].boardNo !== null) {
           setBoards([...response.data]);
@@ -100,7 +100,7 @@ const FundingLists = () => {
     setPage((page) => page + 1);
   };
 
-  const getRemailDate = (endDate) => {
+  const getRemainDate = (endDate) => {
     const today = new Date();
     const end = new Date(endDate);
 
@@ -196,7 +196,7 @@ const FundingLists = () => {
                     <GoodsContent1>
                       <GoodsContent2>{board.companyName}</GoodsContent2>
                       <GoodsContent3>
-                        {getRemailDate(board.endDate)}
+                        {getRemainDate(board.endDate)}
                       </GoodsContent3>
                     </GoodsContent1>
                   </GoodsDiv>

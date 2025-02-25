@@ -5,11 +5,9 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kh.javaray.shipping.shippings.model.dto.Attention;
-import com.kh.javaray.shipping.shippings.model.dto.Fishs;
 import com.kh.javaray.shipping.shippings.model.dto.Port;
 import com.kh.javaray.shipping.shippings.model.dto.Shipping;
-import com.kh.javaray.shipping.shippings.model.dto.UpdateFormDTO;
+import com.kh.javaray.shipping.shippings.model.dto.ShippingFormDTO;
 
 public interface ShippingService {
 
@@ -21,9 +19,8 @@ public interface ShippingService {
 
 	List<Port> selectSearchPort(String option, String searchContent);
 
-	void updateShipping(MultipartFile[] files, UpdateFormDTO shipping, String fishs, String option, String port,
-			String stringImage);
+	ShippingFormDTO updateShipping(MultipartFile[] files, String shipping);
 
-	void insertShipping(MultipartFile[] files, UpdateFormDTO shipping, String fishs, String option, String port);
+	ShippingFormDTO insertShipping(MultipartFile[] files, String shipping);
 
 }

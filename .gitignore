@@ -30,5 +30,6 @@ target/
 .classpath
 .project
 .springBeans
+application-private.yml
 #PuglyProject/src/main/java/com/kh/pugly/board/model/service/BoardServiceImpl.java
 #"/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk11.0.25_9"

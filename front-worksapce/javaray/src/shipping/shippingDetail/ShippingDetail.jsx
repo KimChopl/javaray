@@ -27,53 +27,58 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Weather from "./Weather/Wrather";
 import { AuthContext } from "../../UseContext/Auth/AuthContext";
-import {ShowService} from "../Update/UpdateFormComponent/OptionCheckbox";
-import options from "../Update/options.json"
+import { ShowService } from "../Update/UpdateFormComponent/OptionCheckbox";
+import options from "../Update/options.json";
 import DetailFish from "./DetailComponent/Fish/DetailFish";
 
 const ShippingDetail = () => {
-  const [flag, isFlag] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [attention, setAttention] = useState(false);
   const [shipping, setShipping] = useState(null);
+  const [isLoad, setIsLoad] = useState(true);
+  const [weather, setWeather] = useState({});
   const [fishNo, setFishNo] = useState("");
-  const [isAuth, setIsAuth] = useState(undefined);
-  const [attCount, setAttCount] = useState(null);
-  const [image, setImage] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [fishs, setFishs] = useState([]);
+  const [option, setOption] = useState([]);
+  const [flag, isFlag] = useState(false);
   const { shippingNo } = useParams();
   const { auth } = useContext(AuthContext);
-  const [option, setOption] = useState(options);
-  const [service, setService] = useState([]);
-  const [isLoad, setIsLoad] = useState(true);
   const navi = useNavigate();
   const scrollUp = () => {
     window.scroll({ top: 0 });
   };
   const nextImage = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % image.length);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % shipping.images.length);
   };
   useEffect(() => {
     axios
-    .get(`http://localhost/shippings/detail?shippingNo=${shippingNo}`)
-    .then((response) => {
-      console.log(response);
-      setShipping(response.data);
-      setAttCount(response.data.shipping.attention);
-      setImage(response.data.shipping.images);
-      setService(response.data.shipping.options);
-      setFishs(response.data.shipping.fishs);
-      setIsLoad(false)
-    });
-    
+      .get(`http://localhost/shippings/detail?shippingNo=${shippingNo}`)
+      .then((response) => {
+        setShipping(response.data.shipping);
+        setWeather(response.data.weather);
+        console.log(response.data.weather);
+        setOption(options);
+        setIsLoad(false);
+      });
+    axios
+      .get(`http://localhost/shippings/attention?shippingNo=${shippingNo}`, {
+        headers: {
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
+      })
+      .then((response) => {
+        if (response.data === 1) {
+          setAttention(true);
+        } else {
+          setAttention(false);
+        }
+      })
+      .catch((e) => console.log(e));
+
     scrollUp();
   }, [auth]);
 
-  
-
   const changeAttention = () => {
-    setIsAuth(auth.isAuthenticated);
-    if (isAuth) {
+    if (auth.isAuthenticated) {
       if (attention) {
         axios
           .delete(
@@ -84,8 +89,11 @@ const ShippingDetail = () => {
               },
             }
           )
-          .then((response) => {
-            setAttCount(attCount - 1);
+          .then(() => {
+            setShipping({
+              ...shipping,
+              attention: shipping.attention - 1,
+            });
             setAttention(false);
           })
           .catch((error) => {
@@ -98,8 +106,11 @@ const ShippingDetail = () => {
             null,
             { headers: { Authorization: `Bearer ${auth.accessToken}` } }
           )
-          .then((response) => {
-            setAttCount(attCount + 1);
+          .then(() => {
+            setShipping({
+              ...shipping,
+              attention: shipping.attention + 1,
+            });
             setAttention(true);
           })
           .catch((error) => {
@@ -111,8 +122,7 @@ const ShippingDetail = () => {
     }
   };
   const clickModal = (e, fishNo) => {
-    console.log(fishNo)
-    if(fishNo){
+    if (fishNo) {
       setFishNo(fishNo);
     }
     isFlag(e);
@@ -125,26 +135,25 @@ const ShippingDetail = () => {
     document.getElementById(e).scrollIntoView({ behavior: "smooth" });
   };
 
-  
-  const settingOption = option.filter(options => service.some(services => options.no === services.serviceNo))
-  if(isLoad){
-    return(
-      <Load />
-    )
+  const settingOption = option.filter((options) =>
+    shipping.options.some((services) => options.no === services.serviceNo)
+  );
+  if (isLoad) {
+    return <Load />;
   }
 
   return (
     <>
       <DetailWarp>
         <DetailHeader>
-          <h1>{shipping.shipping.shippingTitle}</h1>
+          <h1>{shipping.shippingTitle}</h1>
         </DetailHeader>
         <DetailBody>
           <DetailBase>
             <ImageCover onClick={nextImage}>
-              {image.length > 0 ? (
+              {shipping.images.length > 0 ? (
                 <ImageBox
-                  src={`http://${image[currentIndex].imagePath}${image[currentIndex].imageChangeName}`}
+                  src={`http://${shipping.images[currentIndex].imagePath}${shipping.images[currentIndex].imageChangeName}`}
                   alt="여러장 넣어야하는디"
                 />
               ) : (
@@ -154,30 +163,28 @@ const ShippingDetail = () => {
             <BaseCover>
               <BaseBar>
                 <LocationDiv>
-                  <ContentLabel>{shipping.shipping.port.address}</ContentLabel>
+                  <ContentLabel>{shipping.port.address}</ContentLabel>
                 </LocationDiv>
               </BaseBar>
               <BaseBar>
                 <PriceDiv>
-                  <ContentLabel>
-                    인당 가격 : {shipping.shipping.price}원
-                  </ContentLabel>
+                  <ContentLabel>인당 가격 : {shipping.price}원</ContentLabel>
                 </PriceDiv>
                 <AllowNumberDiv>
                   <ContentLabel>
-                    최대 탑승 인원 : {shipping.shipping.allowPepleNo}명
+                    최대 탑승 인원 : {shipping.allowPepleNo}명
                   </ContentLabel>
                 </AllowNumberDiv>
               </BaseBar>
               <BaseBar>
-                <DetailFish clickModal={clickModal} fishs={fishs}/>
+                <DetailFish clickModal={clickModal} fishs={shipping.fishs} />
               </BaseBar>
               <BaseBar>
                 <BookBtnCover>
-                  {shipping.shipping.member.nickname === auth.nickname ? (
+                  {shipping.member.nickname === auth.nickname ? (
                     <BookBtn
                       onClick={() =>
-                        navi(`/shipping/update/${shipping.shipping.shippingNo}`)
+                        navi(`/shipping/update/${shipping.shippingNo}`)
                       }
                     >
                       수정하기
@@ -188,7 +195,7 @@ const ShippingDetail = () => {
                 </BookBtnCover>
                 <AttentionInfo onClick={changeAttention}>
                   {attention ? "❤" : "🤍"}
-                  <label>+{attCount}</label>
+                  <label>+{shipping.attention}</label>
                 </AttentionInfo>
               </BaseBar>
               <BaseBar>
@@ -198,18 +205,22 @@ const ShippingDetail = () => {
                 <OtherInfo onClick={() => move("reviewSection")}>
                   리뷰
                 </OtherInfo>
-                <RatingInfo>⭐ : {shipping.shipping.avgRating}</RatingInfo>
+                <RatingInfo>⭐ : {shipping.avgRating}</RatingInfo>
               </BaseBar>
             </BaseCover>
           </DetailBase>
           <WeatherCover>
-            <ShowService option={settingOption}/>
-            {shipping.weather && <Weather weather={shipping.weather} />}
+            <ShowService option={settingOption} />
+            {weather.length !== 0 ? (
+              <Weather weather={weather} />
+            ) : (
+              <div>날씨 정보가 준비 중이에요</div>
+            )}
           </WeatherCover>
           <ShippingContent
             id="contentSection"
             dangerouslySetInnerHTML={{
-              __html: shipping.shipping.shippingContent,
+              __html: shipping.shippingContent,
             }}
           ></ShippingContent>
           <ReviewCover id="reviewSection">리뷰들</ReviewCover>

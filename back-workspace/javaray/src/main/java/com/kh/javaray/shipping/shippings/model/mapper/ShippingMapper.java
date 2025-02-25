@@ -15,7 +15,7 @@ import com.kh.javaray.shipping.shippings.model.dto.Port;
 import com.kh.javaray.shipping.shippings.model.dto.SearchPort;
 import com.kh.javaray.shipping.shippings.model.dto.Shipping;
 import com.kh.javaray.shipping.shippings.model.dto.ShippingOption;
-import com.kh.javaray.shipping.shippings.model.dto.UpdateFormDTO;
+import com.kh.javaray.shipping.shippings.model.dto.ShippingFormDTO;
 
 @Mapper
 public interface ShippingMapper {
@@ -41,7 +41,7 @@ public interface ShippingMapper {
 	
 	String findByShippingNo(String shippingNo);
 
-	void updateShipping(UpdateFormDTO shipping);
+	void updateShipping(ShippingFormDTO shipping);
 	
 	@Insert("INSERT INTO TB_ENABLE_FISH VALUES(#{shippingNo}, #{fishNo})")
 	void updateFish(Fishs fish);
@@ -61,7 +61,7 @@ public interface ShippingMapper {
 	@Delete("DELETE FROM TB_ENABLE_FISH WHERE SHIPPING_NO = #{shippingNo}")
 	void deleteFish(String shippingNo);
 
-	void insertShipping(UpdateFormDTO shipping);
+	void insertShipping(ShippingFormDTO shipping);
 
 	@Update("UPDATE TB_SHIPPING SET STATUS = 'N' WHERE SHIPPING_NO = #{shippingNo}")
 	int deleteShipping(String shippingNo);

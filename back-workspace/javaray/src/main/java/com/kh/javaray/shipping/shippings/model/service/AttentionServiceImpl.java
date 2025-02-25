@@ -13,28 +13,28 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AttentionServiceImpl implements AttentionService {
 	
-	private final AuthenticationService as;
-	private final ShippingMapper sm;
+	private final AuthenticationService authService;
+	private final ShippingMapper shippingMapper;
 
 	@Override
 	public void insertAttention(String shippingNo) {
-		CustomUserDetails user = as.checkedUser();
+		CustomUserDetails user = authService.checkedUser();
 		Attention attention = makingAttention(shippingNo, user);
-		sm.insertAttention(attention);
+		shippingMapper.insertAttention(attention);
 	}
 
 	@Override
 	public void deleteAttention(String shippingNo) {
-		CustomUserDetails user = as.checkedUser();
+		CustomUserDetails user = authService.checkedUser();
 		Attention attention = makingAttention(shippingNo, user);
-		sm.deleteAttention(attention);
+		shippingMapper.deleteAttention(attention);
 	}
 
 	@Override
 	public int selectAttention(String shippingNo) {
-		CustomUserDetails user = as.checkedUser();
+		CustomUserDetails user = authService.checkedUser();
 		Attention att = makingAttention(shippingNo, user);
-		return sm.selectAttention(att);
+		return shippingMapper.selectAttention(att);
 	}
 	
 	private Attention makingAttention(String shippingNo, CustomUserDetails user) {

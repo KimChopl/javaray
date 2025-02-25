@@ -10,11 +10,13 @@ import {
 } from "./FundingGoodsInsert.styles";
 
 import { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../UseContext/Auth/AuthContext";
 import axios from "axios";
 import FundingGoodsOption from "./FundingGoodsOption";
 
 const FundingGoodsForm = () => {
+  const navi = useNavigate();
   const [categoryName, setCategoryName] = useState("");
   const [goodsTitle, setGoodsTitle] = useState("");
   const [goodsContent, setGoodsContent] = useState("");
@@ -108,85 +110,92 @@ const FundingGoodsForm = () => {
 
   const handleInsertFundingGoods = (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("nickName", auth.nickname);
-    formData.append("categoryName", categoryName);
-    formData.append("boardTitle", goodsTitle);
-    formData.append("boardContent", goodsContent);
-    formData.append("startDate", saleStartDate);
-    formData.append("endDate", saleFinishDate);
-    formData.append("purposeAmount", amountOfMoney);
-    console.log(mainFile);
-    console.log(subFiles);
-    if (mainFile) {
-      formData.append("mainFile", mainFile);
-    }
+    if (0 < optionNo) {
+      const formData = new FormData();
+      formData.append("nickName", auth.nickname);
+      formData.append("categoryName", categoryName);
+      formData.append("boardTitle", goodsTitle);
+      formData.append("boardContent", goodsContent);
+      formData.append("startDate", saleStartDate);
+      formData.append("endDate", saleFinishDate);
+      formData.append("purposeAmount", amountOfMoney);
+      console.log(mainFile);
+      console.log(subFiles);
+      if (mainFile) {
+        formData.append("mainFile", mainFile);
+      }
 
-    subFiles.forEach((file) => {
-      formData.append("subFiles", file);
-    });
+      subFiles.forEach((file) => {
+        formData.append("subFiles", file);
+      });
 
-    console.log(formData.get("nickName"));
-    console.log(formData.get("categoryName"));
-    console.log(formData.get("boardTitle"));
-    console.log(formData.get("boardContent"));
-    console.log(formData.get("startDate"));
-    console.log(formData.get("endDate"));
-    console.log(formData.get("purposeAmount"));
-    console.log(formData.get("mainFile"));
-    console.log(typeof saleStartDate);
-    console.log(formData.get("subFiles"));
+      console.log(formData.get("nickName"));
+      console.log(formData.get("categoryName"));
+      console.log(formData.get("boardTitle"));
+      console.log(formData.get("boardContent"));
+      console.log(formData.get("startDate"));
+      console.log(formData.get("endDate"));
+      console.log(formData.get("purposeAmount"));
+      console.log(formData.get("mainFile"));
+      console.log(typeof saleStartDate);
+      console.log(formData.get("subFiles"));
 
-    if (mainFile) {
-      const a = async () => {
-        try {
-          const response = await axios.post(
-            "http://localhost/goods/insert",
-            formData,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-                Authorization: `Bearer ${auth.accessToken}`,
-              },
-            }
-          );
-          console.log(response);
-          console.log(response.data);
-          setBoardNo(response.data);
-
-          return response.data;
-        } catch (error) {
-          console.log(error);
-        }
-      };
-
-      const b = async (boardNo) => {
-        console.log(boardNo);
-        const response = await axios
-          .post(
-            `http://localhost/goods/insert/options?boardNo=${boardNo}`,
-            options,
-            {
-              headers: {
-                Authorization: `Bearer ${auth.accessToken}`,
-              },
-            }
-          )
-          .then((response) => {
+      if (mainFile) {
+        const a = async () => {
+          try {
+            const response = await axios.post(
+              "http://localhost/goods/insert",
+              formData,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                  Authorization: `Bearer ${auth.accessToken}`,
+                },
+              }
+            );
             console.log(response);
-          })
-          .catch((error) => {
+            console.log(response.data);
+            setBoardNo(response.data);
+
+            return response.data;
+          } catch (error) {
             console.log(error);
-          });
-        return response;
-      };
+          }
+        };
 
-      const c = async () => {
-        const boardNo = await a();
-        await b(boardNo);
-      };
+        const b = async (boardNo) => {
+          console.log(boardNo);
+          const response = await axios
+            .post(
+              `http://localhost/goods/insert/options?boardNo=${boardNo}`,
+              options,
+              {
+                headers: {
+                  Authorization: `Bearer ${auth.accessToken}`,
+                },
+              }
+            )
+            .then((response) => {
+              console.log(response);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+          return response;
+        };
 
-      c();
+        const c = async () => {
+          const boardNo = await a();
+          await b(boardNo);
+        };
+
+        c();
+        alert("상품등록에 성공하셨습니다!");
+        navi("/funding");
+      }
+    } else {
+      alert("옵션을 최소 한개를 선택하셔야합니다!");
+      return;
     }
   };
 

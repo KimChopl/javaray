@@ -25,15 +25,23 @@ public class FundingServiceImpl implements FundingService {
 
 	private final FundingMapper fundingMapper;
 	private final AuthenticationService authService;
-	private final FundingFileService fundingFileService;
+	
+	private String getCurrentUserRole() {
+	    CustomUserDetails user = authService.checkedUser();
+	    return user.getAuthorities().iterator().next().getAuthority();
+	}
+	
+	private RowBounds getRowBounds(int page) {
+		int size = 6;
+		return new RowBounds(page * size, size);
+	}
+
 
 	@Override
 	public List<FundingBoardDTO> selectFundingListHasToken(int page, int categoryNo) {
 
-		CustomUserDetails user = authService.checkedUser();
-		String role = user.getAuthorities().iterator().next().getAuthority();
-		int size = 6;
-		RowBounds rowBounds = new RowBounds(page * size, size);
+		String role = getCurrentUserRole();
+		RowBounds rowBounds = getRowBounds(page);
 
 		List<FundingBoardDTO> list = fundingMapper.selectBoardList(rowBounds, categoryNo);
 		if (!list.isEmpty()) {
@@ -50,13 +58,11 @@ public class FundingServiceImpl implements FundingService {
 				if (totalList.getUserNo() != null) {
 					String companyName = companyNameMap.get(totalList.getUserNo());
 					if (companyName != null) {
-						log.info("{}",role);
 						totalList.setCompanyName(companyName);
 						totalList.setRole(role);
 					}
 				}
 			}
-			log.info("나야나 {}", list);
 			return list;
 		} else {
 			FundingBoardDTO emptyBoardDTO = new FundingBoardDTO();
@@ -69,9 +75,8 @@ public class FundingServiceImpl implements FundingService {
 	// 토큰없을 때 메인 페이지 전체조회
 	@Override
 	public List<FundingBoardDTO> selectFundingListHasNoneToken(int page, int categoryNo) {
-
-		int size = 6;
-		RowBounds rowBounds = new RowBounds(page * size, size);
+		
+		RowBounds rowBounds = getRowBounds(page);
 
 		List<FundingBoardDTO> list = fundingMapper.selectBoardList(rowBounds, categoryNo);
 		List<FundingCompanyNameDTO> companyNameList = fundingMapper.selectCompanyName();
