@@ -41,5 +41,5 @@ public class FundingBoardDTO  {
 	private FundingCategoryDTO fundingCategory;
 	private List<FundingOptionDTO> fundingOptionList;
 	private List<FundingFileDTO> fundingFileList;
-//	
+
 }
