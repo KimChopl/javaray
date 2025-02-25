@@ -50,7 +50,7 @@ const ShippingInsertForm = () => {
   const [shipping, setShipping] = useState({
     shippingTitle: "",
     shippingContent: "",
-    allowPepleNo: "",
+    allowPeopleNo: "",
     price: "",
     fishs: [],
     options: [],
@@ -144,8 +144,8 @@ const ShippingInsertForm = () => {
   const insert = () => {
     const resultArr = [
       ...checkedLength([shipping.options, shipping.fishs]),
-      ...checkedVacuum([shipping.shippingTitle, shipping.hippingContent]),
-      ...checkedNegative([shipping.allowPepleNo, shipping.price]),
+      ...checkedVacuum([shipping.shippingTitle, shipping.shippingContent]),
+      ...checkedNegative([shipping.allowPeopleNo, shipping.price]),
       chekedAddress(shipping.port),
     ];
     if (resultArr.includes(true)) {
@@ -247,9 +247,9 @@ const ShippingInsertForm = () => {
             <PepleDiv>
               <PepleInput
                 type="number"
-                value={shipping.allowPepleNo}
+                value={shipping.allowPeopleNo}
                 onChange={valueChange}
-                name="allowPepleNo"
+                name="allowPeopleNo"
               />
             </PepleDiv>
           </LocationPepleDiv>
