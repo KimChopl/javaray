@@ -56,6 +56,7 @@ public class BusinessNoServiceImpl implements BusinessNoService {
 	}
 
 	@Override
+	@Transactional
 	public void insertBoard(BusinessNoDTO businessNoData, MultipartFile file) {
 		
 		CustomUserDetails user = authService.checkedUser();
