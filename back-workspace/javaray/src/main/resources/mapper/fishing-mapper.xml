@@ -40,9 +40,19 @@
 	</insert>
 	
 	<insert id="saveFish">
-	    INSERT INTO TB_REGISTERED_FISH (FISHING_NO, FISH_NO)
+	    INSERT 
+	      INTO 
+	      		TB_REGISTERED_FISH 
+	      		(
+				FISHING_NO, 
+				FISH_NO
+				)
 	    <foreach collection="fishList" item="fish" separator=" UNION ALL ">
-	        SELECT #{fish.fishingNo}, #{fish.fishNo} FROM DUAL
+	     SELECT 
+	     		#{fish.fishingNo}, 
+	     		#{fish.fishNo} 
+	      FROM 
+	     		DUAL
 	    </foreach>
 	</insert>
 
@@ -57,7 +67,6 @@
 				)
 		<foreach collection="amenitiesList" item="amenities" separator=" UNION ALL ">
 		SELECT
-	  			
 				#{amenities.fishingNo},
 				#{amenities.amenitiesNo}
 		  FROM
