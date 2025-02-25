@@ -30,25 +30,28 @@ public class ImageServiceImpl implements ImageService {
 	private final UploadImage uploadImage;
 	private final ShippingMapper shippingMapper;
 
-	private Map<String, List<Image>> checkedDeleteImage(List<Image> beforeImage, List<Image> changeImage) {
+	private Map<String, List<Image>> checkedDeleteImage(List<Image> beforeImage, 
+														List<Image> changeImage) {
 		Map<String, List<Image>> map = new HashMap<String, List<Image>>();
-			Set<String> setImage = changeImage.stream().map(Image::getImageChangeName).collect(Collectors.toSet());
-			List<Image> deleteImage = beforeImage.stream().filter(image -> !setImage.contains(image.getImageChangeName()))
-					.collect(Collectors.toList());
-			List<Image> remainImage = beforeImage.stream().filter(image -> setImage.contains(image.getImageChangeName()))
-					.collect(Collectors.toList());
-			List<Image> imageLevel = deleteImage.stream().filter(image -> 1 == image.getImageLevel()).collect(Collectors.toList());
-			map.put("deleteImage", deleteImage);
-			map.put("remainImage", remainImage);
-			map.put("imageLevel", imageLevel);
-			return map;
+		Set<String> setImage = changeImage.stream().map(Image::getImageChangeName).
+														collect(Collectors.toSet());
+		List<Image> deleteImage = beforeImage.stream().filter(image -> 
+						!setImage.contains(image.getImageChangeName())).collect(Collectors.toList());
+		List<Image> remainImage = beforeImage.stream().filter(image -> 
+						setImage.contains(image.getImageChangeName())).collect(Collectors.toList());
+		List<Image> imageLevel = deleteImage.stream().filter(image -> 1 == image.getImageLevel())
+				.collect(Collectors.toList());
+		map.put("deleteImage", deleteImage);
+		map.put("remainImage", remainImage);
+		map.put("imageLevel", imageLevel);
+		return map;
 	}
-	
+
 	private boolean deleteBeforeImage(List<Image> list, List<Image> imageList) {
-		if(list == null || list.isEmpty()) {
+		if (list == null || list.isEmpty()) {
 			return true;
 		}
-		if (list.size() != imageList.size()) { // 기존 사진에서 삭제한 사진이 있는지
+		if (list.size() != imageList.size()) {
 			Map<String, List<Image>> map = checkedDeleteImage(list, imageList);
 			List<Image> deleteImage = map.get("deleteImage");
 			List<Image> remainImage = map.get("remainImage");
@@ -105,7 +108,7 @@ public class ImageServiceImpl implements ImageService {
 			throw new FailDeleteObjectException("업데이트 중 문제가 발생했습니다. 다시 시도해주세요.");
 		}
 	}
-	
+
 	@Override
 	public void insertImage(List<Image> images) {
 		if (images != null) {

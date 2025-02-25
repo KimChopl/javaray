@@ -96,8 +96,9 @@ public class ShippingController {
 	}
 
 	@PutMapping
-	public ResponseEntity<ShippingFormDTO> updateShipping(@RequestParam(name = "files", required = false) MultipartFile[] files,
-														@RequestParam(name = "shipping") String shipping) {
+	public ResponseEntity<ShippingFormDTO> updateShipping(
+			@RequestParam(name = "files", required = false) MultipartFile[] files,
+			@RequestParam(name = "shipping") String shipping) {
 		ShippingFormDTO updateShipping = shippingService.updateShipping(files, shipping);
 		return ResponseEntity.status(HttpStatus.CREATED).body(updateShipping);
 	}

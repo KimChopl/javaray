@@ -8,7 +8,7 @@
 		<id property="shippingNo" column="shippingNo" />
 		<result property="shippingTitle" column="shippingTitle"/>
 		<result property="shippingContent" column="shippingContent"/>
-		<result property="allowPepleNo" column="allowPepleNo" />
+		<result property="allowPeopleNo" column="allowPeopleNo" />
 		<result property="shippingCreateDate" column="shippingCreateDate" />
 		<result property="shippingModifyDate" column="shippingModifyDate"/>
 		<result property="avgRating" column="avgRating" />
@@ -51,7 +51,7 @@
 	<resultMap id="shippings" type="Shipping">
 		<id property="shippingNo" column="shippingNo"/>
 		<result property="shippingTitle" column="shippingTitle"/>
-		<result property="allowPepleNo" column="allowPepleNo"/>
+		<result property="allowPeopleNo" column="allowPeopleNo"/>
 		<result property="shippingCreateDate" column="shippingCreateDate"/>
 		<result property="avgRating" column="avgRating" />
 		<result property="price" column="price" />
@@ -79,7 +79,7 @@
 		       TM.USER_ID username,
 		       TM.NICKNAME nickname,
 		       SHIPPING_TITLE shippingTitle,
-		       ALLOW_PEPLE_NO allowPepleNo,
+		       ALLOW_PEOPLE_NO allowPeopleNo,
 		       PRICE price,
 		       ADDRESS address,
 		       SHIPPING_CREATE_DATE shippingCreateDate,
@@ -147,7 +147,7 @@
 		       TS.SHIPPING_NO shippingNo,
 		       TS.SHIPPING_TITLE shippingTitle,
 		       TS.SHIPPING_CONTENT shippingCOntent,
-		       TS.ALLOW_PEPLE_NO allowPepleNo,
+		       TS.ALLOW_PEOPLE_NO allowPeopleNo,
 		       TS.SHIPPING_CREATE_DATE shippingCreateDate,
 		       TS.SHIPPING_MODIFY_DATE shippingModifyDate,
 		       ROUND(avgRating, 2) avgRating,
@@ -313,20 +313,20 @@
 		 WHERE
 		       SHIPPING_NO = ${shippingNo}
 	</select>
-	<update id="updateShipping" parameterType="UpdateFormDTO">
+	<update id="updateShipping" parameterType="ShippingFormDTO">
 		UPDATE
 		       TB_SHIPPING
 		   SET
 		       SHIPPING_TITLE = #{shippingTitle},
 		       SHIPPING_CONTENT = #{shippingContent},
-		       ALLOW_PEPLE_NO = #{allowPepleNo},
+		       ALLOW_PEOPLE_NO = #{allowPeopleNo},
 		       PRICE = #{price},
 		       PORT_NO = #{port.portNo}
 		 WHERE
 		       SHIPPING_NO = #{shippingNo}
 	</update>
 	
-	<insert id="insertShipping" parameterType="UpdateFormDTO">
+	<insert id="insertShipping" parameterType="ShippingFormDTO">
 		INSERT
 		  INTO
 		       TB_SHIPPING
@@ -336,7 +336,7 @@
 				USER_NO,
 				SHIPPING_TITLE,
 				SHIPPING_CONTENT,
-				ALLOW_PEPLE_NO,
+				ALLOW_PEOPLE_NO,
 				PRICE
 			   )
 		VALUES
@@ -346,7 +346,7 @@
 				#{userNo},
 				#{shippingTitle},
 				#{shippingContent},
-				#{allowPepleNo},
+				#{allowPeopleNo},
 				#{price}
 			   )
 		<selectKey keyProperty="shippingNo" resultType="string" order="AFTER">

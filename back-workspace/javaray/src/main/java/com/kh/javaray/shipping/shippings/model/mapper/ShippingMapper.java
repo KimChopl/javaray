@@ -43,6 +43,12 @@ public interface ShippingMapper {
 
 	void updateShipping(ShippingFormDTO shipping);
 	
+	@Select("SELECT SHIPPING_NO shippingNo, SHIPPING_SERVICE serviceNo FROM TB_SHIPPING_SERVICE WHERE SHIPPING_NO = #{shippingNo}")
+	List<ShippingOption> selectOption(String shippingNo);
+	
+	@Select("SELECT SHIPPING_NO shippingNo, FISH_NO fishNo FROM TB_ENABLE_FISH WHERE SHIPPING_NO = #{shippingNo}")
+	List<Fishs> selectFishsByShippingNo(String shippingNo);
+	
 	@Insert("INSERT INTO TB_ENABLE_FISH VALUES(#{shippingNo}, #{fishNo})")
 	void updateFish(Fishs fish);
 
@@ -50,14 +56,8 @@ public interface ShippingMapper {
 	int updateOption(ShippingOption option);
 	
 	@Delete("DELETE FROM TB_SHIPPING_SERVICE WHERE SHIPPING_NO = #{shippingNo}")
-	void deleteOption(String shippingNo);
+	int deleteOption(String shippingNo);
 
-	@Select("SELECT SHIPPING_NO shippingNo, SHIPPING_SERVICE serviceNo FROM TB_SHIPPING_SERVICE WHERE SHIPPING_NO = #{shippingNo}")
-	List<ShippingOption> selectOption(String shippingNo);
-
-	@Select("SELECT SHIPPING_NO shippingNo, FISH_NO fishNo FROM TB_ENABLE_FISH WHERE SHIPPING_NO = #{shippingNo}")
-	List<Fishs> selectFishsByShippingNo(String shippingNo);
-	
 	@Delete("DELETE FROM TB_ENABLE_FISH WHERE SHIPPING_NO = #{shippingNo}")
 	void deleteFish(String shippingNo);
 

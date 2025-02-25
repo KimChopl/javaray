@@ -88,7 +88,7 @@ public class ShippingServiceImpl implements ShippingService {
 		if (!shipping.getMember().getUserNo().equals(user.getUserNo())) {
 			throw new NotMatchUserInfoException("유저 정보가 일치하지 않습니다.");
 		}
-		Shipping update = Shipping.builder().allowPepleNo(shipping.getAllowPepleNo()).fishs(shipping.getFishs())
+		Shipping update = Shipping.builder().allowPeopleNo(shipping.getAllowPeopleNo()).fishs(shipping.getFishs())
 				.images(shipping.getImages()).member(shipping.getMember()).options(shipping.getOptions())
 				.port(shipping.getPort()).price(shipping.getPrice())
 				.shippingContent(xssService.changeSelectForm(shipping.getShippingContent())).shippingNo(shippingNo)
@@ -170,9 +170,10 @@ public class ShippingServiceImpl implements ShippingService {
 		shippingMapper.updateShipping(shipping);
 		updateValues(shipping);
 		List<Image> changeImage = shipping.getImages();
-		List<Image> uploadImage = settingImageShippingNo(imageService.checkedImageMain(changeImage, files, shippingNo), shippingNo);
+		List<Image> uploadImage = settingImageShippingNo(
+									imageService.checkedImageMain(changeImage, files, shippingNo), shippingNo);
 		imageService.insertImage(uploadImage);
-		return shipping; // 의문
+		return shipping;
 	}
 
 	

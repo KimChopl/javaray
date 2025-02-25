@@ -7,38 +7,22 @@ import {
   ComplateBtn,
   ContentDiv,
   ContentText,
-  FishsDiv,
-  ImageBigDiv,
-  InputImg,
   LocationAndPeple,
-  LocationDiv,
-  LocationP,
-  LocationPepleDiv,
   OptionDiv,
   OptionLine,
-  PepleDiv,
-  PepleInput,
-  PriceDiv,
-  PriceInput,
-  PriceP,
   SearchBtn,
-  SearchFishDiv,
   TitleDiv,
   TitleInput,
-  UploadImg,
 } from "./ShippingUpdateCss";
-import Modal from "../../Modal/Modal";
-import ShippingFish from "./UpdateFormComponent/Fish";
-import {
-  ShippingBeforeImage,
-  ShippingNewImage,
-} from "./UpdateFormComponent/ShippingImage";
 import { OptionCheckbox } from "./UpdateFormComponent/OptionCheckbox";
 import options from "./options.json";
+import UpdateImages from "./UpdateFormComponent/UpdateImages/UpdateImages";
+import ShippingPrice from "./UpdateFormComponent/ShippingPrice/ShippingPrice";
+import UpdateFish from "./UpdateFormComponent/UpdateFish/UpdateFish";
+import UpdatePort from "./UpdateFormComponent/UpdateAddress/UpdatePort";
+import UpdatePeople from "./UpdateFormComponent/UpdatePeople/UpdatePeople";
 
 const ShippingUpdate = () => {
-  const [searchAddress, setSearchAddress] = useState(false);
-  const [searchFish, setSearchFish] = useState(false);
   const [option, setOption] = useState(options);
   const [shipping, setShipping] = useState({});
   const [imageUrl, setImageUrl] = useState([]);
@@ -46,7 +30,6 @@ const ShippingUpdate = () => {
   const [load, setLoad] = useState(true);
   const { auth } = useContext(AuthContext);
   const { shippingNo } = useParams();
-  const inputFileRef = useRef(null);
   const navi = useNavigate();
 
   const valueChange = (e) => {
@@ -62,7 +45,6 @@ const ShippingUpdate = () => {
       const findSelect = service.find(
         (service) => service.serviceNo === option.no
       );
-
       if (findSelect) {
         option.isSelect = true;
       }
@@ -79,14 +61,6 @@ const ShippingUpdate = () => {
 
   const isLoad = (e) => {
     setLoad(e);
-  };
-
-  const isAddress = (e) => {
-    setSearchAddress(e);
-  };
-
-  const isFish = (e) => {
-    setSearchFish(e);
   };
 
   const checkedLength = (arr) => {
@@ -110,13 +84,14 @@ const ShippingUpdate = () => {
         shipping.shippingNo,
         shipping.shippingContent,
       ]),
-      ...checkedNegative([shipping.allowPepleNo, shipping.price]),
+      ...checkedNegative([shipping.allowPeopleNo, shipping.price]),
       chekedAddress(shipping.port),
     ];
     return resultArr;
   };
 
   const update = () => {
+    console.log(shipping)
     const resultArr = settingResultArr();
     if (resultArr.includes(true)) {
       alert("모든 내용을 채워주세요.");
@@ -152,17 +127,6 @@ const ShippingUpdate = () => {
       .catch(() => alert("수정에 실패하였습니다."));
   };
 
-  const uploadImg = (e) => {
-    const fileList = Array.from(e.target.files);
-    setFiles(fileList);
-    const url = fileList.map((image) => URL.createObjectURL(image));
-    setImageUrl([...imageUrl, ...url]);
-  };
-
-  const imgDivClick = () => {
-    inputFileRef.current.click();
-  };
-
   useEffect(() => {
     const accessToken = auth.accessToken;
     if (false !== auth.isAhenticated || auth.nickname === shippingNo) {
@@ -171,6 +135,7 @@ const ShippingUpdate = () => {
           headers: { Authorization: `Bearer ${accessToken}` },
         })
         .then((response) => {
+          console.log(response.data)
           setShipping(() => response.data);
           setOption(isSelected(response.data.options));
           isLoad(false);
@@ -198,71 +163,12 @@ const ShippingUpdate = () => {
             name="shippingTitle"
           ></TitleInput>
         </TitleDiv>
-        <ImageBigDiv>
-          {shipping.images && (
-            <ShippingBeforeImage
-              image={shipping.images}
-              setImage={objectChange}
-            />
-          )}
-          <ShippingNewImage
-            setFiles={setFiles}
-            setImageUrl={setImageUrl}
-            imageUrl={imageUrl}
-          />
-          <UploadImg onClick={imgDivClick} />
-          <InputImg
-            type="file"
-            multiple
-            onChange={uploadImg}
-            ref={inputFileRef}
-          />
-        </ImageBigDiv>
-        <PriceDiv>
-          <PriceP>인당 탑승 인원</PriceP>
-          <PriceInput
-            type="number"
-            value={shipping.price}
-            onChange={valueChange}
-          />
-        </PriceDiv>
-        <FishsDiv>
-          {shipping.fishs &&
-            shipping.fishs.map((fishs) => {
-              return (
-                <ShippingFish
-                  setFish={objectChange}
-                  fishs={fishs}
-                  fish={shipping.fishs}
-                />
-              );
-            })}
-          <SearchFishDiv>
-            <SearchBtn onClick={() => isFish(true)}>검색하기</SearchBtn>
-          </SearchFishDiv>
-        </FishsDiv>
+        <UpdateImages info={{setFiles, setImageUrl, imageUrl, objectChange}} images={shipping.images}/>
+        <ShippingPrice price={shipping.price} valueChange={valueChange}/>
+        <UpdateFish fishs={shipping.fishs} info={{objectChange}}/>
         <LocationAndPeple>
-          <LocationPepleDiv>
-            <LocationDiv>
-              {shipping.port && <LocationP>{shipping.port.address}</LocationP>}
-            </LocationDiv>
-            <SearchFishDiv>
-              <SearchBtn onClick={() => isAddress(true)}>검색하기</SearchBtn>
-            </SearchFishDiv>
-          </LocationPepleDiv>
-          <LocationPepleDiv>
-            <LocationDiv>
-              <LocationP>예약 가능 인원</LocationP>
-            </LocationDiv>
-            <PepleDiv>
-              <PepleInput
-                type="number"
-                value={shipping.allowPepleNo}
-                name="peple"
-                onChange={valueChange}
-              />
-            </PepleDiv>
-          </LocationPepleDiv>
+          <UpdatePort port={shipping.port} objectChange={objectChange}/>
+          <UpdatePeople allowPeopleNo={shipping.allowPeopleNo} valueChange={valueChange}/>
         </LocationAndPeple>
         <OptionDiv>
           <OptionLine>
@@ -286,22 +192,7 @@ const ShippingUpdate = () => {
           <SearchBtn onClick={update}>수정하기</SearchBtn>
         </ComplateBtn>
       </DetailWarp>
-      {searchFish && (
-        <Modal
-          clickModal={isFish}
-          kind={"searchFish"}
-          selectedFish={shipping.fishs}
-          setFish={objectChange}
-        />
-      )}
-      {searchAddress && (
-        <Modal
-          clickModal={isAddress}
-          setAddress={objectChange}
-          kind={"searchAddress"}
-          port={shipping.port}
-        />
-      )}
+      
     </>
   );
 };
