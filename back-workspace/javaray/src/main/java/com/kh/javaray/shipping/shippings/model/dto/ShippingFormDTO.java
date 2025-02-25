@@ -20,7 +20,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 @ToString
-public class UpdateFormDTO {
+public class ShippingFormDTO {
 	
 	private String shippingNo;
 	private String shippingTitle;

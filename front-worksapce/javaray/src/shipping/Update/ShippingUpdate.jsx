@@ -37,50 +37,48 @@ import { OptionCheckbox } from "./UpdateFormComponent/OptionCheckbox";
 import options from "./options.json";
 
 const ShippingUpdate = () => {
-  const [load, setLoad] = useState(true);
-  const { shippingNo } = useParams();
-  const { auth } = useContext(AuthContext);
-  const [content, setContent] = useState("");
-  const [title, setTitle] = useState("");
-  const [peple, setPeple] = useState("");
-  const [address, setAddress] = useState({});
-  const [image, setImage] = useState([]);
-  const [service, setService] = useState([]);
-  const [fish, setFish] = useState([]);
-  const [price, setPrice] = useState(0);
-  const [searchFish, setSearchFish] = useState(false);
   const [searchAddress, setSearchAddress] = useState(false);
+  const [searchFish, setSearchFish] = useState(false);
+  const [option, setOption] = useState(options);
+  const [shipping, setShipping] = useState({});
   const [imageUrl, setImageUrl] = useState([]);
   const [files, setFiles] = useState([]);
-  const navi = useNavigate();
+  const [load, setLoad] = useState(true);
+  const { auth } = useContext(AuthContext);
+  const { shippingNo } = useParams();
   const inputFileRef = useRef(null);
-  const [option, setOption] = useState(options);
-  const titleChange = (e) => {
-    setTitle(e.target.value);
-  };
-  const pepleChange = (e) => {
-    setPeple(e.target.value);
-  };
-  const contentChange = (e) => {
-    setContent(e.target.value);
-  };
-  const isLoad = (e) => {
-    setLoad(e);
+  const navi = useNavigate();
+
+  const valueChange = (e) => {
+    const { name, value } = e.target;
+    setShipping({
+      ...shipping,
+      [name]: value,
+    });
   };
 
-  const selectFish = (e) => {
-    setFish(e);
-  };
+  const isSelected = (service) => {
+    options.forEach((option) => {
+      const findSelect = service.find(
+        (service) => service.serviceNo === option.no
+      );
 
-  const isSelcted = (e) => {
-    option.forEach((option) => {
-      const findOption = e.find((service) => service.serviceNo === option.no);
-      if (findOption) {
+      if (findSelect) {
         option.isSelect = true;
       }
     });
-    setService(e);
-    return option;
+    return options;
+  };
+
+  const objectChange = (obj, name) => {
+    setShipping({
+      ...shipping,
+      [name]: obj,
+    });
+  };
+
+  const isLoad = (e) => {
+    setLoad(e);
   };
 
   const isAddress = (e) => {
@@ -91,36 +89,54 @@ const ShippingUpdate = () => {
     setSearchFish(e);
   };
 
+  const checkedLength = (arr) => {
+    return arr.map((arr) => arr.length === 0);
+  };
+  const checkedVacuum = (arr) => {
+    return arr.map((arr) => arr.trim() === "");
+  };
+  const checkedNegative = (arr) => {
+    return arr.map((arr) => arr < 1);
+  };
+  const chekedAddress = (add) => {
+    return (add) => Object.keys(add).length === 0;
+  };
+
+  const settingResultArr = () => {
+    const resultArr = [
+      ...checkedLength([shipping.fishs, shipping.options]),
+      ...checkedVacuum([
+        shipping.shippingTitle,
+        shipping.shippingNo,
+        shipping.shippingContent,
+      ]),
+      ...checkedNegative([shipping.allowPepleNo, shipping.price]),
+      chekedAddress(shipping.port),
+    ];
+    return resultArr;
+  };
 
   const update = () => {
-    if (
-      shippingNo.trim() === "" ||
-      content.trim() === "" ||
-      title.trim() === "" ||
-      peple < 1 ||
-      price < 1 ||
-      fish.length < 1 ||
-      service.length < 1
-    ) {
-      alert("모든 내용을 채워 주세요.");
+    const resultArr = settingResultArr();
+    if (resultArr.includes(true)) {
+      alert("모든 내용을 채워주세요.");
       return;
     }
+    const {
+      attention,
+      avgRating,
+      shippingCreateDate,
+      shippingModifyDate,
+      member,
+      ...newShipping
+    } = shipping;
     const formData = new FormData();
-    const shipping = {
-      shippingNo: shippingNo,
-      shippingTitle: title,
-      shippingContent: content,
-      allowPepleNo: peple,
-      price: price,
-      images: image,
-      options: service,
-      fishs: fish,
-      port: address,
-    };
-    formData.append("shipping", JSON.stringify(shipping));
+    formData.append("shipping", JSON.stringify(newShipping));
 
     if (files.length !== 0) {
-      for (let i = 0; i < files.length; i++) formData.append("files", files[i]);
+      for (let i = 0; i < files.length; i++) {
+        formData.append("files", files[i]);
+      }
     }
     axios
       .put(`http://localhost/shippings`, formData, {
@@ -131,9 +147,9 @@ const ShippingUpdate = () => {
       })
       .then(() => {
         alert("수정 성공");
-        navi(-1);
+        navi(`/shipping/detail/${shippingNo}`);
       })
-      .catch((e) => console.log(e));
+      .catch(() => alert("수정에 실패하였습니다."));
   };
 
   const uploadImg = (e) => {
@@ -147,10 +163,6 @@ const ShippingUpdate = () => {
     inputFileRef.current.click();
   };
 
-  const priceChange = (e) => {
-    setPrice(e.target.value);
-  };
-
   useEffect(() => {
     const accessToken = auth.accessToken;
     if (false !== auth.isAhenticated || auth.nickname === shippingNo) {
@@ -159,19 +171,12 @@ const ShippingUpdate = () => {
           headers: { Authorization: `Bearer ${accessToken}` },
         })
         .then((response) => {
-          const data = response.data;
-          setContent(data.shippingContent);
-          setTitle(data.shippingTitle);
-          setImage(data.images);
-          setPeple(data.allowPepleNo);
-          setAddress(data.port);
-          setFish(data.fishs);
-          setPrice(data.price);
-          setOption(isSelcted(data.options));
+          setShipping(() => response.data);
+          setOption(isSelected(response.data.options));
           isLoad(false);
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          return <Load>로링 중입니다. 너무 오래 걸리면 새로고침 해주세요</Load>;
         });
     } else {
       alert("작성자만 이용할 수 있는 서비스 입니다.");
@@ -187,10 +192,19 @@ const ShippingUpdate = () => {
       <DetailWarp>
         <h1>수정하기</h1>
         <TitleDiv>
-          <TitleInput value={title} onChange={titleChange}></TitleInput>
+          <TitleInput
+            value={shipping.shippingTitle}
+            onChange={valueChange}
+            name="shippingTitle"
+          ></TitleInput>
         </TitleDiv>
         <ImageBigDiv>
-          <ShippingBeforeImage image={image} setImage={setImage} />
+          {shipping.images && (
+            <ShippingBeforeImage
+              image={shipping.images}
+              setImage={objectChange}
+            />
+          )}
           <ShippingNewImage
             setFiles={setFiles}
             setImageUrl={setImageUrl}
@@ -206,12 +220,23 @@ const ShippingUpdate = () => {
         </ImageBigDiv>
         <PriceDiv>
           <PriceP>인당 탑승 인원</PriceP>
-          <PriceInput type="number" value={price} onChange={priceChange} />
+          <PriceInput
+            type="number"
+            value={shipping.price}
+            onChange={valueChange}
+          />
         </PriceDiv>
         <FishsDiv>
-          {fish.map((fishs) => (
-            <ShippingFish setFish={setFish} fishs={fishs} fish={fish} />
-          ))}
+          {shipping.fishs &&
+            shipping.fishs.map((fishs) => {
+              return (
+                <ShippingFish
+                  setFish={objectChange}
+                  fishs={fishs}
+                  fish={shipping.fishs}
+                />
+              );
+            })}
           <SearchFishDiv>
             <SearchBtn onClick={() => isFish(true)}>검색하기</SearchBtn>
           </SearchFishDiv>
@@ -219,7 +244,7 @@ const ShippingUpdate = () => {
         <LocationAndPeple>
           <LocationPepleDiv>
             <LocationDiv>
-              <LocationP>{address.address}</LocationP>
+              {shipping.port && <LocationP>{shipping.port.address}</LocationP>}
             </LocationDiv>
             <SearchFishDiv>
               <SearchBtn onClick={() => isAddress(true)}>검색하기</SearchBtn>
@@ -230,26 +255,32 @@ const ShippingUpdate = () => {
               <LocationP>예약 가능 인원</LocationP>
             </LocationDiv>
             <PepleDiv>
-              <PepleInput type="number" value={peple} onChange={pepleChange} />
+              <PepleInput
+                type="number"
+                value={shipping.allowPepleNo}
+                name="peple"
+                onChange={valueChange}
+              />
             </PepleDiv>
           </LocationPepleDiv>
         </LocationAndPeple>
         <OptionDiv>
           <OptionLine>
-            {option.map((options, index) => (
-              <OptionCheckbox
-                options={options}
-                option={option}
-                index={index}
-                setOption={setOption}
-                service={service}
-                setService={setService}
-              />
-            ))}
+            <OptionCheckbox
+              options={option}
+              service={shipping.options}
+              setOption={setOption}
+              setService={objectChange}
+              shipping={shipping}
+            />
           </OptionLine>
         </OptionDiv>
         <ContentDiv>
-          <ContentText value={content} onChange={contentChange}></ContentText>
+          <ContentText
+            value={shipping.shippingContent}
+            onChange={valueChange}
+            name="shippingContent"
+          ></ContentText>
         </ContentDiv>
         <ComplateBtn>
           <SearchBtn onClick={update}>수정하기</SearchBtn>
@@ -259,16 +290,16 @@ const ShippingUpdate = () => {
         <Modal
           clickModal={isFish}
           kind={"searchFish"}
-          selectedFish={fish}
-          setFish={selectFish}
+          selectedFish={shipping.fishs}
+          setFish={objectChange}
         />
       )}
       {searchAddress && (
         <Modal
           clickModal={isAddress}
-          setAddress={setAddress}
+          setAddress={objectChange}
           kind={"searchAddress"}
-          port={address}
+          port={shipping.port}
         />
       )}
     </>

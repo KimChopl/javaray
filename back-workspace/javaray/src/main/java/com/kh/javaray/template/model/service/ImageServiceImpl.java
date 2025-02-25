@@ -26,9 +26,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
 
-	private final ImageMapper im;
-	private final UploadImage ui;
-	private final ShippingMapper sm;
+	private final ImageMapper imageMapper;
+	private final UploadImage uploadImage;
+	private final ShippingMapper shippingMapper;
 
 	private Map<String, List<Image>> checkedDeleteImage(List<Image> beforeImage, List<Image> changeImage) {
 		Map<String, List<Image>> map = new HashMap<String, List<Image>>();
@@ -54,9 +54,9 @@ public class ImageServiceImpl implements ImageService {
 			List<Image> remainImage = map.get("remainImage");
 			List<Image> imageLevel = map.get("imageLevel");
 			deleteImage(deleteImage);
-			ui.delete(deleteImage);
+			uploadImage.delete(deleteImage);
 			if (!imageLevel.isEmpty() && !remainImage.isEmpty()) {
-				im.updateImageLevel(remainImage.get(0).getImageNo());
+				imageMapper.updateImageLevel(remainImage.get(0).getImageNo());
 				return false;
 			}
 			if (remainImage.isEmpty()) {
@@ -69,14 +69,14 @@ public class ImageServiceImpl implements ImageService {
 
 	@Override
 	public List<Image> checkedImageMain(List<Image> imageList, MultipartFile[] files, String shippingNo) {
-		Shipping ship = sm.selectShippingDetail(shippingNo);
+		Shipping ship = shippingMapper.selectShippingDetail(shippingNo);
 		List<Image> list = ship.getImages();
 		MultipartFile[] uploadFiles = null;
 		boolean isMain;
 		if (files != null) {
 			uploadFiles = files;
 			isMain = deleteBeforeImage(list, imageList);
-			return ui.store(uploadFiles, isMain);
+			return uploadImage.store(uploadFiles, isMain);
 		} else {
 			deleteBeforeImage(list, imageList);
 			return null;
@@ -85,14 +85,14 @@ public class ImageServiceImpl implements ImageService {
 
 	@Override
 	public List<Image> checkedImageMain(MultipartFile[] files, String shippingNo) {
-		return ui.store(files, true);
+		return uploadImage.store(files, true);
 	}
 
 	@Override
 	public void deleteImage(List<Image> lists) {
 		int result = 1;
 		for (Image image : lists) {
-			result = result * im.deleteImage(image);
+			result = result * imageMapper.deleteImage(image);
 		}
 		if (result == 0) {
 			throw new FailDeleteObjectException("업데이트 중 문제가 발생했습니다. 다시 시도해주세요.");
@@ -101,7 +101,7 @@ public class ImageServiceImpl implements ImageService {
 
 	@Override
 	public void deleteImage(Image deleteImage) {
-		if (im.deleteImage(deleteImage) == 0) {
+		if (imageMapper.deleteImage(deleteImage) == 0) {
 			throw new FailDeleteObjectException("업데이트 중 문제가 발생했습니다. 다시 시도해주세요.");
 		}
 	}
@@ -111,7 +111,7 @@ public class ImageServiceImpl implements ImageService {
 		if (images != null) {
 			int result = 1;
 			for (Image image : images) {
-				result = im.insertImage(image);
+				result = imageMapper.insertImage(image);
 				if (result == 0) {
 					throw new FailInsertObjectException("업데이트에 실패했습니다. 다시 시도해주세요.");
 				}

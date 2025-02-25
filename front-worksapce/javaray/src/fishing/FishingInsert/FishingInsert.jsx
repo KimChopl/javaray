@@ -51,7 +51,6 @@ const FishingInsert = () => {
   const { auth } = useContext(AuthContext);
   const [selectedAmenities, setSelectedAmenities] = useState([]);
   const [selectedFishes, setSelectedFishes] = useState([]);
-  const [selectedDay, setSelectedDay] = useState([]);
   const [accessToken, setAccessToken] = useState(""); //권한이 있는 사람만 들어올 수 있게 하기 위해
   const navi = useNavigate();
   const [userId, setUserId] = useState("");
@@ -108,7 +107,7 @@ const FishingInsert = () => {
       formData.append("file", file);
     }
 
-    //---- 배열로 변환환
+    //---- 배열로 변환
 
     let amenitiesList = [];
     selectedAmenities.forEach((amenity) => {

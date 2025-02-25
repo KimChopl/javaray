@@ -40,10 +40,7 @@ public class FishingController {
 										, @RequestParam(name="fish") String fish
 										, @RequestParam(name="file", required=false)MultipartFile file){
 		
-		log.info("fishing:{}, amenities:{}", fishing, amenities);
-		
-		
-		
+		//log.info("fishing:{}, amenities:{}", fishing, amenities);
 		
 		service.fishingSave(fishing, file, amenities, fish);
 		

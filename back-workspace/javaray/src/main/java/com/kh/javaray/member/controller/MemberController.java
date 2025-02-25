@@ -28,41 +28,41 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MemberController {
 	
-	private final MemberService ms;
+	private final MemberService memberService;
 	
 	@PostMapping
 	public ResponseEntity<?> insertMember(@Valid @RequestBody MemberDTO member) {
-		ms.insertMember(member);
+		memberService.insertMember(member);
 		return ResponseEntity.ok("회원가입에 완료하였습니다.");
 	}
 	
 	@PostMapping("login")
 	public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginForm requestMember){
-		LoginResponse response = ms.login(requestMember);
+		LoginResponse response = memberService.login(requestMember);
 		return ResponseEntity.ok(response);
 	}
 	
 	@PutMapping("update/all")
 	public ResponseEntity<?> update (@Valid @RequestBody UpdateMemberDTO member){
-		ms.updateAll(member);
+		memberService.updateAll(member);
 		return ResponseEntity.status(HttpStatusCode.valueOf(201)).body("수정에 성공했습니다.");
 	}
 	
 	@PutMapping("update/password")
 	public ResponseEntity<?> updatePassword (@Valid @RequestBody ChangePassword password){
-		ms.updatePassword(password);
+		memberService.updatePassword(password);
 		return ResponseEntity.status(HttpStatusCode.valueOf(201)).body("비밀번호 변경에 성공했습니다. 다시 로그인 하세요.");
 	}
 	
 	@DeleteMapping
 	public ResponseEntity<?> deleteMember (@RequestBody LoginForm userPwd) {
-		ms.deleteMember(userPwd);
+		memberService.deleteMember(userPwd);
 		return ResponseEntity.status(HttpStatusCode.valueOf(201)).body("회원 탈퇴에 완료하였습니다.");
 	}
 	
 	@GetMapping("users")
 	public ResponseEntity<Member> selectUserRole(){
-		Member member = ms.selectUserRole();
+		Member member = memberService.selectUserRole();
 		return ResponseEntity.ok().body(member);
 	}
 
