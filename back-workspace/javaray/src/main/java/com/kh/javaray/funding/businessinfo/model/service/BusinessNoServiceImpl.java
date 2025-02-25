@@ -45,7 +45,6 @@ public class BusinessNoServiceImpl implements BusinessNoService {
 		if(1 != managerMapper.changeRole(managingDTO)) {
 			throw new FailUpdateUserInfoException("업데이트에 실패했습니다. 다시 시도해주세요");
 		}
-		
 	}
 
 	@Override
@@ -70,7 +69,6 @@ public class BusinessNoServiceImpl implements BusinessNoService {
 		
 		businessNoMapper.insertBoard(businessNoData);
 		
-		
 		ManagingDTO managingDTO = new ManagingDTO();
 		managingDTO.setUsername(user.getUsername());
 		managingDTO.setChangeRole("ROLE_FUNDINGCOMPANY");
@@ -78,7 +76,6 @@ public class BusinessNoServiceImpl implements BusinessNoService {
 		if(1 != managerMapper.changeRole(managingDTO)) {
 			throw new FailUpdateUserInfoException("업데이트에 실패했습니다. 다시 시도해주세요");
 		}
-		
 	}
 
 }

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.javaray.funding.businessinfo.model.dto.BusinessNoAPIDTO;
-import com.kh.javaray.funding.businessinfo.model.dto.BusinessNoAPIDTO;
 import com.kh.javaray.funding.businessinfo.model.dto.BusinessNoDTO;
 import com.kh.javaray.funding.businessinfo.model.service.BusinessNoService;
 
@@ -31,7 +30,7 @@ public class BusinessInfoController {
 	private final BusinessNoService businessNoService;
 
 	@PostMapping
-	public ResponseEntity<?> insertBusinessNumber(@RequestBody BusinessNoAPIDTO businessNoAPIData) {
+	public ResponseEntity<?> insertBusinessNumber(@RequestBody @Valid BusinessNoAPIDTO businessNoAPIData) {
 
 		businessNoService.save(businessNoAPIData);
 

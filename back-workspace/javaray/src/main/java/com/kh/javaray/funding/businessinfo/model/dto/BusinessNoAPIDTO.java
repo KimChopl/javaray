@@ -1,5 +1,6 @@
 package com.kh.javaray.funding.businessinfo.model.dto;
 
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -24,7 +25,7 @@ public class BusinessNoAPIDTO {
 	@Pattern(regexp = "^국세청에 등록되지 않은 사업자등록번호입니다.$", message = "등록되어 있지 않은 사업자등록번호입니다.")
 	private String resultContent;
 	
-	@Pattern(regexp = "^[0~9]*$", message = "등록되어 있지 않은 사업자등록번호입니다.")
+	@Digits(integer = 10, fraction = 0, message = "등록되어 있지 않은 사업자등록번호입니다.")
 	private Long resultCode;
 	
 	@NotBlank(message = "신청 게시글 작성자는 비어있을 수 없습니다.")
