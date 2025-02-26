@@ -16,7 +16,7 @@ public class FishingFileService {
 	private final Path fileLocation;
 	
 	public FishingFileService() {
-		this.fileLocation = Paths.get("fishingUploads").toAbsolutePath().normalize();
+		this.fileLocation = Paths.get("uploads/fishing").toAbsolutePath().normalize();
 		
 	}
 	
@@ -27,7 +27,7 @@ public class FishingFileService {
 		try {
 		Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 		
-		return "http://localhost/fishingUploads/" + fileName;
+		return "http://localhost/uploads/fishing/" + fileName;
 		} catch(IOException e) {
 			throw new RuntimeException("파일을 찾을 수 없습니다");
 		}

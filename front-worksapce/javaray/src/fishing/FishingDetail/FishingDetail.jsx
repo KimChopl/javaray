@@ -44,6 +44,7 @@ const FishingDetail = () => {
       .get(`http://localhost/fishing/detail?fishingNo=${fishingNo}`)
       .then((response) => {
         console.log("응답:", response.data);
+        console.log("이미지 경로:", response.filefishingFileUrl);
         setFishingsDetail(response.data);
       })
       .catch((error) => {
@@ -59,7 +60,12 @@ const FishingDetail = () => {
       <DetailWrap>
         <TopWrap>
           <TopBlock>
-            <TopImageBlock src={fishingsDetail.fishingFileUrl}></TopImageBlock>
+            {fishingsDetail.fishingFileUrl && (
+              <TopImageBlock
+                src={fishingsDetail.fishingFileUrl}
+                alt="낚시터 등록 사진"
+              ></TopImageBlock>
+            )}
             <TopTextBlock>
               <DetailTitleBlock>
                 <DetailTitle>{fishingsDetail.fishingName}</DetailTitle>
