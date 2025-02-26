@@ -38,7 +38,7 @@ const FundingGoodsForm = () => {
         setCategories(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        alert("저장된 카테고리가 없습니다.");
       });
   }, []);
 
@@ -128,7 +128,7 @@ const FundingGoodsForm = () => {
       });
 
       if (mainFile) {
-        const a = async () => {
+        const insertMain = async () => {
           try {
             const response = await axios.post(
               "http://localhost/goods/insert",
@@ -143,12 +143,11 @@ const FundingGoodsForm = () => {
             setBoardNo(response.data);
             return response.data;
           } catch (error) {
-            console.log(error);
             alert("펀딩 정보를 다시 입력해주세요.");
           }
         };
 
-        const b = async (boardNo) => {
+        const insertSub = async (boardNo) => {
           const response = await axios
             .post(
               `http://localhost/goods/insert/options?boardNo=${boardNo}`,
@@ -163,18 +162,17 @@ const FundingGoodsForm = () => {
               alert("상품등록에 성공하셨습니다!");
             })
             .catch((error) => {
-              console.log(error);
               alert("옵션을 입력하는데 실패했습니다.");
             });
           return response;
         };
 
-        const c = async () => {
-          const boardNo = await a();
-          await b(boardNo);
+        const totalInsert = async () => {
+          const boardNo = await insertMain();
+          await insertSub(boardNo);
         };
 
-        c();
+        totalInsert();
         navi("/funding");
       }
     } else {

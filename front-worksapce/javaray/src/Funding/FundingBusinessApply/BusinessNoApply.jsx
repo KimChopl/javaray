@@ -82,9 +82,6 @@ const BusinessNoApply = () => {
 
     if (businessNoFile) {
       formData.append("businessNoFile", businessNoFile);
-    } else {
-      alert("사업자등록증 사본을 꼭 넣어 주시기 바랍니다.");
-      return;
     }
 
     axios
