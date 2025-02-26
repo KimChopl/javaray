@@ -22,9 +22,8 @@ public class OptionServiceImpl implements OptionService {
 
 	@Transactional
 	private void deleteOption(String shippingNo) {
-		shippingMapper.deleteOption(shippingNo);
-		List<ShippingOption> list = shippingMapper.selectOption(shippingNo);
-		if (!list.isEmpty()) {
+		int result = shippingMapper.deleteOption(shippingNo);
+		if (result < 1) {
 			throw new NotFoundInfoException("업데이트에 실패 하였습니다.");
 		}
 	}
@@ -43,7 +42,8 @@ public class OptionServiceImpl implements OptionService {
 	}
 
 	@Override
-	 public List<ShippingOption> settingOptionsShippingNo(List<ShippingOption> options, String shippingNo) {
+	 public List<ShippingOption> settingOptionsShippingNo(List<ShippingOption> options, 
+			 											  String shippingNo) {
 		log.info(shippingNo);
 		for (ShippingOption option : options) {
 			option.setShippingNo(shippingNo);

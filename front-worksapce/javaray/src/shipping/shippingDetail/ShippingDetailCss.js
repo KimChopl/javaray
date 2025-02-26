@@ -17,8 +17,9 @@ export const DetailHeader = styled.div`
 
 export const DetailBody = styled.div`
   width: 100%;
-  min-height: 802px;
+  min-height: 900px;
   height: auto;
+  flaot : left;
 `;
 export const DetailBase = styled.div`
   width: 1100px;
@@ -31,8 +32,8 @@ export const ImageCover = styled.div`
   height: 452px;
   padding: 25px;
   display: inline-block;
-  position: relative;
   text-align: left;
+  vertical-align: top;
 `;
 
 export const BaseCover = styled.div`
@@ -47,7 +48,6 @@ export const ImageBox = styled.img`
   height: auto;
   max-height: 100%;
   object-fit: contain;
-  position: absolute;
 `;
 
 export const BaseBar = styled.div`

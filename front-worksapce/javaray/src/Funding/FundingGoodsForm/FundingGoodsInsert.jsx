@@ -119,8 +119,6 @@ const FundingGoodsForm = () => {
       formData.append("startDate", saleStartDate);
       formData.append("endDate", saleFinishDate);
       formData.append("purposeAmount", amountOfMoney);
-      console.log(mainFile);
-      console.log(subFiles);
       if (mainFile) {
         formData.append("mainFile", mainFile);
       }
@@ -128,17 +126,6 @@ const FundingGoodsForm = () => {
       subFiles.forEach((file) => {
         formData.append("subFiles", file);
       });
-
-      console.log(formData.get("nickName"));
-      console.log(formData.get("categoryName"));
-      console.log(formData.get("boardTitle"));
-      console.log(formData.get("boardContent"));
-      console.log(formData.get("startDate"));
-      console.log(formData.get("endDate"));
-      console.log(formData.get("purposeAmount"));
-      console.log(formData.get("mainFile"));
-      console.log(typeof saleStartDate);
-      console.log(formData.get("subFiles"));
 
       if (mainFile) {
         const a = async () => {
@@ -153,18 +140,15 @@ const FundingGoodsForm = () => {
                 },
               }
             );
-            console.log(response);
-            console.log(response.data);
             setBoardNo(response.data);
-
             return response.data;
           } catch (error) {
             console.log(error);
+            alert("펀딩 정보를 다시 입력해주세요.");
           }
         };
 
         const b = async (boardNo) => {
-          console.log(boardNo);
           const response = await axios
             .post(
               `http://localhost/goods/insert/options?boardNo=${boardNo}`,
@@ -176,10 +160,11 @@ const FundingGoodsForm = () => {
               }
             )
             .then((response) => {
-              console.log(response);
+              alert("상품등록에 성공하셨습니다!");
             })
             .catch((error) => {
               console.log(error);
+              alert("옵션을 입력하는데 실패했습니다.");
             });
           return response;
         };
@@ -190,7 +175,6 @@ const FundingGoodsForm = () => {
         };
 
         c();
-        alert("상품등록에 성공하셨습니다!");
         navi("/funding");
       }
     } else {

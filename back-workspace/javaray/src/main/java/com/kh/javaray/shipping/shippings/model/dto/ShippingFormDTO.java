@@ -25,7 +25,7 @@ public class ShippingFormDTO {
 	private String shippingNo;
 	private String shippingTitle;
 	private String shippingContent;
-	private int allowPepleNo;
+	private int allowPeopleNo;
 	private int price;
 	private Long userNo;
 	private Port port;

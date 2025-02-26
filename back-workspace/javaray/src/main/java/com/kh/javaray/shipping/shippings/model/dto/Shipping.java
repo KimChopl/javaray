@@ -24,7 +24,7 @@ public class Shipping {
 	private String shippingNo;
 	private String shippingTitle;
 	private String shippingContent;
-	private int allowPepleNo;
+	private int allowPeopleNo;
 	private Date shippingCreateDate;
 	private Date shippingModifyDate;
 	private double avgRating;

@@ -48,7 +48,6 @@ public class GoodsServiceImpl implements GoodsService {
 				categoryDTO.setCategoryNo(categoryList.get(i).getCategoryNo());
 			}
 		}
-		log.info("{}", categoryDTO);
 		goodsFormData.setFundingCategory(categoryDTO);
 		
 		List<FundingFileDTO> list = new ArrayList();
@@ -76,16 +75,9 @@ public class GoodsServiceImpl implements GoodsService {
 		}
 		
 		goodsMapper.insertBoard(goodsFormData);
-		log.info("{}",goodsFormData);
-		//Long boardNo = goodsMapper.selectBoardNo(goodsFormData);
-		//log.info("{}", boardNo);
-		
-		//goodsFormData.setBoardNo(boardNo);
-		log.info("{}", list);
 		for(int i= 0; i < list.size(); i++) {
 			goodsMapper.insertBoardFiles(list.get(i));
 		}
-		
 		
 		return goodsFormData.getBoardNo();
 	}
@@ -97,7 +89,5 @@ public class GoodsServiceImpl implements GoodsService {
 			optionList.get(i).setRefBno(boardNo);
 			goodsMapper.insertBoardOption(optionList.get(i));
 		}
-		
 	}
-
 }

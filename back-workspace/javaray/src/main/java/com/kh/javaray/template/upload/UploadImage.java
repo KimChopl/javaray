@@ -26,7 +26,7 @@ public class UploadImage {
 private final Path fileLocation;
 	
 	public UploadImage() {
-		this.fileLocation = Paths.get("uploads").toAbsolutePath().normalize(); // 빈등록 못함이렇게 하면
+		this.fileLocation = Paths.get("uploads").toAbsolutePath().normalize(); 
 	}
 	
 	public List<Image> store(MultipartFile[] file, boolean main) {
@@ -49,13 +49,12 @@ private final Path fileLocation;
 			String ex = imageOriginName.substring(imageOriginName.indexOf('.'));
 			String imageChangeName = new StringBuilder(currentTime + (int)random + ex).toString();
 			
-			// 저장 위치 지정
 			Path targetLocation = this.fileLocation.resolve(imageChangeName);
 			
-			// 저장(복사)
 			try {
 				Files.copy(file[i].getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-				Image image = Image.builder().imagePath(imagePath).imageChangeName(imageChangeName).imageOriginName(imageOriginName).imageLevel(imageLevel).build();
+				Image image = Image.builder().imagePath(imagePath).imageChangeName(imageChangeName).
+										imageOriginName(imageOriginName).imageLevel(imageLevel).build();
 				list.add(image);
 			} catch (IOException e) {
 				throw new NotFoundFileException("파일을 찾을 수 없음.");
