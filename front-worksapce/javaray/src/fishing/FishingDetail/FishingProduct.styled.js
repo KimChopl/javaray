@@ -4,7 +4,7 @@ export const DownWrap = styled.div`
   width: 100%;
   height: 78%;
   margin: auto;
-  border: 1px solid blue;
+  //border: 1px solid blue;
   background-color: rgb(246, 245, 245);
 `;
 
