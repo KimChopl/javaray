@@ -34,7 +34,7 @@ public class BusinessNoDTO {
 	private String companyIntroduce;
 	
 	private String businessNoFileUrl;
-	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+	
 	private LocalDate applicationDate;
 	
 	private String adminStatus;

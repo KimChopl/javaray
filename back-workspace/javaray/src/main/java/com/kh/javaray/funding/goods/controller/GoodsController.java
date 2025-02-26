@@ -36,15 +36,12 @@ public class GoodsController {
 										 @RequestParam(name = "mainFile", required = true) MultipartFile file,
 										 @RequestParam(name = "subFiles", required = false) MultipartFile[] files){
 
-		Long boardNo = goodsService.insertGoods(goodsFormData, categoryName, file, files);
-		
-		return ResponseEntity.ok().body(boardNo);
+		return ResponseEntity.ok().body(goodsService.insertGoods(goodsFormData, categoryName, file, files));
 	}
 	
 	@PostMapping("/insert/options")
-	public ResponseEntity<?> insertOptions(@RequestParam("boardNo") Long boardNo, @RequestBody List<FundingOptionDTO> optionList){
-		log.info("{}", optionList.get(0));
-		log.info("{}", boardNo);
+	public ResponseEntity<?> insertOptions(@RequestParam("boardNo") Long boardNo, 
+										   @RequestBody List<FundingOptionDTO> optionList){
 		
 		goodsService.insertGoodsOptions(optionList, boardNo);
 		
