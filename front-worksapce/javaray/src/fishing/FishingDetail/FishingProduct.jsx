@@ -1,4 +1,5 @@
 import FishingDetail from "./FishingDetail";
+import FishingMap from "./KakaoMap/KakaoMap";
 import {
   DownWrap,
   AddressDiv,
@@ -12,6 +13,7 @@ import {
   AmenitiesImg,
   AmenitiesText,
   AmenitiesDiv,
+  MapDiv,
 } from "./FishingProduct.styled";
 import { useNavigate } from "react-router-dom";
 import airconditioner from "../FishingImg/airconditioner.png";
@@ -73,6 +75,9 @@ const FishingProduct = ({ fishingsDetail }) => {
         <AddressDiv>
           <DownAddressH2>{fishingsDetail.address}</DownAddressH2>
         </AddressDiv>
+        <MapDiv>
+          <FishingMap lat={fishingsDetail.lat} lng={fishingsDetail.lng} />
+        </MapDiv>
         <MessageDiv>
           <MessageDiv1>
             <MessageTitle>사장님 한마디</MessageTitle>
