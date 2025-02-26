@@ -108,22 +108,17 @@ const FishingInsert = () => {
     }
 
     //---- 배열로 변환
-
     let amenitiesList = [];
     selectedAmenities.forEach((amenity) => {
       amenitiesList = [...amenitiesList, { amenitiesNo: amenity }];
     });
-
-    console.log(amenitiesList);
-    // formData.append("amenitiesList", amenitiesList);
+    //console.log(amenitiesList);
 
     let fishList = [];
     selectedFishes.forEach((fish) => {
       fishList = [...fishList, { fishNo: fish }];
     });
-
-    console.log(fishList);
-    // formData.append("fishList", fishList);
+    //console.log(fishList);
 
     //-- 배열을 문자열로 변환
     const amenitiesListStr = amenitiesList
@@ -136,8 +131,8 @@ const FishingInsert = () => {
     formData.append("amenities", amenitiesListStr);
     formData.append("fish", fishListStr);
 
-    console.log("amenitiesListStr:", amenitiesListStr);
-    console.log("fishListStr:", fishListStr);
+    //console.log("amenitiesListStr:", amenitiesListStr);
+    //console.log("fishListStr:", fishListStr);
 
     axios
       .post("http://localhost/fishing/insert", formData, {
