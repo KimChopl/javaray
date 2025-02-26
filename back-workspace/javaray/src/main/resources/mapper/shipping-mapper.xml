@@ -70,7 +70,8 @@
 			<result property="imageChangeName" column="imageChangeName"/>
 			<result property="imageOriginName" column="imageOriginName"/>
 		</collection>
-		</resultMap>
+	</resultMap>
+	
 	<select id="selectShipping" resultMap="shippings">
 		SELECT
 		       TS.SHIPPING_NO shippingNo,
@@ -216,6 +217,9 @@
 		              TB_SHIPPING_IMAGE TSI
 		        WHERE
 		              TSI.STATUS = 'Y'
+		        ORDER
+		           BY
+		              IMAGE_LEVEL
                 ) IMG ON (TS.SHIPPING_NO = boardNo)
 		  LEFT
 		  JOIN

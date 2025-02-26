@@ -18,31 +18,32 @@ const ShippingSmallMenu = (props) => {
   const [displayDiv, setDisplayDiv] = useState(false);
   const data = props.data;
   const [user, setUser] = useState();
-  const {auth} = useContext(AuthContext);
+  const { auth } = useContext(AuthContext);
   const accessToken = auth.accessToken;
   const setData = (e) => {
     props.setData(e);
-  }
+  };
   const onClickDiv = () => {
     setDisplayDiv(true);
-    if(auth.isAuthenticated){
-
-      axios.get('http://localhost/members/users', {
-        headers : {
-          Authorization : `Bearer ${accessToken}`
-        }
-      }).then(response =>{
-        console.log(response)
-        setUser(response.data)
-      });
+    if (auth.isAuthenticated) {
+      axios
+        .get("http://localhost/members/users", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((response) => {
+          setUser(response.data);
+        })
+        .catch(() => {
+          return;
+        });
     }
-  }
-    
+  };
 
   const closeDiv = () => {
     setDisplayDiv(false);
   };
- 
 
   return (
     <CircleCover>

@@ -1,10 +1,7 @@
 package com.kh.javaray.shipping.shippings.model.dto;
 
-import java.sql.Date;
 import java.util.List;
 
-import com.kh.javaray.member.model.dto.Member;
-import com.kh.javaray.member.model.dto.MemberDTO;
 import com.kh.javaray.shipping.dto.Image;
 
 import lombok.AllArgsConstructor;

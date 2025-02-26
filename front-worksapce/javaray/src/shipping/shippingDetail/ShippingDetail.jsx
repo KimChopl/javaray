@@ -31,15 +31,13 @@ const ShippingDetail = () => {
   const scrollUp = () => {
     window.scroll({ top: 0 });
   };
-  
+
   useEffect(() => {
     axios
       .get(`http://localhost/shippings/detail?shippingNo=${shippingNo}`)
       .then((response) => {
-        console.log(response.data)
         setShipping(response.data.shipping);
         setWeather(response.data.weather);
-        console.log(response.data.weather);
         setOption(options);
         setIsLoad(false);
       });
@@ -72,6 +70,7 @@ const ShippingDetail = () => {
   const settingOption = option.filter((options) =>
     shipping.options.some((services) => options.no === services.serviceNo)
   );
+
   if (isLoad) {
     return <Load />;
   }
@@ -83,9 +82,19 @@ const ShippingDetail = () => {
           <h1>{shipping.shippingTitle}</h1>
         </DetailHeader>
         <DetailBody>
-          <ShippingImages images={shipping.images}/>
-          <SimpleExplain info={{shipping, move, auth, setShipping, attention, setAttention, setFishNo, isFlag
-          }} />
+          <ShippingImages images={shipping.images} />
+          <SimpleExplain
+            info={{
+              shipping,
+              move,
+              auth,
+              setShipping,
+              attention,
+              setAttention,
+              setFishNo,
+              isFlag,
+            }}
+          />
           <WeatherCover>
             <ShowService option={settingOption} />
             {weather.length !== 0 ? (

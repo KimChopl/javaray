@@ -25,7 +25,7 @@ public interface MemberMapper {
 	@Update("UPDATE TB_MEMBER SET STATUS = 'N', MODIFY_AT = SYSDATE WHERE USER_NO = #{userNo}")
 	void deleteMember(Long userNo);
 
-	Member selectUserRole(Long userNo);
+	MemberDTO selectUserRole(Long userNo);
 
 
 }

@@ -50,7 +50,7 @@ public interface ShippingMapper {
 	List<Fishs> selectFishsByShippingNo(String shippingNo);
 	
 	@Insert("INSERT INTO TB_ENABLE_FISH VALUES(#{shippingNo}, #{fishNo})")
-	void updateFish(Fishs fish);
+	int uploadFish(Fishs fish);
 
 	@Insert("INSERT INTO TB_SHIPPING_SERVICE VALUES(#{shippingNo}, #{serviceNo})")
 	int updateOption(ShippingOption option);

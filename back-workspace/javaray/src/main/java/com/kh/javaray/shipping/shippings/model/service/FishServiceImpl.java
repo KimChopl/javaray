@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kh.javaray.exception.exceptions.FailInsertObjectException;
 import com.kh.javaray.exception.exceptions.NotFoundInfoException;
 import com.kh.javaray.exception.exceptions.NotMatchBoardInfoException;
 import com.kh.javaray.shipping.shippings.model.dto.Fishs;
@@ -47,10 +48,18 @@ public class FishServiceImpl implements FishService{
 
 	@Override
 	@Transactional
-	public void uploadFish(List<Fishs> fishs) {
-		deleteFish(fishs.get(0).getShippingNo());
+	public void updateFish(List<Fishs> fishs, String shippingNo) {
+		deleteFish(shippingNo);
+		uploadFish(settingFishsShippingNo(fishs, shippingNo));
+	}
+	
+	private void uploadFish(List<Fishs> fishs) {
+		int result = 0;
 		for (Fishs fish : fishs) {
-			shippingMapper.updateFish(fish);
+			result = shippingMapper.uploadFish(fish);
+		}
+		if(result == 0) {
+			throw new FailInsertObjectException("등록에 실패하였습니다.");
 		}
 	}
 
@@ -60,6 +69,11 @@ public class FishServiceImpl implements FishService{
 			fish.setShippingNo(shippingNo);
 		}
 		return fishs;
+	}
+
+	@Override
+	public void insertFish(List<Fishs> fishs, String shippingNo) {
+		uploadFish(settingFishsShippingNo(fishs, shippingNo));
 	}
 
 }
