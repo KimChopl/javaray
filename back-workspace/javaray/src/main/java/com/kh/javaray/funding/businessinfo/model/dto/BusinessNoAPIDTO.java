@@ -22,10 +22,9 @@ public class BusinessNoAPIDTO {
 	@Size(min = 10, max = 10, message = "사업자등록번호는 10자리만 입력가능합니다.")
 	private String companyBusinessNo;
 	
-	@Pattern(regexp = "^국세청에 등록되지 않은 사업자등록번호입니다.$", message = "등록되어 있지 않은 사업자등록번호입니다.")
 	private String resultContent;
 	
-	@Digits(integer = 10, fraction = 0, message = "등록되어 있지 않은 사업자등록번호입니다.")
+	@Digits(integer = 10, fraction = 0, message = "등록되어 있지 않은 사업자등록번호입니다..")
 	private Long resultCode;
 	
 	@NotBlank(message = "신청 게시글 작성자는 비어있을 수 없습니다.")
