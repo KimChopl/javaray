@@ -27,18 +27,22 @@ public class OptionServiceImpl implements OptionService {
 			throw new NotFoundInfoException("업데이트에 실패 하였습니다.");
 		}
 	}
-
-	@Override
-	@Transactional
-	public void uploadOption(List<ShippingOption> options) {
+	
+	private void insertOption(List<ShippingOption> options) {
 		int result = 1;
-		deleteOption(options.get(0).getShippingNo());
 		for (ShippingOption option : options) {
 			result = shippingMapper.updateOption(option);
 			if (result == 0) {
 				throw new FailUpdateException("업데이트에 실패 하였습니다.");
 			}
 		}
+	}
+
+	@Override
+	@Transactional
+	public void uploadOption(List<ShippingOption> options, String shippingNo) {
+		deleteOption(shippingNo);
+		insertOption(settingOptionsShippingNo(options, shippingNo));
 	}
 
 	@Override
@@ -49,6 +53,11 @@ public class OptionServiceImpl implements OptionService {
 			option.setShippingNo(shippingNo);
 		}
 		return options;
+	}
+
+	@Override
+	public void insertOption(List<ShippingOption> options, String shippingNo) {
+		insertOption(settingOptionsShippingNo(options, shippingNo));
 	}
 
 }

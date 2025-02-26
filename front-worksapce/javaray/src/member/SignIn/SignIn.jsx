@@ -46,6 +46,7 @@ const SignIn = (props) => {
         userPwd: pwd,
       })
       .then((response) => {
+        console.log(response);
         const data = response.data;
         signin(
           data.nickname,
@@ -56,8 +57,6 @@ const SignIn = (props) => {
         closeModal();
       })
       .catch((error) => {
-        console.log(error.response.data || error.response.data.userPwd);
-        console.log("----------------");
         if (error.status === 400) {
           console.log(
             error.response.data

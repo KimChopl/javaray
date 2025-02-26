@@ -2,7 +2,6 @@ import { ImageCover, Images } from "../ShippingUpdateCss";
 
 export const ShippingBeforeImage = ({ image, setImage }) => {
   const deleteImage = (e) => {
-    console.log(e);
     const newImage = image.filter((img) => img.imageNo !== e);
     setImage([...newImage], "images");
     console.log("이게머지?" + image);

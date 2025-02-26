@@ -24,9 +24,11 @@ const FishForm = (props) => {
     return fishs;
   };
   const settingNote = (findFish, e) => {
-    const newFishs = fishs.map(fish => fish.fishNo === findFish.fishNo ? {...fish, note: e} : fish);
-      setFishs(newFishs);
-  }
+    const newFishs = fishs.map((fish) =>
+      fish.fishNo === findFish.fishNo ? { ...fish, note: e } : fish
+    );
+    setFishs(newFishs);
+  };
   const changeFishs = (e) => {
     const findFish = fishs.find((fishs) => fishs.fishNo === e.target.value);
     if (e.target.checked) {
@@ -34,7 +36,6 @@ const FishForm = (props) => {
         fishNo: findFish.fishNo,
         fishName: findFish.fishName,
       });
-      props.setFish([...fish, newFish]);
       settingNote(findFish, true);
     } else {
       const deleteFish = fish.filter((fish) => {
@@ -49,7 +50,7 @@ const FishForm = (props) => {
       axios
         .get("http://localhost/shippings/fishs")
         .then((response) => {
-          console.log(response)
+          console.log(response);
           setFishs(response.data);
           checkedFish(response.data);
           isLoad(false);

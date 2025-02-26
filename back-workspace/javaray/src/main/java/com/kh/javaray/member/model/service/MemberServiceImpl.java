@@ -99,7 +99,12 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member selectUserRole() {
 		CustomUserDetails user = authService.checkedUser();
-		return memberMapper.selectUserRole(user.getUserNo());
+		MemberDTO member = memberMapper.selectUserRole(user.getUserNo());
+		String role = member.getRole();
+		String cutRole = role.substring(role.indexOf("_") + 1);
+		log.info(cutRole);
+		Member changeMember = Member.builder().role(cutRole).build();
+		return changeMember;
 	}
 
 }

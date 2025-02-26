@@ -91,7 +91,7 @@ const ShippingUpdate = () => {
   };
 
   const update = () => {
-    console.log(shipping)
+    console.log(shipping);
     const resultArr = settingResultArr();
     if (resultArr.includes(true)) {
       alert("모든 내용을 채워주세요.");
@@ -135,7 +135,6 @@ const ShippingUpdate = () => {
           headers: { Authorization: `Bearer ${accessToken}` },
         })
         .then((response) => {
-          console.log(response.data)
           setShipping(() => response.data);
           setOption(isSelected(response.data.options));
           isLoad(false);
@@ -163,12 +162,18 @@ const ShippingUpdate = () => {
             name="shippingTitle"
           ></TitleInput>
         </TitleDiv>
-        <UpdateImages info={{setFiles, setImageUrl, imageUrl, objectChange}} images={shipping.images}/>
-        <ShippingPrice price={shipping.price} valueChange={valueChange}/>
-        <UpdateFish fishs={shipping.fishs} info={{objectChange}}/>
+        <UpdateImages
+          info={{ setFiles, setImageUrl, imageUrl, objectChange }}
+          images={shipping.images}
+        />
+        <ShippingPrice price={shipping.price} valueChange={valueChange} />
+        <UpdateFish fishs={shipping.fishs} info={{ objectChange }} />
         <LocationAndPeple>
-          <UpdatePort port={shipping.port} objectChange={objectChange}/>
-          <UpdatePeople allowPeopleNo={shipping.allowPeopleNo} valueChange={valueChange}/>
+          <UpdatePort port={shipping.port} objectChange={objectChange} />
+          <UpdatePeople
+            allowPeopleNo={shipping.allowPeopleNo}
+            valueChange={valueChange}
+          />
         </LocationAndPeple>
         <OptionDiv>
           <OptionLine>
@@ -192,7 +197,6 @@ const ShippingUpdate = () => {
           <SearchBtn onClick={update}>수정하기</SearchBtn>
         </ComplateBtn>
       </DetailWarp>
-      
     </>
   );
 };

@@ -39,8 +39,8 @@ public class ImageServiceImpl implements ImageService {
 						!setImage.contains(image.getImageChangeName())).collect(Collectors.toList());
 		List<Image> remainImage = beforeImage.stream().filter(image -> 
 						setImage.contains(image.getImageChangeName())).collect(Collectors.toList());
-		List<Image> imageLevel = deleteImage.stream().filter(image -> 1 == image.getImageLevel())
-				.collect(Collectors.toList());
+		List<Image> imageLevel = remainImage.stream().filter(image -> 1 == image.getImageLevel())
+											.collect(Collectors.toList());
 		map.put("deleteImage", deleteImage);
 		map.put("remainImage", remainImage);
 		map.put("imageLevel", imageLevel);
@@ -62,7 +62,7 @@ public class ImageServiceImpl implements ImageService {
 				imageMapper.updateImageLevel(remainImage.get(0).getImageNo());
 				return false;
 			}
-			if (remainImage.isEmpty()) {
+			if (imageLevel.isEmpty()) {
 				return true;
 			}
 		}
@@ -75,15 +75,12 @@ public class ImageServiceImpl implements ImageService {
 		Shipping ship = shippingMapper.selectShippingDetail(shippingNo);
 		List<Image> list = ship.getImages();
 		MultipartFile[] uploadFiles = null;
-		boolean isMain;
+		boolean isMain = deleteBeforeImage(list, imageList);
 		if (files != null) {
 			uploadFiles = files;
-			isMain = deleteBeforeImage(list, imageList);
 			return uploadImage.store(uploadFiles, isMain);
-		} else {
-			deleteBeforeImage(list, imageList);
-			return null;
-		}
+		} 
+		return null;
 	}
 
 	@Override

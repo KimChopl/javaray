@@ -9,8 +9,10 @@ public interface FishService {
 
 	List<Fishs> selectFish();
 
-	void uploadFish(List<Fishs> fishs);
+	void updateFish(List<Fishs> fishs, String shippingNo);
 
+	void insertFish(List<Fishs> fishs, String shippingNo);
+	
 	List<Fishs> settingFishsShippingNo(List<Fishs> fishs, String shippingNo);
 
 }

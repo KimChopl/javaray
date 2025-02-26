@@ -53,7 +53,6 @@ public class ShippingServiceImpl implements ShippingService {
 		RowBounds rb = makingRowBounds(page);
 		List<Shipping> list = shippingMapper.selectShipping(rb);
 		return list;
-
 	}
 
 	private RowBounds makingRowBounds(int page) {
@@ -137,10 +136,10 @@ public class ShippingServiceImpl implements ShippingService {
 	@Transactional
 	private void updateValues(ShippingFormDTO shipping) {
 		String shippingNo = shipping.getShippingNo();
-		List<ShippingOption> uploadUption = shipping.getOptions();
+		List<ShippingOption> uploadOption = shipping.getOptions();
 		List<Fishs> uploadFish = shipping.getFishs();
-		optionService.uploadOption(optionService.settingOptionsShippingNo(uploadUption, shippingNo));
-		fishService.uploadFish(fishService.settingFishsShippingNo(uploadFish, shippingNo));
+		optionService.uploadOption(uploadOption, shippingNo); 
+		fishService.updateFish(uploadFish, shippingNo);
 	}
 
 	private ShippingFormDTO addShipping(ShippingFormDTO shipping) {
@@ -165,14 +164,18 @@ public class ShippingServiceImpl implements ShippingService {
 	@Override
 	@Transactional
 	public ShippingFormDTO updateShipping(MultipartFile[] files, String shippingString) {
+		
 		ShippingFormDTO shipping = addShipping(parsedShipping(shippingString));
 		String shippingNo = shipping.getShippingNo();
+		
 		shippingMapper.updateShipping(shipping);
 		updateValues(shipping);
+		
 		List<Image> changeImage = shipping.getImages();
 		List<Image> uploadImage = settingImageShippingNo(
 									imageService.checkedImageMain(changeImage, files, shippingNo), shippingNo);
 		imageService.insertImage(uploadImage);
+		
 		return shipping;
 	}
 
@@ -183,13 +186,21 @@ public class ShippingServiceImpl implements ShippingService {
 		shipping.setUserNo(user.getUserNo());
 		return shipping;
 	}
+	
+	private void insertValues(ShippingFormDTO shipping) {
+		String shippingNo = shipping.getShippingNo();
+		List<ShippingOption> uploadOption = shipping.getOptions();
+		List<Fishs> uploadFish = shipping.getFishs();
+		optionService.insertOption(uploadOption, shippingNo); 
+		fishService.insertFish(uploadFish, shippingNo);
+	}
 
 	@Override
 	@Transactional
 	public ShippingFormDTO insertShipping(MultipartFile[] files, String shipping) {
 		ShippingFormDTO uploadShipping = addUserNo(settingXss(parsedShipping(shipping)));
 		shippingMapper.insertShipping(uploadShipping);
-		updateValues(uploadShipping);
+		insertValues(uploadShipping);
 		String shippingNo = uploadShipping.getShippingNo();
 		List<Image> uploadImage = imageService.checkedImageMain(files, shippingNo);
 		imageService.insertImage(settingImageShippingNo(uploadImage, shippingNo));
