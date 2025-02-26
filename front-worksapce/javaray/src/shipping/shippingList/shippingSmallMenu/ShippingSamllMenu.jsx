@@ -50,7 +50,7 @@ const ShippingSmallMenu = (props) => {
       <PositionDiv onClick={!displayDiv ? onClickDiv : closeDiv}>
         <TripleCircleDiv />
       </PositionDiv>
-      {displayDiv && (
+      {displayDiv && user&& (
         <ShippingReport
           shippingNo={props.shippingNo}
           i={setDisplayDiv}

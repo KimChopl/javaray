@@ -41,19 +41,19 @@ const ReportForm = ({ kind, shippingNo, clickModal, data, setData }) => {
   };
   return (
     <>
-      <ReportTitle>{kind === "deleteManager" ? "신고하기" : "삭제하기"}</ReportTitle>
+      <ReportTitle>{kind === "deleteManager" ?  "삭제하기" : "신고하기"}</ReportTitle>
       <Hr />
       <ReportBody>
         <ReportSelectCover>
           <ReportSelect>
             {kind === "deleteManager" ? (
               <>
-                <option value="1">무엇을 신고하시겠습니까</option>
-                <option value="2">골라 골라 흔히 오는 기회가 아니야</option>
+                <option>삭제 사유</option>
               </>
             ) : (
               <>
-                <option>삭제 사유</option>
+              <option value="1">무엇을 신고하시겠습니까</option>
+              <option value="2">골라 골라 흔히 오는 기회가 아니야</option>
               </>
             )}
           </ReportSelect>

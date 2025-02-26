@@ -13,19 +13,18 @@ import ShippingSmallMenu from "./shippingSmallMenu/ShippingSamllMenu";
 import { useNavigate } from "react-router-dom";
 import { ListCover } from "../ShippingCss";
 
-const ShippingList = ({ setData, data, user }) => {
+const ShippingList = ({ setData, data}) => {
   const navi = useNavigate();
   return (
     <ListCover>
       {data.map((datas) => {
         return (
           <StyledShipDiv key={datas.shippingNo}>
-            {user &&<ShippingSmallMenu
+            <ShippingSmallMenu
               data={data}
               setData={setData}
-              user={user}
               shippingNo={datas.shippingNo}
-            />}
+            />
             <ShippingToDetail
               onClick={() => navi(`/shipping/detail/${datas.shippingNo}`)}
             >
