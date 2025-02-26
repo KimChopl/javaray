@@ -47,6 +47,23 @@ export const AddressDiv = styled.div`
   }
 `;
 
+export const MapDiv = styled.div`
+  border: 1px solid white;
+  background-color: white;
+  width: 1000px;
+  height: 200px;
+  margin: auto;
+  margin-top: 50px;
+  font-weight: bold;
+  display: flex;
+  background-size: cover;
+  background-position: center;
+  border-radius: 5px;
+
+  position: relative;
+  overflow: hidden; /* 부모 영역을 벗어나지 않도록 설정 */
+`;
+
 export const DownAddressH2 = styled.h2`
   font-size: 25px;
   display: flex;

@@ -27,7 +27,6 @@ const FishingList = () => {
   const navigate = useNavigate();
 
   const [fishings, setFishings] = useState([]);
-
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
 
