@@ -95,7 +95,7 @@ public class OpenDataApi {
 					String[] info = split[i].split("\n");
 					String[] infos = info[2].split(",");
 					Weather weather = Weather.builder().regName(infos[0]).tmef(infos[2]).s1(infos[12]).s2(infos[13])
-							.wh1(infos[14]).wh2(infos[15]).prep(infos[17]).wf(infos[18]).sky(infos[16]).build(); // DTO
+							.wh1(infos[14]).wh2(infos[15]).prep(infos[17]).wf(infos[18]).sky(infos[16]).build();
 					list.add(weather);
 				} else {
 					String[] infos = split[i].split(",");
@@ -112,7 +112,7 @@ public class OpenDataApi {
 
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
-			throw new NotMatchUserInfoException("네트워크 오류.");
+			return list;
 		}
 
 	}

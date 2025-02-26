@@ -67,7 +67,6 @@ public class ImageServiceImpl implements ImageService {
 			}
 		}
 		return false;
-
 	}
 
 	@Override

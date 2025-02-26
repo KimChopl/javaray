@@ -40,7 +40,7 @@ public class ShippingController {
 	@GetMapping
 	public ResponseEntity<List<Shipping>> selectShippings(@RequestParam(name = "page", defaultValue = "0") int page) {
 
-		List<Shipping> shipping = shippingService.selectShipping(page);
+		List<Shipping> shipping = shippingService.selectShipping(page, 20);
 
 		return ResponseEntity.ok().body(shipping);
 	}

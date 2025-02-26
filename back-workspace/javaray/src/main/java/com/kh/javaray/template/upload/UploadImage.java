@@ -36,18 +36,17 @@ private final Path fileLocation;
 			if(main) {
 				if(i == 0) {
 					imageLevel = 1;
-				} else {
-					imageLevel = 2;
 				}
-			} else {
-				imageLevel = 2;
 			}
 			String imagePath = "localhost/uploads/";
 			String imageOriginName = file[i].getOriginalFilename();
-			String currentTime = new SimpleDateFormat("yyMMddHHmm").format(new Date());
+			String currentTime = new SimpleDateFormat("yyMMddHHmm")
+												.format(new Date());
 			double random = (Math.random() + 1) * 10000;
-			String ex = imageOriginName.substring(imageOriginName.indexOf('.'));
-			String imageChangeName = new StringBuilder(currentTime + (int)random + ex).toString();
+			String ex = imageOriginName
+							.substring(imageOriginName.indexOf('.'));
+			String imageChangeName = 
+						new StringBuilder(currentTime + (int)random + ex).toString();
 			
 			Path targetLocation = this.fileLocation.resolve(imageChangeName);
 			

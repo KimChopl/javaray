@@ -15,7 +15,7 @@
 				#{imageOriginName},
 				#{imageChangeName},
 				#{boardNo},
-				#{imageLevel},
+				<if test="imageLevel != null" >	#{imageLevel},</if>
 				'Y'
 			   )
 	</insert>

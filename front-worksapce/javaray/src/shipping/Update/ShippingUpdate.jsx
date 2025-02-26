@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { DetailWarp, Load } from "../shippingDetail/ShippingDetailCss";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
@@ -135,6 +135,7 @@ const ShippingUpdate = () => {
           headers: { Authorization: `Bearer ${accessToken}` },
         })
         .then((response) => {
+          console.log(response.data)
           setShipping(() => response.data);
           setOption(isSelected(response.data.options));
           isLoad(false);

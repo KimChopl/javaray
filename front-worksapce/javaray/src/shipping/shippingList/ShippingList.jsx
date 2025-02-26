@@ -20,12 +20,12 @@ const ShippingList = ({ setData, data, user }) => {
       {data.map((datas) => {
         return (
           <StyledShipDiv key={datas.shippingNo}>
-            <ShippingSmallMenu
+            {user &&<ShippingSmallMenu
               data={data}
               setData={setData}
               user={user}
               shippingNo={datas.shippingNo}
-            />
+            />}
             <ShippingToDetail
               onClick={() => navi(`/shipping/detail/${datas.shippingNo}`)}
             >

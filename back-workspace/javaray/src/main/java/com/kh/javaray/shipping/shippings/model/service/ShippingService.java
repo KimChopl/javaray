@@ -11,7 +11,7 @@ import com.kh.javaray.shipping.shippings.model.dto.ShippingFormDTO;
 
 public interface ShippingService {
 
-	List<Shipping> selectShipping(int page);
+	List<Shipping> selectShipping(int page, int size);
 
 	Map<String, Object> selectShippingDetail(String shippingNo);
 
@@ -22,5 +22,6 @@ public interface ShippingService {
 	ShippingFormDTO updateShipping(MultipartFile[] files, String shipping);
 
 	ShippingFormDTO insertShipping(MultipartFile[] files, String shipping);
+
 
 }

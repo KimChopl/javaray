@@ -49,19 +49,17 @@ public class ShippingServiceImpl implements ShippingService {
 	private final OptionService optionService;
 
 	@Override
-	public List<Shipping> selectShipping(int page) {
-		RowBounds rb = makingRowBounds(page);
+	public List<Shipping> selectShipping(int page, int size) {
+		RowBounds rb = makingRowBounds(page, size);
 		List<Shipping> list = shippingMapper.selectShipping(rb);
 		return list;
 	}
 
-	private RowBounds makingRowBounds(int page) {
-		int size = 20;
+	private RowBounds makingRowBounds(int page, int size) {
 		return new RowBounds(page * size, size);
 	}
 
 	private Shipping checkedShipping(String shippingNo) {
-		log.info(shippingNo);
 		Shipping shipping = shippingMapper.selectShippingDetail(shippingNo);
 		if (shipping == null) {
 			throw new NotMatchBoardInfoException("조회된 항목이 없습니다.");
@@ -77,6 +75,7 @@ public class ShippingServiceImpl implements ShippingService {
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("shipping", shipping);
 		response.put("weather", weather);
+		
 		return response;
 	}
 
@@ -84,25 +83,30 @@ public class ShippingServiceImpl implements ShippingService {
 	public Shipping selectUpdateForm(String shippingNo) {
 		CustomUserDetails user = authService.checkedUser();
 		Shipping shipping = shippingMapper.selectShippingDetail(shippingNo);
+		
 		if (!shipping.getMember().getUserNo().equals(user.getUserNo())) {
 			throw new NotMatchUserInfoException("유저 정보가 일치하지 않습니다.");
 		}
+		
 		Shipping update = Shipping.builder().allowPeopleNo(shipping.getAllowPeopleNo()).fishs(shipping.getFishs())
 				.images(shipping.getImages()).member(shipping.getMember()).options(shipping.getOptions())
 				.port(shipping.getPort()).price(shipping.getPrice())
 				.shippingContent(xssService.changeSelectForm(shipping.getShippingContent())).shippingNo(shippingNo)
 				.shippingTitle(shipping.getShippingTitle()).build();
+		
 		return update;
 	}
 
 	@Override
 	public List<Port> selectSearchPort(String option, String searchContent) {
 		SearchPort search = SearchPort.builder().option(option).searchContent(searchContent).build();
+		
 		return shippingMapper.selectSearchPort(search);
 	}
 
 	private void matchShippingInfo(String shippingNo) {
 		Shipping shipping = shippingMapper.selectShippingDetail(shippingNo);
+		
 		if (shipping == null) {
 			throw new NotFoundInfoException("잘못된 접근입니다. 다시 시도해주세요.");
 		}
@@ -111,6 +115,7 @@ public class ShippingServiceImpl implements ShippingService {
 	
 	private void checkedUserInfo(Shipping shipping) {
 		CustomUserDetails user = authService.checkedUser();
+		
 		if (user.getUserNo() != shipping.getMember().getUserNo()) {
 			throw new NotFoundUserInfoException("잘못된 접근입니다. 다시 시도해주세요.");
 		}
@@ -130,6 +135,7 @@ public class ShippingServiceImpl implements ShippingService {
 	private ShippingFormDTO settingXss(ShippingFormDTO shipping) {
 		shipping.setShippingContent(xssService.changeInsertForm(xssService.makingXss(shipping.getShippingContent())));
 		shipping.setShippingTitle(xssService.makingXss(shipping.getShippingTitle()));
+		
 		return shipping;
 	}
 
@@ -138,33 +144,38 @@ public class ShippingServiceImpl implements ShippingService {
 		String shippingNo = shipping.getShippingNo();
 		List<ShippingOption> uploadOption = shipping.getOptions();
 		List<Fishs> uploadFish = shipping.getFishs();
+		
 		optionService.uploadOption(uploadOption, shippingNo); 
 		fishService.updateFish(uploadFish, shippingNo);
 	}
 
 	private ShippingFormDTO addShipping(ShippingFormDTO shipping) {
 		String shippingNo = shipping.getShippingNo();
-		matchShippingInfo(shippingNo);
 		ShippingFormDTO uploadShipping = settingXss(shipping);
+		
+		matchShippingInfo(shippingNo);
+		
 		return uploadShipping;
 	}
 
 	private ShippingFormDTO parsedShipping(String shippingString) {
-		log.info(shippingString);
 		ObjectMapper objectMapper = new ObjectMapper();
+		
 		try {
 			ShippingFormDTO shipping = objectMapper.readValue(shippingString, ShippingFormDTO.class);
+			
 			return shipping;
 		} catch (JsonProcessingException e) {
+			
 			e.printStackTrace();
 			throw new FailUpdateException("업데이트에 실패하였습니다.");
+			
 		}
 	}
 	
 	@Override
 	@Transactional
 	public ShippingFormDTO updateShipping(MultipartFile[] files, String shippingString) {
-		
 		ShippingFormDTO shipping = addShipping(parsedShipping(shippingString));
 		String shippingNo = shipping.getShippingNo();
 		
@@ -191,6 +202,7 @@ public class ShippingServiceImpl implements ShippingService {
 		String shippingNo = shipping.getShippingNo();
 		List<ShippingOption> uploadOption = shipping.getOptions();
 		List<Fishs> uploadFish = shipping.getFishs();
+		
 		optionService.insertOption(uploadOption, shippingNo); 
 		fishService.insertFish(uploadFish, shippingNo);
 	}
@@ -199,12 +211,17 @@ public class ShippingServiceImpl implements ShippingService {
 	@Transactional
 	public ShippingFormDTO insertShipping(MultipartFile[] files, String shipping) {
 		ShippingFormDTO uploadShipping = addUserNo(settingXss(parsedShipping(shipping)));
+		
 		shippingMapper.insertShipping(uploadShipping);
 		insertValues(uploadShipping);
+		
 		String shippingNo = uploadShipping.getShippingNo();
+		
 		List<Image> uploadImage = imageService.checkedImageMain(files, shippingNo);
 		imageService.insertImage(settingImageShippingNo(uploadImage, shippingNo));
+		
 		return uploadShipping;
 	}
 
+	
 }

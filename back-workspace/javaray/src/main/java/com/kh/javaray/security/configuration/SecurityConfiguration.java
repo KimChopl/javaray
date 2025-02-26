@@ -1,4 +1,4 @@
- package com.kh.javaray.security.configuration;
+package com.kh.javaray.security.configuration;
 
 import java.util.Arrays;
 
@@ -49,19 +49,18 @@ public class SecurityConfiguration {
 		return httpSecurity.formLogin(AbstractHttpConfigurer::disable).httpBasic(AbstractHttpConfigurer::disable)
 				.csrf(AbstractHttpConfigurer::disable).cors(Customizer.withDefaults())
 				.authorizeHttpRequests(requests -> {
-					requests.requestMatchers("/members", "/members/login", "/uploads/**", "/funding")
-							.permitAll();
+					requests.requestMatchers("/members", "/members/login", "/uploads/**", "/funding").permitAll();
 					requests.requestMatchers(HttpMethod.PUT, "/members/update/**", "/shippings").authenticated();
 					requests.requestMatchers(HttpMethod.DELETE, "/members", "/shippings/attention").authenticated();
 					requests.requestMatchers(HttpMethod.POST, "/members/refresh", "/businessNo/**",
-							 "/shippings/attention", "/goods/**", "/shippings").authenticated();
+							"/shippings/attention", "/goods/**", "/shippings").authenticated();
 					requests.requestMatchers(HttpMethod.GET, "/shippings/**", "/shippings/detail/**",
-							"/funding/selectList/**", "/funding/selectCategory", "uploads/**", "/uploads/images/**", "/businessNo")
-							.permitAll();
+							"/funding/selectList/**", "/funding/selectCategory", "uploads/**", "/uploads/images/**",
+							"/businessNo", "/main/**").permitAll();
 					requests.requestMatchers(HttpMethod.GET, "/fishing", "/fishing/detail/**", "/fishing/review")
 							.permitAll();
-					requests.requestMatchers(HttpMethod.POST, "/fishing/review/insert", "/fishing/insert","/fishing/insertList")
-							.authenticated();
+					requests.requestMatchers(HttpMethod.POST, "/fishing/review/insert", "/fishing/insert",
+							"/fishing/insertList").authenticated();
 					requests.requestMatchers(HttpMethod.GET, "/members/users", "/shippings/attention").authenticated();
 					requests.requestMatchers("/manager/**").hasRole("ADMIN");
 
