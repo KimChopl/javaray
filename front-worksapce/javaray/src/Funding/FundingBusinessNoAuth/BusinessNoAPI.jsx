@@ -54,6 +54,7 @@ const BusninessNoAPI = () => {
   };
 
   const handleInsertBusinessNo = async (response) => {
+    console.log(response);
     await axios
       .post(
         "http://localhost/businessNo",

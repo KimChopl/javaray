@@ -51,8 +51,7 @@
 				#{title},
 				#{content},
 				#{price},
-				#{count},
-				0
+				#{count}
 			   )
 	</insert>
 	
