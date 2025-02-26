@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const FullContainer = styled.div`
   width: 100%;
   height: auto;
-  border: 6px dotted purple;
+  //border: 6px dotted purple;
 `;
 // 전체를 감싸는 요소 / 낚시터 하나당 블럭 / 사진/ 낚시터 이름 / 낚시터 주소 / 어종 / 가격 / 지역 필터
 export const Container = styled.div`
@@ -12,7 +12,7 @@ export const Container = styled.div`
   max-height: auto; /* 나중에 auto로 바꾸기 */
   margin: auto;
   background-color: rgb(246, 245, 245);
-  border: 6px solid rgb(43, 183, 122); // 스타일 확인하고 지우기
+  // border: 6px solid rgb(43, 183, 122); // 스타일 확인하고 지우기
 `;
 
 export const TitleLine = styled.div`
@@ -34,7 +34,7 @@ export const TitleText = styled.p`
 export const Block1 = styled.div`
   width: 60%;
   min-height: 1700px;
-  border: 1px solid blue;
+  // border: 1px solid blue;
   display: inline-block;
 `;
 
@@ -42,7 +42,7 @@ export const Block2 = styled.div`
   width: 40%;
   height: 1500px;
   margin: auto;
-  border: 1px solid red;
+  // border: 1px solid red;
   float: right;
 `;
 
@@ -126,20 +126,20 @@ export const ImageDiv = styled.div`
   width: 45%;
   height: 100%;
   float: left;
-  border: 1px solid blue;
+  border: 1px solid black;
 `;
 
 export const TextDiv = styled.div`
   width: 55%;
   height: 100%;
   float: left;
-  border: 1px solid purple;
+  //border: 1px solid purple;
 `;
 
 export const InnerTextDiv = styled.div`
   width: 250px;
   height: 40px;
-  border: 1px solid red;
+  // border: 1px solid red;
   margin-top: 3px;
   margin-left: 8px;
 `;
@@ -156,7 +156,7 @@ export const FishP = styled.p`
 export const PriceDiv = styled.div`
   width: 100px;
   height: 40px;
-  border: 1px solid red;
+  //border: 1px solid red;
   margin-top: 50px;
   margin-left: 200px;
 `;
@@ -164,7 +164,7 @@ export const PriceDiv = styled.div`
 export const FilterP = styled.p`
   width: 50%;
   height: 70%;
-  border: 1px solid pink;
+  //border: 1px solid pink;
   margin-top: 10px;
   margin-left: 15px;
   font-size: 25px;
