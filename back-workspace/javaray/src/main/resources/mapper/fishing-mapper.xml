@@ -85,6 +85,9 @@
 					F.START_TIME startTime,
 					F.END_TIME endTime,
 					F.INTRODUCE introduce,
+					F.LATITUDE lat,
+		        	F.LONGITUDE lng,
+		        	F.FISHING_FILE_URL fishingFileUrl,
 					F.STATUS status
 			FROM 
 					TB_FISHING F

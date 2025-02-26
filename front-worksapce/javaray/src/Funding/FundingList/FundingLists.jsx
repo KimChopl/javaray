@@ -53,7 +53,7 @@ const FundingLists = () => {
       .then((response) => {
         setRole(response.data[0].role);
         if (response.data && response.data[0].boardNo !== null) {
-          setBoards([...response.data]);
+          setBoards([...boards, ...response.data]);
           if (response.data.length < 6) {
             setHasMore(false);
           }
@@ -75,7 +75,7 @@ const FundingLists = () => {
       .then((response) => {
         setRole("");
         if (response.data && response.data[0].boardNo !== null) {
-          setBoards([...response.data]);
+          setBoards([...boards, ...response.data]);
           if (response.data.length < 6) {
             setHasMore(false);
           }

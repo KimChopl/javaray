@@ -62,7 +62,7 @@ public class FishingController {
 		  FishingDTO fishingDetail = service.findById(fishingNo);
 		  log.info("controller fishingDetail:{}", fishingDetail);
 		  return ResponseEntity.ok(fishingDetail);
-	}
+	} 
 
 	
 }

@@ -4,7 +4,7 @@ export const DownWrap = styled.div`
   width: 100%;
   height: 78%;
   margin: auto;
-  border: 1px solid blue;
+  //border: 1px solid blue;
   background-color: rgb(246, 245, 245);
 `;
 
@@ -45,6 +45,23 @@ export const AddressDiv = styled.div`
     position: relative;
     z-index: 1;
   }
+`;
+
+export const MapDiv = styled.div`
+  border: 1px solid white;
+  background-color: white;
+  width: 1000px;
+  height: 200px;
+  margin: auto;
+  margin-top: 50px;
+  font-weight: bold;
+  display: flex;
+  background-size: cover;
+  background-position: center;
+  border-radius: 5px;
+
+  position: relative;
+  overflow: hidden; /* 부모 영역을 벗어나지 않도록 설정 */
 `;
 
 export const DownAddressH2 = styled.h2`

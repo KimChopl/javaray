@@ -47,8 +47,8 @@ public class FishingDTO {
 	@Size(min=10, message="사장님 소개는 10자 이상 작성해주세요.")	
 	private String introduce;
 	
-	private Long lat;
-	private Long lng;
+	private Double lat;
+	private Double lng;
 	private char status;
 	private String fishingFileUrl;
 	

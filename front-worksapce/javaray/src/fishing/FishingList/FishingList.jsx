@@ -22,12 +22,12 @@ import {
 } from "./FishingList.styled";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import FishingGoods from "../FishingDetail/FishingGoods";
 
 const FishingList = () => {
   const navigate = useNavigate();
 
   const [fishings, setFishings] = useState([]);
-
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
 
@@ -40,6 +40,7 @@ const FishingList = () => {
       })
       .then((response) => {
         setFishings((fishings) => [...fishings, ...response.data]);
+        console.log("낚시터 정보:", fishings);
         if (response.data.length < 6) {
           setHasMore(false);
         }
@@ -65,7 +66,7 @@ const FishingList = () => {
               <FishingListBox
                 onClick={() => navigate(`detail/${fishing.fishingNo}`)}
               >
-                <ImageDiv></ImageDiv>
+                <ImageDiv src={fishing.fishingFileUrl}></ImageDiv>
                 <TextDiv>
                   <InnerTextDiv>
                     <TitleP>{fishing.fishingName}</TitleP>

@@ -11,7 +11,7 @@ export const TopWrap = styled.div`
   width: 100%;
   height: 22%;
   margin: auto;
-  border: 1px solid red;
+  // border: 1px solid red;
 `;
 
 export const TopBlock = styled.div`
@@ -25,21 +25,21 @@ export const TopBlock = styled.div`
 export const TopImageBlock = styled.img`
   width: 60%;
   height: 100%;
-  border: 1px solid red;
+  border: 1px solid black;
   float: left;
 `;
 
 export const TopTextBlock = styled.div`
   width: 40%;
   height: 100%;
-  border: 1px solid blue;
+  //border: 1px solid blue;
   float: left;
 `;
 
 export const TopMenuBlock = styled.div`
   width: 1001px;
   height: 70px;
-  border: 1px solid pink;
+  // border: 1px solid pink;
   margin: auto;
   margin-top: 15px;
 `;
@@ -47,7 +47,7 @@ export const TopMenuBlock = styled.div`
 export const TopMenuInnerBlock = styled.div`
   width: 333px;
   height: 100%;
-  border: 1px solid orange;
+  ////border: 1px solid gray;
   float: left;
 
   cursor: pointer;
@@ -83,7 +83,7 @@ export const MenuText = styled.p`
 export const DetailTitleBlock = styled.div`
   width: auto;
   height: 60px;
-  border: 1px solid red;
+  //border: 1px solid red;
   margin-top: 30px;
   margin-left: 20px;
 `;
@@ -99,7 +99,7 @@ export const DetailAddressBlock = styled.div`
   height: 40px;
   margin-left: 20px;
   margin-top: 3px;
-  border: 1px solid green;
+  //  border: 1px solid green;
 `;
 
 export const DetailAddress = styled.p`
@@ -109,7 +109,7 @@ export const DetailAddress = styled.p`
 `;
 
 export const PhoneBlock = styled.div`
-  border: 1px solid skyblue;
+  // border: 1px solid skyblue;
   width: 170px;
   height: 35px;
 
