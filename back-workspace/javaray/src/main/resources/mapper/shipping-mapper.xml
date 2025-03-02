@@ -217,6 +217,8 @@
 		              TB_SHIPPING_IMAGE TSI
 		        WHERE
 		              TSI.STATUS = 'Y'
+		          AND
+		              TSI.REF_BOARD_MO LIKE 'SP%'
 		        ORDER
 		           BY
 		              IMAGE_LEVEL

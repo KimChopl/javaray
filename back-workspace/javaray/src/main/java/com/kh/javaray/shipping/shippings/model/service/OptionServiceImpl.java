@@ -28,6 +28,7 @@ public class OptionServiceImpl implements OptionService {
 		}
 	}
 	
+	@Transactional
 	private void insertOption(List<ShippingOption> options) {
 		int result = 1;
 		for (ShippingOption option : options) {
@@ -48,7 +49,6 @@ public class OptionServiceImpl implements OptionService {
 	@Override
 	 public List<ShippingOption> settingOptionsShippingNo(List<ShippingOption> options, 
 			 											  String shippingNo) {
-		log.info(shippingNo);
 		for (ShippingOption option : options) {
 			option.setShippingNo(shippingNo);
 		}

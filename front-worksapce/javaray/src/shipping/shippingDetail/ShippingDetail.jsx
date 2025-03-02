@@ -9,7 +9,7 @@ import {
 } from "./ShippingDetailCss";
 import Modal from "../../Modal/Modal";
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Weather from "./Weather/Wrather";
 import { AuthContext } from "../../UseContext/Auth/AuthContext";
@@ -26,8 +26,9 @@ const ShippingDetail = () => {
   const [fishNo, setFishNo] = useState("");
   const [option, setOption] = useState([]);
   const [flag, isFlag] = useState(false);
-  const { shippingNo } = useParams();
   const { auth } = useContext(AuthContext);
+  const { shippingNo } = useParams();
+  const navi = useNavigate();
   const scrollUp = () => {
     window.scroll({ top: 0 });
   };
@@ -40,21 +41,27 @@ const ShippingDetail = () => {
         setWeather(response.data.weather);
         setOption(options);
         setIsLoad(false);
+        axios
+          .get(`http://localhost/shippings/attention?shippingNo=${shippingNo}`, {
+            headers: {
+              Authorization: `Bearer ${auth.accessToken}`,
+            },
+          })
+          .then((response) => {
+            if (response.data === 1) {
+              setAttention(true);
+            } else {
+              setAttention(false);
+            }
+          })
+          .catch(() => 
+            setAttention(false)
+          );
+      }).catch(() => {
+        alert('시스템 오류 다시 시도해주세요.');
+        navi('/shipping');
       });
-    axios
-      .get(`http://localhost/shippings/attention?shippingNo=${shippingNo}`, {
-        headers: {
-          Authorization: `Bearer ${auth.accessToken}`,
-        },
-      })
-      .then((response) => {
-        if (response.data === 1) {
-          setAttention(true);
-        } else {
-          setAttention(false);
-        }
-      })
-      .catch((e) => console.log(e));
+    
 
     scrollUp();
   }, [auth]);

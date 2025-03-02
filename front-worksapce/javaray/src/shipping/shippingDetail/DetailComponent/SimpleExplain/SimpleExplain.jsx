@@ -69,7 +69,7 @@ export const SimpleExplain = ({info}) => {
             </PriceDiv>
             <AllowNumberDiv>
               <ContentLabel>
-                최대 탑승 인원 : {shipping.allowPepleNo}명
+                최대 탑승 인원 : {shipping.allowPeopleNo}명
               </ContentLabel>
             </AllowNumberDiv>
           </BaseBar>
