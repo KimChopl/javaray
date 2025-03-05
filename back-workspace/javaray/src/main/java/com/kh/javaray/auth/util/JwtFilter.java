@@ -36,7 +36,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
 		String header = request.getRequestURI();
 		String method = request.getMethod();
-		
 		if ((header.equals("/members") || header.equals("/members/login")) && method.equals("POST")) {
 			filterChain.doFilter(request, response);
 			return;
@@ -45,7 +44,7 @@ public class JwtFilter extends OncePerRequestFilter {
 		if ((header.equals("/fishing/review") || header.equals("/shippings") || header.equals("/fishing/detail")
 				|| header.equals("/shippings/detail") || header.equals("/funding/selectList/hasNonToken")
 				|| header.equals("/fishing") || header.equals("/shippings/fish") || header.equals("/shippings/fishs")
-				|| header.equals("/funding/selectCategory") || header.contains("/uploads")) && method.equals("GET") || header.equals("/main")) {
+				|| header.equals("/funding/selectCategory") || header.contains("/uploads") || header.equals("/main") || header.contains("/shipping-book")) && method.equals("GET")) {
 			filterChain.doFilter(request, response);
 			return;
 		}
@@ -53,10 +52,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
 		String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
 		if (authorization == null || !authorization.startsWith("Bearer ")) {
-			log.info("??");
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			// response.getWriter().write("접근 권한이 없음.");
-			filterChain.doFilter(request, response);
+			response.getWriter().write("접근 권한이 없음.");
 			return;
 		}
 

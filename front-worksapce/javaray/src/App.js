@@ -18,6 +18,7 @@ import FishingReviewInsert from "./fishing/FishingDetail/FishingReviewInsert";
 import { AuthProvider } from "./UseContext/Auth/AuthContext";
 import ShippingUpdate from "./shipping/Update/ShippingUpdate";
 import ShippingInsertForm from "./shipping/InsertForm/ShippigInsertForm";
+import ShippingBook from "./shipping/ShippingBook/ShippingBook";
 
 function App() {
   return (
@@ -53,6 +54,8 @@ function App() {
             element={<ShippingUpdate />}
           />
           <Route path="/shipping/insert" element={<ShippingInsertForm />} />
+
+          <Route path="/shipping/book/:shippingNo" element={<ShippingBook />} />
         </Routes>
         <Footer />
       </AuthProvider>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.kh.javaray.shipping.book.model.mapper.BookMapper" >
+ 	<select id="selectShippingBook" parameterType="string" resultType="Book">
+ 		SELECT
+		       TSB.BOOK_NO bookNo,
+		       TSB.BOOK_PEOPLE_NO bookPeopleNo,
+		       TSB.PLAY_DATE playDate
+		  FROM
+		       TB_SHIPPING_BOOK TSB
+		  LEFT
+		  JOIN
+		       TB_SHIPPING_CANCEL TSC ON(TSB.BOOK_NO = TSC.BOOK_NO)
+		 WHERE
+		       TSC.BOOK_NO IS NULL
+		   AND
+		       TSB.PLAY_DATE > SYSDATE
+		   AND
+		       TSB.SHIPPING_NO = #{shippingNo}
+ 	</select>
+ </mapper>

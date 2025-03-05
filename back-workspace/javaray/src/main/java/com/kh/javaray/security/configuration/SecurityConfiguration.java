@@ -56,7 +56,7 @@ public class SecurityConfiguration {
 							"/shippings/attention", "/goods/**", "/shippings").authenticated();
 					requests.requestMatchers(HttpMethod.GET, "/shippings/**", "/shippings/detail/**",
 							"/funding/selectList/**", "/funding/selectCategory", "uploads/**", "/uploads/images/**",
-							"/businessNo", "/main/**").permitAll();
+							"/businessNo", "/main/**", "shipping-book/**").permitAll();
 					requests.requestMatchers(HttpMethod.GET, "/fishing", "/fishing/detail/**", "/fishing/review")
 							.permitAll();
 					requests.requestMatchers(HttpMethod.POST, "/fishing/review/insert", "/fishing/insert",

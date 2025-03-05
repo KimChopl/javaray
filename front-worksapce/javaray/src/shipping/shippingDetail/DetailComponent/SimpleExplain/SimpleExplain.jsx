@@ -4,14 +4,20 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export const SimpleExplain = ({info}) => {
-    const {shipping, move, auth, setShipping, attention, setAttention, setFishNo, isFlag} = info;
+    const {shipping, move, auth, setShipping, attention, setAttention, setFishNo, isFlag, navi} = info;
     const clickModal = (e, fishNo) => {
         if (fishNo) {
           setFishNo(fishNo);
         }
         isFlag(e);
       };
-    const navi = useNavigate();
+    const shippingBook = () => {
+      if(auth.isAuthenticated){
+        navi(`/shipping/book/${shipping.shippingNo}`)
+      } else {
+        alert('로그인 후 사용할 수 있습니다.')
+      }
+    }
     const changeAttention = () => {
         if (auth.isAuthenticated) {
           if (attention) {
@@ -87,7 +93,7 @@ export const SimpleExplain = ({info}) => {
                   수정하기
                 </BookBtn>
               ) : (
-                <BookBtn>에약하기</BookBtn>
+                <BookBtn onClick={shippingBook}>에약하기</BookBtn>
               )}
             </BookBtnCover>
             <AttentionInfo onClick={changeAttention}>

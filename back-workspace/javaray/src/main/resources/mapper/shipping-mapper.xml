@@ -218,7 +218,7 @@
 		        WHERE
 		              TSI.STATUS = 'Y'
 		          AND
-		              TSI.REF_BOARD_MO LIKE 'SP%'
+		              TSI.REF_BOARD_NO LIKE 'SP%'
 		        ORDER
 		           BY
 		              IMAGE_LEVEL

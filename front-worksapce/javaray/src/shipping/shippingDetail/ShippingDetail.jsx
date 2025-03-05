@@ -100,6 +100,7 @@ const ShippingDetail = () => {
               setAttention,
               setFishNo,
               isFlag,
+              navi,
             }}
           />
           <WeatherCover>
