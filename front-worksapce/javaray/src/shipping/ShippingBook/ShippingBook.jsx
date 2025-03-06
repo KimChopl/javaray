@@ -1,17 +1,27 @@
 import axios from "axios"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import Calendar from "../../Calendar/Calendar";
 
 const ShippingBook = () => {
+    const [bookData, setBookData] = useState([]);
+    const [people, setPeople] = useState(0);
+    const [selectedDate, setSelectedDate] = useState('');
     const {shippingNo} = useParams();
     useEffect(() => {
         axios.get(`http://localhost/shipping-book/${shippingNo}`)
-        .then((response) => console.log(response))
-    })
+        .then((response) => 
+        {
+            setBookData(response.data.bookInfo);
+            setPeople(response.data.people)
+            console.log(response.data.bookInfo)
+        })
+    }, [])
 
     return(
         <>
         <>
+        <Calendar data={{bookData, people, selectedDate, setSelectedDate}}/>
         </>
         </>
     )

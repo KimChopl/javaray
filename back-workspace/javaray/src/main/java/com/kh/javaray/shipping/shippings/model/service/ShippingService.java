@@ -22,6 +22,7 @@ public interface ShippingService {
 	ShippingFormDTO updateShipping(MultipartFile[] files, String shipping);
 
 	ShippingFormDTO insertShipping(MultipartFile[] files, String shipping);
-
+	
+	Shipping checkedShipping(String shippingNo);
 
 }

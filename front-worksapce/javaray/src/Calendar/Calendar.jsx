@@ -24,13 +24,14 @@ import {
   eachDayOfInterval,
   getDay,
 } from "date-fns";
+import { BookBtn } from "../shipping/shippingDetail/ShippingDetailCss";
 
-const Calendar = () => {
+const Calendar = ({data}) => {
   const [date, setDate] = useState(new Date());
   const startDate = startOfWeek(startOfMonth(date));
   const endDate = endOfWeek(endOfMonth(date));
+  const {bookData, people, selectedDate, setSelectedDate} = data
   const days = eachDayOfInterval({ start: startDate, end: endDate });
-  const toDayMonth = format(date, "MM");
   const toDay = new Date().getTime() - 86399999;
   const daysFormat = days.map((day, index) => ({
     date: format(day, "yyyy-MM-dd"),
@@ -42,17 +43,37 @@ const Calendar = () => {
     dateNumber: day.getTime(),
   }));
 
+  const bookInfoMap = new Map(bookData.map(book => [book.playDate, book.bookPeopleNo]));
+
+  const result = daysFormat.map(day => ({
+    ...day,
+    peoples: bookInfoMap.get(day.date) || 0
+  }))
+
+  const clickPlayDate = (e) => {
+    if(e.date == selectedDate){
+      setSelectedDate('')
+    } else{
+      setSelectedDate(e.date);
+    }
+  }  
+
+
   const preBtn = () => {
     setDate(subMonths(date, 1));
   };
   const nextBtn = () => {
     setDate(addMonths(date, 1));
-    console.log("현재시간 : " || toDay);
   };
   return (
     <>
       <CalTable>
         <thead>
+          {selectedDate !== '' &&
+          <tr>
+            <th colSpan={7}>선택한 날짜 : {selectedDate}</th>
+          </tr>
+          }
           <tr>
             <CalMonth colSpan={7}>
               <CalPreOrNext onClick={preBtn}>{"<"}</CalPreOrNext>
@@ -71,7 +92,7 @@ const Calendar = () => {
           </tr>
         </thead>
         <tbody>
-          {daysFormat
+          {result
             .reduce((rows, day, index) => {
               if (index % 7 === 0) rows.push([]);
               rows[rows.length - 1].push(day);
@@ -80,7 +101,7 @@ const Calendar = () => {
             .map((week, index) => (
               <tr key={index}>
                 {week.map((day, dayIndex) => (
-                  <CalTd key={`${index}-${dayIndex}`}>
+                  <CalTd key={day.date} onClick={() => clickPlayDate({date: day.date, people: day.peoples})}>
                     {day.dateNumber < toDay ? (
                       dayIndex % 7 === 0 || dayIndex % 7 === 6 ? (
                         <GrayDiv>
@@ -92,28 +113,39 @@ const Calendar = () => {
                         </GrayDiv>
                       )
                     ) : dayIndex % 7 === 0 || dayIndex % 7 === 6 ? (
-                      day.month === toDayMonth ? (
+                      day.people !== people ? (
                         <CalDiv>
                           <CalWeekend>{day.day}</CalWeekend>
+                          <CalWeekday>{day.peoples}/{people}</CalWeekday>
+                        </CalDiv>
+                        ) : (
+                          <GrayDiv>
+                            <GrayWeekEnd>{day.day}</GrayWeekEnd>
+                            <CalWeekday>마감</CalWeekday>
+                          </GrayDiv>
+                        )
+                    ) :(
+                      day.people !== people ? (
+                        <CalDiv>
+                          <CalWeekday>{day.day}</CalWeekday>
+                          <CalWeekday>{day.peoples}/{people}</CalWeekday>
                         </CalDiv>
                       ) : (
                         <GrayDiv>
-                          <GrayWeekEnd>{day.day}</GrayWeekEnd>
+                          <GrayWeekday>{day.day}</GrayWeekday>
+                          <CalWeekday>마감</CalWeekday>
                         </GrayDiv>
                       )
-                    ) : day.month === toDayMonth ? (
-                      <CalDiv>
-                        <CalWeekday>{day.day}</CalWeekday>
-                      </CalDiv>
-                    ) : (
-                      <GrayDiv>
-                        <GrayWeekday>{day.day}</GrayWeekday>
-                      </GrayDiv>
                     )}
                   </CalTd>
                 ))}
               </tr>
             ))}
+            <tr>
+              <td colSpan={3}>확인</td>
+              <td></td>
+              <td colSpan={3}>취소</td>
+            </tr>
         </tbody>
       </CalTable>
     </>

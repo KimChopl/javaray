@@ -1,11 +1,9 @@
 package com.kh.javaray.shipping.book.model.service;
 
-import java.util.List;
-
-import com.kh.javaray.shipping.book.model.dto.Book;
+import java.util.Map;
 
 public interface BookService {
 
-	List<Book> selectShippingBook(String shippingNo);
+	Map<String, Object> selectShippingBook(String shippingNo);
 	
 }

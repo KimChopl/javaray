@@ -1,6 +1,6 @@
 package com.kh.javaray.shipping.book.controller;
 
-import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kh.javaray.shipping.book.model.dto.Book;
 import com.kh.javaray.shipping.book.model.service.BookService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,9 +22,9 @@ public class BookController {
 	private final BookService bookService;
 
 	@GetMapping("{shippingNo}")
-	public ResponseEntity<List<Book>> selectShippingBookInfo(@PathVariable("shippingNo") String shippingNo) {
-		List<Book> list = bookService.selectShippingBook(shippingNo);
-		return ResponseEntity.ok().body(list);
+	public ResponseEntity<Map<String, Object>> selectShippingBookInfo(@PathVariable("shippingNo") String shippingNo) {
+		Map<String, Object> bookMap = bookService.selectShippingBook(shippingNo);
+		return ResponseEntity.ok().body(bookMap);
 	}
 	
 }

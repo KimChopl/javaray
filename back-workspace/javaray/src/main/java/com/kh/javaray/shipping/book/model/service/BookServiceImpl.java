@@ -1,10 +1,11 @@
 package com.kh.javaray.shipping.book.model.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.kh.javaray.exception.exceptions.NotFoundInfoException;
 import com.kh.javaray.shipping.book.model.dto.Book;
 import com.kh.javaray.shipping.book.model.mapper.BookMapper;
 import com.kh.javaray.shipping.shippings.model.dto.Shipping;
@@ -21,19 +22,22 @@ public class BookServiceImpl implements BookService {
 	private final ShippingService shippingService;
 	private final BookMapper bookMapper;
 	
-
-	
-	private void checkedShippingNo(String shippingNo) {
-		Shipping shipping = shippingService.selectUpdateForm(shippingNo);
-		if(shipping == null || shipping.getShippingNo().equals(shippingNo)) {
-			throw new NotFoundInfoException("잘못된 접근입니다.");
+	private List<Book> cutPlayDate(List<Book> books){
+		for(Book book : books) {
+			book.setPlayDate(book.getPlayDate().substring(0, 10));
 		}
+		return books;
 	}
 	
 	@Override
-	public List<Book> selectShippingBook(String shippingNo) {
-//		checkedShippingNo(shippingNo);
-		return bookMapper.selectShippingBook(shippingNo);
+	public Map<String, Object> selectShippingBook(String shippingNo) {
+		Shipping shipping = shippingService.checkedShipping(shippingNo);
+		List<Book> bookInfo =  cutPlayDate(bookMapper.selectShippingBook(shippingNo));
+		Map<String, Object> bookMap = new HashMap<String, Object>();
+		bookMap.put("people", shipping.getAllowPeopleNo());
+		bookMap.put("bookInfo", bookInfo);
+		
+		return bookMap;
 	}
 
 }

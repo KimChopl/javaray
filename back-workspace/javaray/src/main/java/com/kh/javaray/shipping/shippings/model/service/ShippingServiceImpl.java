@@ -59,7 +59,8 @@ public class ShippingServiceImpl implements ShippingService {
 		return new RowBounds(page * size, size);
 	}
 
-	private Shipping checkedShipping(String shippingNo) {
+	@Override
+	public Shipping checkedShipping(String shippingNo) {
 		Shipping shipping = shippingMapper.selectShippingDetail(shippingNo);
 		if (shipping == null) {
 			throw new NotMatchBoardInfoException("조회된 항목이 없습니다.");

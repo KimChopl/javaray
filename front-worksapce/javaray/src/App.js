@@ -35,7 +35,6 @@ function App() {
           <Route path="funding" element={<FundingLists />} />
           <Route path="/fishing/insert" element={<FishingInsert />} />
           <Route path="fishing" element={<FishingList />} />
-          <Route path="cal" element={<Calendar />} />
           <Route
             path="/fishing/detail/:fishingNo"
             element={<FishingDetail />}
