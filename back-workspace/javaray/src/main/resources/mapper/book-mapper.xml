@@ -5,8 +5,7 @@
  <mapper namespace="com.kh.javaray.shipping.book.model.mapper.BookMapper" >
  	<select id="selectShippingBook" parameterType="string" resultType="Book">
  		SELECT
-		       TSB.BOOK_NO bookNo,
-		       TSB.BOOK_PEOPLE_NO bookPeopleNo,
+		       SUM(TSB.BOOK_PEOPLE_NO) bookPeopleNo,
 		       TSB.PLAY_DATE playDate
 		  FROM
 		       TB_SHIPPING_BOOK TSB
@@ -19,5 +18,8 @@
 		       TSB.PLAY_DATE > SYSDATE
 		   AND
 		       TSB.SHIPPING_NO = #{shippingNo}
+		 GROUP
+		    BY
+		       TSB.PLAY_DATE
  	</select>
  </mapper>
