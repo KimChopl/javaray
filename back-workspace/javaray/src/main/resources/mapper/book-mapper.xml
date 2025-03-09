@@ -22,4 +22,27 @@
 		    BY
 		       TSB.PLAY_DATE
  	</select>
+ 	
+ 	<insert id="insertBook" parameterType="RegistBook">
+ 		INSERT
+ 		  INTO
+ 		       TB_SHIPPING_BOOK
+ 		       (
+				BOOK_NO,
+				SHIPPING_NO,
+				USER_NO,
+				BOOK_PEOPLE_NO,
+				PLAY_DATE,
+				BOOK_CONTENT
+			   )
+	   VALUES
+	          (
+				SEQ_BOOK_NO.NEXTVAL,
+				#{shippingNo},
+				#{userNo},
+				#{inPeople},
+				TO_DATE(#{playDate}, 'YYYY-MM-DD'),
+				#{bookContent}
+			  )
+ 	</insert>
  </mapper>

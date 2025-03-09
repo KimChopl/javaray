@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const CalTable = styled.table`
   width: 350px;
-  height: 400px;
+  height: 450px;
   text-align: center;
   margin: auto;
   border: 1px solid #eaeaea;

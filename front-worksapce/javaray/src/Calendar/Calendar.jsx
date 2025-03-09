@@ -24,13 +24,12 @@ import {
   eachDayOfInterval,
   getDay,
 } from "date-fns";
-import { BookBtn } from "../shipping/shippingDetail/ShippingDetailCss";
 
 const Calendar = ({data}) => {
   const [date, setDate] = useState(new Date());
   const startDate = startOfWeek(startOfMonth(date));
   const endDate = endOfWeek(endOfMonth(date));
-  const {bookData, people, selectedDate, setSelectedDate} = data
+  const {bookData, people, selectedDate, setSelectedDate, setPlayDate} = data
   const days = eachDayOfInterval({ start: startDate, end: endDate });
   const toDay = new Date().getTime() - 86399999;
   const daysFormat = days.map((day, index) => ({
@@ -51,7 +50,7 @@ const Calendar = ({data}) => {
   }))
 
   const clickPlayDate = (e) => {
-    if(e.date == selectedDate){
+    if(e.date === selectedDate){
       setSelectedDate('')
     } else{
       setSelectedDate(e.date);
@@ -69,11 +68,14 @@ const Calendar = ({data}) => {
     <>
       <CalTable>
         <thead>
-          {selectedDate !== '' &&
+          {selectedDate !== '' ?
           <tr>
             <th colSpan={7}>선택한 날짜 : {selectedDate}</th>
           </tr>
-          }
+           : <tr>
+              <th colSpan={7} >&nbsp;</th>
+            </tr>
+             }
           <tr>
             <CalMonth colSpan={7}>
               <CalPreOrNext onClick={preBtn}>{"<"}</CalPreOrNext>
@@ -142,7 +144,9 @@ const Calendar = ({data}) => {
               </tr>
             ))}
             <tr>
-              <td colSpan={3}>확인</td>
+              <td colSpan={3} onClick={() => setPlayDate(selectedDate, 'playDate')}>
+                확인
+                </td>
               <td></td>
               <td colSpan={3}>취소</td>
             </tr>

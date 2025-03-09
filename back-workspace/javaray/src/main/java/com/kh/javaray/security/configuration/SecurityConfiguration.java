@@ -53,7 +53,7 @@ public class SecurityConfiguration {
 					requests.requestMatchers(HttpMethod.PUT, "/members/update/**", "/shippings").authenticated();
 					requests.requestMatchers(HttpMethod.DELETE, "/members", "/shippings/attention").authenticated();
 					requests.requestMatchers(HttpMethod.POST, "/members/refresh", "/businessNo/**",
-							"/shippings/attention", "/goods/**", "/shippings").authenticated();
+							"/shippings/attention", "/goods/**", "/shippings", "shipping-book/**").authenticated();
 					requests.requestMatchers(HttpMethod.GET, "/shippings/**", "/shippings/detail/**",
 							"/funding/selectList/**", "/funding/selectCategory", "uploads/**", "/uploads/images/**",
 							"/businessNo", "/main/**", "shipping-book/**").permitAll();
