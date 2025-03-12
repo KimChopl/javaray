@@ -37,7 +37,7 @@
 			   )
 	   VALUES
 	          (
-				SEQ_BOOK_NO.NEXTVAL,
+				TO_CHAR('B'||SEQ_BOOK_NO.NEXTVAL),
 				#{shippingNo},
 				#{userNo},
 				#{inPeople},
