@@ -49,6 +49,8 @@ const Calendar = ({data}) => {
     peoples: bookInfoMap.get(day.date) || 0
   }))
 
+  // setCalendarDays(result);
+
   const clickPlayDate = (e) => {
     if(e.date === selectedDate){
       setSelectedDate('')

@@ -14,5 +14,8 @@ public interface BookMapper {
 	
 	
 	int insertBook(RegistBook book);
+
+
+	String selectDateAndShippingNo(RegistBook book);
 	
 }

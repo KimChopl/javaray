@@ -8,6 +8,7 @@ const ShippingBook = () => {
     const [bookData, setBookData] = useState([]);
     const [people, setPeople] = useState(0);
     const [selectedDate, setSelectedDate] = useState('');
+    // const [calendarDays, setCalendarDays] = useState({});
     const [booker, setBooker] = useState({
         inPeople : 0,
         playDate : '',
@@ -27,12 +28,26 @@ const ShippingBook = () => {
             [name] : e
         })
     }
+    const checkedPeople = (checkedPeople) => {
+        if(checkedPeople < 1){
+            alert("탑승 인원을 정확하게 입력해 주세요.");
+            return;
+        }
+        if(people < checkedPeople){
+            alert(`최대 탑승 가능 인원은 ${people}명 입니다.`)
+            return;
+        }
+        // const date = calendarDays.filter(day => day.date === bookDate);
+        // if(date.people + checkedPeople > people){
+        //     alert("최대 탐승 인원을 초과하였습니다.");
+        // }
+    };
     const registBook = () => {
+        checkedPeople(booker.inPeople);
             axios.post(`http://localhost/shipping-book/${shippingNo}`, booker , {headers: {
                 Authorization: `Bearer ${auth.accessToken}`,
             }})
             .then((response) => {
-                console.log(response)
                 alert('등록 성공')
             })
             .catch((error) => {

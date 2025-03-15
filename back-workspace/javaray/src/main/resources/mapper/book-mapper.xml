@@ -42,7 +42,30 @@
 				#{userNo},
 				#{inPeople},
 				TO_DATE(#{playDate}, 'YYYY-MM-DD'),
-				#{bookContent}
+				<choose>
+					<when test="bookContent != null" >#{bookContent}</when>
+					<otherwise>NULL</otherwise>
+				</choose>
 			  )
  	</insert>
+ 	
+ 	<select id="selectDateAndShippingNo" parameterType="RegistBook" resultType="string">
+ 		SELECT
+ 		       SUM(BOOK_PEOPLE_NO) 
+ 		  FROM
+ 		       TB_SHIPPING_BOOK TSB
+ 		  LEFT
+ 		  JOIN
+ 		       TB_SHIPPING_CANCEL TSC ON (TSB.BOOK_NO = TSC.BOOK_NO)
+ 		 WHERE
+ 		       SHIPPING_NO = #{shippingNo}
+ 		   AND
+ 		       PLAY_DATE = TO_DATE(#{playDate}, 'YYYY-MM-DD')
+ 		   AND
+ 		       TSC.BOOK_NO IS NULL
+ 		 GROUP
+ 		    BY
+ 		       TSB.SHIPPING_NO
+ 	</select>
+ 	
  </mapper>

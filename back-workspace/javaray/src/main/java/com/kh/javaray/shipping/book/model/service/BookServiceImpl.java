@@ -52,13 +52,23 @@ public class BookServiceImpl implements BookService {
 	}
 
 	private RegistBook registBook(String shippingNo, RegistBook book) {
-		shippingService.checkedShipping(shippingNo);
+		Shipping shipping = shippingService.checkedShipping(shippingNo);
 		CustomUserDetails user = authService.checkedUser();
 		book.setShippingNo(shippingNo);
 		book.setUserNo(user.getUserNo());
-		log.info("{}", book);
+		checkedPeople(book, shipping.getAllowPeopleNo());
 		saveBook(book);
 		return book;
+	}
+	
+	private void checkedPeople(RegistBook book, int limitPeople) {
+		String datePeople = bookMapper.selectDateAndShippingNo(book);
+		if(datePeople != null) {
+			int a = Integer.parseInt(datePeople);
+			if(a + book.getInPeople() > limitPeople) {
+				throw new FailInsertObjectException("최대 예약 인원을 초과하였습니다.");
+			}
+		}
 	}
 
 	private void saveBook(RegistBook book) {
